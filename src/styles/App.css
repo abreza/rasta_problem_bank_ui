@@ -10,6 +10,7 @@
   text-align: right;
 }
 
+.tox.tox-tinymce,
 .ui.input > input,
 .ui.input > textarea{
   border-radius: 5px;
@@ -20,6 +21,8 @@
   transition: 0.3s;
 }
 
+.tox.tox-tinymce:focus,
+.tox.tox-tinymce:hover,
 .ui.input > input:focus,
 .ui.input > input:hover,
 .ui.input > textarea:focus,
@@ -27,3 +30,31 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
+.tox-notifications-container {
+  display: none;
+}
+
+.tox-statusbar {
+  border: none !important;
+  direction: ltr !important;
+}
+
+.tox-statusbar a {
+  display: none;
+}
+
+.tox .tox-tbtn--bespoke .tox-tbtn__select-label {
+  direction: ltr;
+}
+
+.tox .tox-tbtn--bespoke[title='اندازه فونت'] .tox-tbtn__select-label {
+  width: 35px;
+}
+
+.tox .tox-tbtn--bespoke[title='فونت‌ها'] .tox-tbtn__select-label {
+  width: 60px;
+}
+
+.tox .tox-tbtn--bespoke[title='Formats'] .tox-tbtn__select-label {
+  width: 70px;
+}
