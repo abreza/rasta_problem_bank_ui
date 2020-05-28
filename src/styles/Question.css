@@ -1,0 +1,7 @@
+.ui.input {
+  padding: 0 0 5px 5px;
+}
+
+.ui.input.hardness > input {
+  width: 85px;
+}

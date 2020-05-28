@@ -1,0 +1,29 @@
+.rtl,
+.ui.input.rtl > input {
+  text-align: right;
+  direction: rtl;
+}
+
+.form-label {
+  display: block;
+  margin: 20px 0 5px 0;
+  text-align: right;
+}
+
+.ui.input > input,
+.ui.input > textarea{
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin: 3px 0;
+  direction: rtl !important;
+  border: none;
+  transition: 0.3s;
+}
+
+.ui.input > input:focus,
+.ui.input > input:hover,
+.ui.input > textarea:focus,
+.ui.input > textarea:hover{
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
