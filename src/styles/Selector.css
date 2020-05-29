@@ -1,0 +1,41 @@
+.selector {
+  display: inline-block;
+  position: relative;
+  margin: 100px;
+}
+
+.selector-list {
+  border-radius: 5px;
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin: 3px 0;
+  direction: rtl;
+  transition: 0.3s;
+  position: absolute;
+  top: 100%;
+  border: 1px solid #ccc;
+  display: none;
+}
+
+.selector-list.show {
+  display: block;
+}
+
+.selector-list ul {
+  list-style: none;
+  padding: 0;
+  text-align: right;
+  margin: 0;
+  max-height: 100px;
+  overflow-y: scroll;
+}
+
+.selector-list ul li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  display: none;
+}
+
+.selector-list ul li.show {
+  display: block;
+}

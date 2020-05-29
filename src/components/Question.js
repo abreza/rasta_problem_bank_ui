@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Grid, Header, Input } from 'semantic-ui-react';
 import Editor from './editor/tiny_editor/react_tiny/TinyEditorComponent';
 
+import Selector from './selector/Selector';
+
 import '../styles/Question.css';
 
 export default class Question extends Component {
@@ -41,6 +43,9 @@ export default class Question extends Component {
                 onEditorChange={(content) => console.log(content)}
               />
             </label>
+          </Grid.Row>
+          <Grid.Row>
+            <Selector />
           </Grid.Row>
         </Grid.Column>
       </Grid>
