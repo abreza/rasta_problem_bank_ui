@@ -44,5 +44,39 @@
   <body class="iranyekan">
     <noscript>فعال بودن جاوااسکریپت برای اجرای این برنامه اجباریست.</noscript>
     <div id="root"></div>
+
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/moratab/jquery-1.11.1.min.js"
+    ></script>
+    <script type="text/javascript" src="%PUBLIC_URL%/moratab/libs.js"></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/moratab/syntax.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/moratab/buttons.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="%PUBLIC_URL%/moratab/editor.js"
+    ></script>
+    <script>
+      $(document).ready(function () {
+        $('.moratab').each(function () {
+          let hidden_textarea = $(this).find('textarea');
+          let content_text = hidden_textarea.val();
+          let editor = $(this).find('.editor').moratab(
+            content_text,
+            { strings: { help: '' } },
+            (textContent) => {
+              content_text = textContent;
+              hidden_textarea.val(textContent);
+            }
+          );
+        });
+      });
+    </script>
   </body>
 </html>

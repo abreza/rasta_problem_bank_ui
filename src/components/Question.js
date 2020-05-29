@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Header, Input } from 'semantic-ui-react';
-import Editor from './editor/tiny_editor/react_tiny/TinyEditorComponent';
+import Editor from './editor/moratab/MoratabEditorComponent';
 
 import '../styles/Question.css';
 
@@ -36,10 +36,10 @@ export default class Question extends Component {
           <Grid.Row>
             <label className="form-label">
               پاسخ
-              <Editor
+              {/* <Editor
                 id="AnswerTextArea"
                 onEditorChange={(content) => console.log(content)}
-              />
+              /> */}
             </label>
           </Grid.Row>
         </Grid.Column>
