@@ -63,7 +63,7 @@ export default class Login extends Component {
       <Grid centered doubling columns={2}>
         <Grid.Column>
           <Header as="h2" textAlign="center">
-            Login
+            ورود
           </Header>
           <Segment>
             <Form
