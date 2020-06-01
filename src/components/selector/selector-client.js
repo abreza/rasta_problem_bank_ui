@@ -3,11 +3,7 @@ import jQuery from 'jquery';
 
 $(document).ready(function () {
   $(document).click(function () {
-    $('.selector').select_equal();
-
-    setTimeout(function () {
-      $('.selector .selector-list').removeClass('show');
-    }, 100);
+    $('.selector').close();
   });
 
   $('.selector-list ul li').click(function (e) {
@@ -27,6 +23,7 @@ $(document).ready(function () {
 
   $('.selector input').click(function (e) {
     let selector = $(this).closest('.selector');
+    $('.selector').not(selector).close();
     selector.find('.selector-list').addClass('show');
     e.preventDefault();
     return false;
@@ -97,6 +94,16 @@ $(document).ready(function () {
     elems.removeClass('selected');
     selector.update_selected_labels();
   }
+
+  jQuery.fn.close = function (options) {
+    let o = $(this);
+    o.select_equal();
+
+    setTimeout(function () {
+      o.find('.selector-list').removeClass('show');
+    }, 100);
+    return this;
+  };
 
   jQuery.fn.reset_selector = function (options) {
     let o = $(this[0]);
