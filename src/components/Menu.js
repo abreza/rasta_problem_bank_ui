@@ -11,11 +11,11 @@ export default () => (
 
       <Menu.Menu position="right">
         <Menu.Item as={Link} to="/login" name="login">
-          Login
+          ورود
         </Menu.Item>
 
         <Menu.Item as={Link} to="/registration" name="register">
-          Register
+          ثبت‌نام
         </Menu.Item>
       </Menu.Menu>
     </Container>

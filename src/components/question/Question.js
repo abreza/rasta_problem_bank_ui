@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Grid, Header, Input } from 'semantic-ui-react';
-import Editor from './editor/tiny_editor/react_tiny/TinyEditorComponent';
+import Editor from '../editor/tiny_editor/react_tiny/TinyEditorComponent';
 
-import Selector from './selector/Selector';
+import Selector from '../selector/Selector';
 
-import '../styles/Question.css';
+import '../../styles/Question.css';
 
 export default class Question extends Component {
   render() {
