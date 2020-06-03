@@ -54,7 +54,7 @@ export default class Registration extends Component {
           }
         },
         (error) => {
-          console.log("registration error", error);
+          console.log('registration error', error);
           this.setState({
             form_error: {
               title: 'Connection Refused!',

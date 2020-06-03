@@ -4,7 +4,7 @@ import { Input } from 'semantic-ui-react';
 import SelectorList from './SelectList';
 
 import '../../styles/Selector.css';
-import './selector-client'
+import './selector-client';
 
 export default class Selector extends Component {
   render() {

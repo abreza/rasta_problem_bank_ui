@@ -9,7 +9,7 @@ import Question from './components/question/Question';
 import AccountList from './components/AccountList';
 import './styles/App.css';
 import QuestionView from './components/question/QuestionView';
-import Tag from './components/question/Tag'
+import Tag from './components/question/Tag';
 
 export default class App extends Component {
   constructor(props) {
