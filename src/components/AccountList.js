@@ -18,18 +18,18 @@ class AccountDisplay extends React.Component {
         <b>{this.props.account.firstName} {this.props.account.lastName}</b> :
         <span>{this.props.account.firstName} {this.props.account.lastName}</span> ;
         const itemStyle =  this.props.isItMe ?
-        {position: "relative", backgroundColor:"rgb(200, 200, 200)", padding:"7px", borderRadius: "7px"} :
-        {position: "relative"} ;
+        {position: "relative", backgroundColor:"rgb(200, 200, 200)", padding:"7px", borderRadius: "0px 0px 10px 10px"} :
+        {position: "relative", padding:"7px"} ;
         const labelColor =  this.props.rate === 1 ? "yellow" :
                             this.props.rate === 2 ? "grey" :
                             this.props.rate === 3 ? "brown"  :
-                            "white";
+                                                    "white";
         
           return (
             <Item style={itemStyle}>
                 <Label style={{marginRight: "10px"}} color={labelColor}>{this.props.rate}</Label>
                 {staticName}
-                <span style={{position: "absolute", right:"10px", top:"25%"}}>{this.props.account.numberOfAdds}</span>
+                <span style={{position: "absolute", right:"7%", top:"25%"}}>{this.props.account.numberOfAdds}</span>
             </Item> 
         );
       }    
@@ -49,7 +49,7 @@ export default class AccountList extends Component {
                 account: {
                     firstName: "ali",
                     lastName: 're',
-                    numberOfAdds: 5,
+                    numberOfAdds: 10,
                     username: 'fdfsd',
                 }
             },
@@ -112,6 +112,27 @@ export default class AccountList extends Component {
             Rating
           </Header>
           <Segment>
+          <Item style={{
+            position:"relative",
+            backgroundColor:"rgb(100, 100, 100)",
+            borderRadius: "10px 10px 0px 0px",
+            paddingBottom: "10px",
+            marginBottom: "0",
+            padding: "10px"
+
+           }}>
+          <Header as="h4" style={{display:"inline", color:"white"}}>name</Header>
+          <Header as="h4" style={{display:"inline", color:"white", position: "absolute", right:"10px", bottom:"25%"}}>number of adds</Header>
+
+          </Item>
+          <Divider style={{
+            position:"relative",
+            backgroundColor:"rgb(50, 50, 50)",
+            marginTop: "0px",
+
+          }}>
+           </Divider>
+       
           <List>
               {accountsItems}
           </List>
