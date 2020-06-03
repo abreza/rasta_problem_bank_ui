@@ -3,12 +3,17 @@
   position: relative;
   direction: rtl;
   text-align: right;
-  float: right;
   margin-top: 10px;
+  min-width: 100%;
 }
 
 .ui .selector input {
   padding-left: 25px;
+  width: 100%;
+}
+
+.ui .selector .input{
+  width: 100%;
 }
 
 .selector .search-icon {
@@ -21,14 +26,19 @@
 .new-source {
   position: absolute;
   box-shadow: 0 0px 4px rgba(0, 0, 0, 0.35), 0 0px 6px rgba(0, 0, 0, 0.05);
-  right: -15px;
-  top: -8px;
-  font-size: 10px;
-  z-index: 100;
+  right: -14px;
+  top: 5px;
+  font-size: 9px;
   background-color: #72b8ec;
   color: white;
   border-radius: 4px;
-  padding: 1px 8px;
+  padding: 0 4px;
+  line-height: 14px;
+  transform: rotate(45deg);
+}
+
+.empty-list {
+  padding: 5px;
 }
 
 .new-source,
@@ -57,6 +67,7 @@
   display: none;
   transition: 0.2s;
   overflow: hidden;
+  /* z-index: 100; */
 }
 
 .selected-labels {

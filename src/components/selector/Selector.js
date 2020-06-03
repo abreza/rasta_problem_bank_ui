@@ -18,7 +18,6 @@ export default class Selector extends Component {
 
     return (
       <div className={this.props.multiple ? 'selector multiple' : 'selector'}>
-        {this.props.add_new ? <small className="new-source">جدید</small> : ''}
         <div>
           <Input
             placeholder={this.props.placeholder}
@@ -29,6 +28,13 @@ export default class Selector extends Component {
           {selected_lables}
         </div>
         <SelectorList items={this.props.items} />
+        {this.props.add_new ? (
+          <small className="new-source">
+            {this.props.placeholder + ' جدید'}
+          </small>
+        ) : (
+          ''
+        )}
       </div>
     );
   }
