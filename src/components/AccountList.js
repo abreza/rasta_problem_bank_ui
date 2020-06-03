@@ -6,22 +6,31 @@ import {
   Message,
   Segment,
   Label,
+  Divider,
   Statistic,
+  Item,
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 class AccountDisplay extends React.Component {
     render() {
         const staticName = this.props.isItMe ?
-        <Statistic as='h3'>{this.props.account.firstName} {this.props.account.lastName}</Statistic> :
-        <Statistic>{this.props.account.firstName} {this.props.account.lastName}</Statistic> ;
-                
-        return (
-            <Segment>
-                <Label>{this.props.rate}</Label>
+        <b>{this.props.account.firstName} {this.props.account.lastName}</b> :
+        <span>{this.props.account.firstName} {this.props.account.lastName}</span> ;
+        const itemStyle =  this.props.isItMe ?
+        {position: "relative", backgroundColor:"rgb(200, 200, 200)", padding:"7px", borderRadius: "7px"} :
+        {position: "relative"} ;
+        const labelColor =  this.props.rate === 1 ? "yellow" :
+                            this.props.rate === 2 ? "grey" :
+                            this.props.rate === 3 ? "brown"  :
+                            "white";
+        
+          return (
+            <Item style={itemStyle}>
+                <Label style={{marginRight: "10px"}} color={labelColor}>{this.props.rate}</Label>
                 {staticName}
-                <Statistic floated='right'>{this.props.account.numberOfAdds}</Statistic>
-            </Segment> 
+                <span style={{position: "absolute", right:"10px", top:"25%"}}>{this.props.account.numberOfAdds}</span>
+            </Item> 
         );
       }    
 }
@@ -60,6 +69,14 @@ export default class AccountList extends Component {
                     username: 'fad',
                 }
             },
+            {
+                account: {
+                    firstName: "ali",
+                    lastName: 'rea',
+                    numberOfAdds: 20,
+                    username: 'fad',
+                }
+            },
         ],
     };
   }
@@ -71,6 +88,9 @@ export default class AccountList extends Component {
   render() {
     sortAccounts(this.state.accounts);
     const accountsItems = this.state.accounts.map((x,rate) => {
+        const diver = rate+1 === this.state.accounts.length ?
+          null :
+          <Divider ></Divider> ;
         return (
         <List.Item>
             <AccountDisplay
@@ -78,6 +98,7 @@ export default class AccountList extends Component {
              rate={rate+1}
              isItMe = {this.isItMe(x.account)}
              />
+            {diver}
         </List.Item>      
         );    
     });
