@@ -7,6 +7,23 @@ import Selector from '../selector/Selector';
 import '../../styles/Question.css';
 
 export default class Question extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      sources:[
+        {name: 'المپیاد ملی روسیه ۲۰۱۹'},
+        {name: 'المپیاد ملی روسیه ۲۰۱۰'},
+        {name: 'المپیاد ملی رومانی ۲۰۱۹'},
+      ],
+
+      events:[
+        {name: 'عباس‌آباد'},
+        {name: 'بوشهر'},
+        {name: 'سراوان'},
+        {name: 'کابار'},
+      ]
+    }
+  }
   render() {
     return (
       <Grid centered>
@@ -45,7 +62,8 @@ export default class Question extends Component {
             </label>
           </Grid.Row>
           <Grid.Row>
-            <Selector />
+            <Selector items={this.state.sources} placeholder='منبع' add_new />
+            <Selector items={this.state.events} placeholder='رویداد' multiple />
           </Grid.Row>
         </Grid.Column>
       </Grid>
