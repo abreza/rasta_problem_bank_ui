@@ -23,6 +23,7 @@ import 'tinymce/plugins/code';
 import 'tinymce/plugins/help';
 import 'tinymce/plugins/wordcount';
 import 'tinymce/plugins/directionality';
+import './additional_plugins/latex';
 
 import 'tinymce/skins/ui/oxide/skin.min.css';
 
@@ -32,6 +33,7 @@ let config = {
   branding: false,
   theme_url: process.env.PUBLIC_URL + '/tinymce/themes/silver/theme.js',
   directionality: 'rtl',
+  extended_valid_elements: "svg[*],defs[*],pattern[*],desc[*],metadata[*],g[*],mask[*],path[*],line[*],marker[*],rect[*],circle[*],ellipse[*],polygon[*],polyline[*],linearGradient[*],radialGradient[*],stop[*],image[*],view[*],text[*],textPath[*],title[*],tspan[*],glyph[*],symbol[*],switch[*],use[*]",
   content_css:
     '/fonts/iranyekan/iranyekan.css, https://fonts.googleapis.com/css?family=Almarai|Baloo+Bhaijaan|Changa|El+Messiri|Harmattan|Lalezar|Markazi+Text&display=swap',
   font_formats:
@@ -70,11 +72,11 @@ let config = {
     'Wingdings=wingdings,zapf dingbats;',
   plugins: [
     'advlist autolink lists link image charmap print preview anchor',
-    'searchreplace visualblocks code fullscreen',
+    'searchreplace visualblocks code fullscreen latex',
     'insertdatetime media table paste code help wordcount directionality',
   ],
   toolbar:
-    'undo redo | preview print | styleselect | bold italic backcolor fontselect fontsizeselect forecolor | align | bullist numlist | rtl ltr outdent indent | removeformat',
+    'undo redo | latex | preview print | styleselect | bold italic backcolor fontselect fontsizeselect forecolor | align | bullist numlist | rtl ltr outdent indent | removeformat',
 };
 
 export default config;

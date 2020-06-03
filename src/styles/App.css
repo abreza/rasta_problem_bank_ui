@@ -52,9 +52,13 @@
 }
 
 .tox .tox-tbtn--bespoke[title='فونت‌ها'] .tox-tbtn__select-label {
-  width: 60px;
+  width: 50px;
 }
 
 .tox .tox-tbtn--bespoke[title='Formats'] .tox-tbtn__select-label {
-  width: 70px;
+  width: 50px;
+}
+
+.tox .tox-dialog{
+  direction: rtl;
 }
