@@ -9,7 +9,7 @@ import $ from 'jquery';
     let latex_data = init_data;
     let x = '';
     let body_text =
-      '<div style="text-align: right; direction: rtl">فرمول LaTeX موردنظر را در این کادر وارد کنید. (<a target="_blank" href="http://mathysc.com/sites/default/files/pdf/LaTeX_MathJax_Persian_Tutorial.pdf">راهنما</a>)</div>';
+      '<div style="text-align: right; direction: rtl">فرمول LaTeX موردنظر را در این کادر وارد کنید. (<a target="_blank" href="https://www.hostmath.com/">راهنما</a>)</div>';
     editor.windowManager.open({
       title: 'ویراستار فرمول ریاضی',
       body: {
