@@ -118,7 +118,7 @@ $(document).ready(function () {
 
   jQuery.fn.filter_selector = function () {
     let o = $(this[0]);
-    let search = o.find('input').val();
+    let search = o.find('input').val() || '';
     let elems = o.find('.selector-list li');
     let selected_size = 0;
     search = fixNumbers(search.toUpperCase());
@@ -141,7 +141,7 @@ $(document).ready(function () {
   jQuery.fn.select_equal = function () {
     let o = $(this[0]);
     let found_in_list = false;
-    let search = o.find('input').val();
+    let search = o.find('input').val() || '';
     if (search === '') {
       return this;
     }
