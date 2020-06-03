@@ -11,11 +11,7 @@ export default class Selector extends Component {
     let selected_lables = '';
     if (this.props.multiple) {
       let labels_list = this.props.items.map(function (item, index) {
-        return (
-          <li data-id={index}>
-            {' ' + item.name + ' '}
-          </li>
-        );
+        return <li data-id={index}>{' ' + item.name + ' '}</li>;
       });
       selected_lables = <ul className="selected-labels">{labels_list}</ul>;
     }

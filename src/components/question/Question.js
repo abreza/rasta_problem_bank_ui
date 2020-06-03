@@ -7,21 +7,22 @@ import Selector from '../selector/Selector';
 import '../../styles/Question.css';
 
 export default class Question extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
-      sources:[
-        {name: 'المپیاد ملی روسیه ۲۰۱۹'},
-        {name: 'المپیاد ملی روسیه ۲۰۱۰'},
-        {name: 'المپیاد ملی رومانی ۲۰۱۹'},
+      sources: [
+        { name: 'المپیاد ملی روسیه ۲۰۱۹' },
+        { name: 'المپیاد ملی روسیه ۲۰۱۰' },
+        { name: 'المپیاد ملی رومانی ۲۰۱۹' },
       ],
 
-      events:[
-        {name: 'عباس‌آباد'},
-        {name: 'بوشهر'},
-        {name: 'سراوان'},
-        {name: 'کابار'},
-      ]
+      events: [
+        { name: 'عباس‌آباد' },
+        { name: 'بوشهر' },
+        { name: 'سراوان' },
+        { name: 'کابار' },
+      ],
+    };
     }
   }
   render() {
