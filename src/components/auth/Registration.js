@@ -57,8 +57,8 @@ export default class Registration extends Component {
           console.log('registration error', error);
           this.setState({
             form_error: {
-              title: 'Connection Refused!',
-              message: 'Please try again later.',
+              title: 'ای بابا!',
+              message: 'یکم وقت دیگه دوباره تلاش کن...',
             },
           });
         }
@@ -68,10 +68,18 @@ export default class Registration extends Component {
 
   render() {
     return (
-      <Grid centered doubling columns={2}>
-        <Grid.Column>
+      <Grid
+        centered
+        doubling
+        container
+        stackable
+      >
+        <Grid.Column
+          style={{ textAlign: 'center', direction: 'rtl' }}
+          width={6}
+        >
           <Header as="h2" textAlign="center">
-            Register
+            ثبت‌نام
           </Header>
           <Segment>
             <Form
@@ -86,7 +94,7 @@ export default class Registration extends Component {
                 fluid
                 icon="user"
                 iconPosition="left"
-                placeholder="Email address"
+                placeholder="ایمیل"
                 value={this.state.email}
                 onChange={this.handleChange}
               />
@@ -97,7 +105,7 @@ export default class Registration extends Component {
                 fluid
                 icon="lock"
                 iconPosition="left"
-                placeholder="Password"
+                placeholder="رمز عبور"
                 type="password"
                 value={this.state.password}
                 onChange={this.handleChange}
@@ -109,7 +117,7 @@ export default class Registration extends Component {
                 fluid
                 icon="lock"
                 iconPosition="left"
-                placeholder="Password Confirmation"
+                placeholder="تکرار رمز عبور"
                 type="password"
                 value={this.state.password_confirmation}
                 onChange={this.confirmPassword}
@@ -121,12 +129,12 @@ export default class Registration extends Component {
                 content={this.state.form_error.message}
               />
               <Button type="submit" color="blue" fluid size="large">
-                Register
+                ثبت‌نام
               </Button>
             </Form>
           </Segment>
           <Message>
-            Already signed up? <Link to="/login">Login</Link>
+            قبلاً ثبت‌نام کردی؟ <Link to="/login">وارد شو!</Link>
           </Message>
         </Grid.Column>
       </Grid>

@@ -38,8 +38,15 @@ export default class QuestionView extends Component {
   render() {
     const tags = sampleQuestion.tags.map((tag) => <Tag name={tag}></Tag>);
     const subtags = sampleQuestion.subtags.map((tag) => <Tag name={tag}></Tag>);
+
     return (
-      <Grid centered container stackable style={{ direction: 'rtl' }}>
+      <Grid
+        centered
+        container
+        stackable
+        doubling
+        style={{ direction: 'rtl' }}
+      >
         <Grid.Row columns={2}>
           <Grid.Column
             width={11}

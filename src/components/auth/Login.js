@@ -49,8 +49,8 @@ export default class Login extends Component {
           console.log('login error', error);
           this.setState({
             form_error: {
-              title: 'Connection Refused!',
-              message: 'Please try again later.',
+              title: 'ای بابا!',
+              message: 'یکم وقت دیگه دوباره تلاش کن...',
             },
           });
         }
@@ -60,8 +60,17 @@ export default class Login extends Component {
 
   render() {
     return (
-      <Grid centered doubling columns={2}>
-        <Grid.Column>
+      <Grid
+        centered
+        container
+        doubling
+        stackable
+
+      >
+        <Grid.Column
+          style={{ textAlign: 'center', direction: 'rtl' }}
+          width={6}
+        >
           <Header as="h2" textAlign="center">
             ورود
           </Header>
@@ -78,7 +87,7 @@ export default class Login extends Component {
                 fluid
                 icon="user"
                 iconPosition="left"
-                placeholder="Email address"
+                placeholder="ایمیل"
                 value={this.state.email}
                 onChange={this.handleChange}
               />
@@ -89,7 +98,7 @@ export default class Login extends Component {
                 fluid
                 icon="lock"
                 iconPosition="left"
-                placeholder="Password"
+                placeholder="رمز عبور"
                 type="password"
                 value={this.state.password}
                 onChange={this.handleChange}
@@ -102,12 +111,12 @@ export default class Login extends Component {
               />
 
               <Button color="blue" fluid size="large">
-                Login
+                بزن بریم
               </Button>
             </Form>
           </Segment>
           <Message>
-            Not registered yet? <Link to="/registration">Sign Up</Link>
+            هنوز ثبت‌نام نکردی؟ <Link to="/registration">ثبت‌نام کن!</Link>
           </Message>
         </Grid.Column>
       </Grid>

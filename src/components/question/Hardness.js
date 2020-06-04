@@ -18,7 +18,12 @@ export default class Hardness extends Component {
       'دوازدهم',
     ];
     return (
-      <Grid doubling centered container stackable style={{ direction: 'rtl' }}>
+      <Grid
+        doubling
+        centered
+        container
+        stackable
+        style={{ direction: 'rtl' }}>
         <Segment>
           <Grid.Row>
             <Progress
