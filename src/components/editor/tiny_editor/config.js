@@ -7,6 +7,7 @@ import 'tinymce/plugins/autolink';
 import 'tinymce/plugins/lists';
 import 'tinymce/plugins/link';
 import 'tinymce/plugins/image';
+import 'tinymce/plugins/imagetools';
 import 'tinymce/plugins/charmap';
 import 'tinymce/plugins/print';
 import 'tinymce/plugins/preview';
@@ -14,6 +15,7 @@ import 'tinymce/plugins/anchor';
 import 'tinymce/plugins/searchreplace';
 import 'tinymce/plugins/visualblocks';
 import 'tinymce/plugins/code';
+import 'tinymce/plugins/contextmenu';
 import 'tinymce/plugins/fullscreen';
 import 'tinymce/plugins/insertdatetime';
 import 'tinymce/plugins/media';
@@ -23,6 +25,7 @@ import 'tinymce/plugins/code';
 import 'tinymce/plugins/help';
 import 'tinymce/plugins/wordcount';
 import 'tinymce/plugins/directionality';
+import './additional_plugins/latex';
 
 import 'tinymce/skins/ui/oxide/skin.min.css';
 
@@ -32,6 +35,8 @@ let config = {
   branding: false,
   theme_url: process.env.PUBLIC_URL + '/tinymce/themes/silver/theme.js',
   directionality: 'rtl',
+  extended_valid_elements:
+    'svg[*],defs[*],pattern[*],desc[*],metadata[*],g[*],mask[*],path[*],line[*],marker[*],rect[*],circle[*],ellipse[*],polygon[*],polyline[*],linearGradient[*],radialGradient[*],stop[*],image[*],view[*],text[*],textPath[*],title[*],tspan[*],glyph[*],symbol[*],switch[*],use[*]',
   content_css:
     '/fonts/iranyekan/iranyekan.css, https://fonts.googleapis.com/css?family=Almarai|Baloo+Bhaijaan|Changa|El+Messiri|Harmattan|Lalezar|Markazi+Text&display=swap',
   font_formats:
@@ -69,12 +74,45 @@ let config = {
     'Webdings=webdings;' +
     'Wingdings=wingdings,zapf dingbats;',
   plugins: [
-    'advlist autolink lists link image charmap print preview anchor',
-    'searchreplace visualblocks code fullscreen',
+    'advlist autolink lists link image imagetools charmap print preview anchor',
+    'searchreplace visualblocks code fullscreen latex contextmenu',
     'insertdatetime media table paste code help wordcount directionality',
   ],
   toolbar:
-    'undo redo | preview print | styleselect | bold italic backcolor fontselect fontsizeselect forecolor | align | bullist numlist | rtl ltr outdent indent | removeformat',
+    'undo redo | styleselect | formatgroup paragraphgroup | bullist numlist align | latex link image emoticons table | charmap hr | ',
+  toolbar_groups: {
+    formatgroup: {
+      icon: 'format',
+      tooltip: 'Formatting',
+      items:
+        'bold italic underline strikethrough | forecolor backcolor | superscript subscript | removeformat',
+    },
+    paragraphgroup: {
+      icon: 'paragraph',
+      tooltip: 'حالت پاراگراف',
+      items:
+        'rtl ltr | indent outdent',
+    },
+    mobile_paragraphgroup: {
+      icon: 'paragraph',
+      tooltip: 'حالت پاراگراف',
+      items:
+        'bullist numlist | alignleft aligncenter alignright | rtl ltr | indent outdent',
+    },
+    insertgroup: {
+      icon: 'plus',
+      tooltip: 'درج',
+      items: 'link image emoticons table charmap hr',
+    },
+  },
+  contextmenu:
+    'link image imagetools table latex spellchecker | bold italic underline strikethrough | forecolor backcolor | removeformat',
+  menubar: false,
+  mobile: {
+    menubar: false,
+    toolbar:
+    'undo redo | styleselect | formatgroup mobile_paragraphgroup | latex link image emoticons table | charmap hr | ',
+  }
 };
 
 export default config;

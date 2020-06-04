@@ -14,13 +14,14 @@ import Hardness from './Hardness';
 import Tag from './Tag';
 
 export default class QuestionView extends Component {
-  // constructor(props) {
-  //     super(props);
-  //     this.state = {
-  //         books: [],
-  //     };
-  //     this.loadBooks = this.loadBooks.bind(this);
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      tags: sampleQuestion.tags.map((tag) => <Tag name={tag}></Tag>),
+      subtags: sampleQuestion.subtags.map((tag) => <Tag name={tag}></Tag>),
+    };
+    // this.loadBooks = this.loadBooks.bind(this);
+  }
 
   // componentWillMount() {
   //     this.loadBooks();
@@ -36,9 +37,6 @@ export default class QuestionView extends Component {
   // }
 
   render() {
-    const tags = sampleQuestion.tags.map((tag) => <Tag name={tag}></Tag>);
-    const subtags = sampleQuestion.subtags.map((tag) => <Tag name={tag}></Tag>);
-
     return (
       <Grid
         centered
@@ -79,11 +77,11 @@ export default class QuestionView extends Component {
               <br />
               <Segment textAlign="center">
                 <Label attached="top">مباحث کلی سوال</Label>
-                {tags}
+                {this.state.tags}
               </Segment>
               <Segment textAlign="center">
                 <Label attached="top">مباحث ریزتر</Label>
-                {subtags}
+                {this.state.subtags}
               </Segment>
             </Segment>
           </Grid.Column>
