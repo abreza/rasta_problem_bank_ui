@@ -17,24 +17,11 @@ export default class QuestionView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tags: sampleQuestion.tags.map((tag) => <Tag name={tag}></Tag>),
-      subtags: sampleQuestion.subtags.map((tag) => <Tag name={tag}></Tag>),
+      question: sampleQuestion,
+      tags: sampleQuestion.tags.map((tagName) => <Tag name={tagName}></Tag>),
+      subtags: sampleQuestion.subtags.map((tagName) => <Tag name={tagName}></Tag>),
     };
-    // this.loadBooks = this.loadBooks.bind(this);
   }
-
-  // componentWillMount() {
-  //     this.loadBooks();
-  // }
-
-  // async loadBooks() {
-  //     const promise = await axios.get("http://localhost:8000/book/");
-  //     const status = promise.status;
-  //     if (status === 200) {
-  //         const data = promise.data.data;
-  //         this.setState({ books: data });
-  //     }
-  // }
 
   render() {
     return (
@@ -45,22 +32,39 @@ export default class QuestionView extends Component {
         doubling
         style={{ direction: 'rtl' }}
       >
+
+        <Grid.Row centered relaxed>
+          <Grid.Column>
+            <Header as="h1" textAlign="center">
+              {'«' + this.state.question.name + '»'}
+            </Header>
+          </Grid.Column>
+        </Grid.Row>
+
         <Grid.Row columns={2}>
           <Grid.Column
             width={11}
             style={{ textAlign: 'right', direction: 'rtl' }}
           >
-            <Segment>
-              <Header
-                content={sampleQuestion.name}
-                as="h2"
-                textAlign="center"
-              />
-              <Divider section></Divider>
+            <Segment textAlign="center">
+              <Label size="large" attached="top">
+                <Icon name="pencil" size="large" />
+                {" صورت سوال"}
+              </Label>
+              <Container fluid textAlign="right" style={{ fontSize: 20, }} >
+                <br />
+                {this.state.question.questionText}
+              </Container>
+            </Segment>
 
-              <Container>
-                <Icon name="pencil alternate" size="large" />
-                {' ' + sampleQuestion.question}
+            <Segment textAlign="center">
+              <Label size="large" attached="top">
+                <Icon name="book" size="large" />
+                {" پاسخ"}
+              </Label>
+              <Container fluid textAlign="right" style={{ fontSize: 20, }}>
+                <br />
+                {this.state.question.answer.answer}
               </Container>
             </Segment>
           </Grid.Column>
@@ -69,17 +73,16 @@ export default class QuestionView extends Component {
             width={5}
             style={{ textAlign: 'right', direction: 'rtl' }}
           >
-            <Segment>
+            <Segment textAlign="center">
               <Header content={'شناسنامه'} as="h2" textAlign="center" />
-              <Divider></Divider>
+              <Divider section></Divider>
+              <Hardness hardness={this.state.question.hardness}></Hardness>
               <br />
-              <Hardness hardness={sampleQuestion.hardness}></Hardness>
-              <br />
-              <Segment textAlign="center">
+              <Segment>
                 <Label attached="top">مباحث کلی سوال</Label>
                 {this.state.tags}
               </Segment>
-              <Segment textAlign="center">
+              <Segment>
                 <Label attached="top">مباحث ریزتر</Label>
                 {this.state.subtags}
               </Segment>
@@ -87,10 +90,6 @@ export default class QuestionView extends Component {
           </Grid.Column>
         </Grid.Row>
       </Grid>
-      // <div>
-      //     <h1>Books</h1>
-      //     {this.state.books.map((value, index) => { return <h4 key={index}>{value}</h4> })}
-      // </div>
     );
   }
 }
