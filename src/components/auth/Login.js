@@ -25,11 +25,11 @@ export default class Login extends Component {
   }
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     const { email, password } = this.state;
 
-    axios
-      .post(
+    try {
+      const response = await axios.post(
         'http://localhost:3001/login',
         {
           user: {
@@ -38,14 +38,11 @@ export default class Login extends Component {
           },
         },
         { withCredentials: true }
-      )
-      .then(
-        (response) => {
+      );
           if (response.data.logged_in) {
             this.props.handleLogin(response.data);
           }
-        },
-        (error) => {
+    } catch (error) {
           console.log('login error', error);
           this.setState({
             form_error: {
@@ -54,7 +51,7 @@ export default class Login extends Component {
             },
           });
         }
-      );
+
     event.preventDefault();
   }
 

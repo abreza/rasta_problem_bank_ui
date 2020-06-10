@@ -33,11 +33,10 @@ export default class Registration extends Component {
       elem.setCustomValidity('');
     }
   }
-  handleSubmit(event) {
+  async handleSubmit(event) {
     const { email, password } = this.state;
-
-    axios
-      .post(
+    try {
+      const response = axios.post(
         'http://localhost:3001/registrations',
         {
           user: {
@@ -46,14 +45,11 @@ export default class Registration extends Component {
           },
         },
         { withCredentials: true }
-      )
-      .then(
-        (response) => {
+      );
           if (response.data.status === 'created') {
             this.props.handleLogin(response.data);
           }
-        },
-        (error) => {
+    } catch (error) {
           console.log('registration error', error);
           this.setState({
             form_error: {
@@ -62,7 +58,6 @@ export default class Registration extends Component {
             },
           });
         }
-      );
     event.preventDefault();
   }
 
