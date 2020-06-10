@@ -39,31 +39,25 @@ export default class Login extends Component {
         },
         { withCredentials: true }
       );
-          if (response.data.logged_in) {
-            this.props.handleLogin(response.data);
-          }
+      if (response.data.logged_in) {
+        this.props.handleLogin(response.data);
+      }
     } catch (error) {
-          console.log('login error', error);
-          this.setState({
-            form_error: {
-              title: 'ای بابا!',
-              message: 'یکم وقت دیگه دوباره تلاش کن...',
-            },
-          });
-        }
+      console.log('login error', error);
+      this.setState({
+        form_error: {
+          title: 'ای بابا!',
+          message: 'یکم وقت دیگه دوباره تلاش کن...',
+        },
+      });
+    }
 
     event.preventDefault();
   }
 
   render() {
     return (
-      <Grid
-        centered
-        container
-        doubling
-        stackable
-
-      >
+      <Grid centered container doubling stackable>
         <Grid.Column
           style={{ textAlign: 'center', direction: 'rtl' }}
           width={6}
@@ -85,6 +79,7 @@ export default class Login extends Component {
                 icon="user"
                 iconPosition="left"
                 placeholder="ایمیل"
+                className="persian-input"
                 value={this.state.email}
                 onChange={this.handleChange}
               />
@@ -97,6 +92,7 @@ export default class Login extends Component {
                 iconPosition="left"
                 placeholder="رمز عبور"
                 type="password"
+                className="persian-input"
                 value={this.state.password}
                 onChange={this.handleChange}
               />

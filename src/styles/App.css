@@ -62,3 +62,12 @@
 .tox .tox-dialog {
   direction: rtl;
 }
+
+.ui.message .header {
+  font-family: iranyekan;
+}
+
+.persian-input .ui.input > input::placeholder {
+  text-align: right;
+}
+
