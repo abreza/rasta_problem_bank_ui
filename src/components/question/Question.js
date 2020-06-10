@@ -62,7 +62,11 @@ export default class Question extends Component {
                 مسئله جدید
               </Header>
             </Grid.Column>
-            <Grid.Column width={5} style={{ textAlign: 'right' }}>
+            <Grid.Column
+              width={5}
+              only="computer"
+              style={{ textAlign: 'right' }}
+            >
               <Button icon labelPosition="left" positive>
                 <Icon name="save" />
                 ذخیره
@@ -133,6 +137,23 @@ export default class Question extends Component {
                   {this.state.subtags}
                 </Segment>
               </Segment>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column
+              width={16}
+              only="mobile tablet"
+              style={{ textAlign: 'center' }}
+            >
+              <Button
+                icon
+                labelPosition="left"
+                positive
+                className="mobile-save-btn"
+              >
+                <Icon name="save" />
+                ذخیره
+              </Button>
             </Grid.Column>
           </Grid.Row>
         </Grid>
