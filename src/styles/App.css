@@ -71,3 +71,62 @@
   text-align: right;
 }
 
+h1.ui.header {
+  font-weight: 800;
+}
+
+h2.ui.header {
+  font-weight: 600;
+}
+
+h3.ui.header {
+  font-weight: 500;
+}
+
+.ui.label.selectable-tag {
+  filter: drop-shadow(0px 1px 2px #333333);
+  transition: 0.3;
+}
+
+.ui.label.selectable-tag:hover {
+  background: rgb(72, 116, 235);
+  color: white;
+}
+
+.ui.label.selectable-tag::before {
+  background: #f3f3f3;
+  border-radius: 3px;
+}
+
+.ui.label.selectable-tag.selected::before,
+.ui.label.selectable-tag.selected {
+  background: rgb(53, 98, 223);
+  color: white;
+}
+
+.ui.label.selectable-tag:hover,
+.ui.label.selectable-tag:focus {
+  background: rgb(72, 116, 235);
+  cursor: pointer;
+}
+
+.ui.label.selectable-tag.selected:hover::before,
+.ui.label.selectable-tag:hover::before,
+.ui.label.selectable-tag.selected:focus::before,
+.ui.label.selectable-tag:focus::before {
+  background: rgb(72, 116, 235);
+}
+
+.ui.label.selectable-tag::before,
+.ui.label.selectable-tag {
+  background: #fafafa;
+}
+
+.ui.label.selectable-tag.not-selected {
+  border: 1px solid #ccc;
+}
+
+.ui.label.selectable-tag.not-selected::before {
+  border-left: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}

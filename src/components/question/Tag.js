@@ -1,25 +1,39 @@
 import React, { Component } from 'react';
 import { Label } from 'semantic-ui-react';
 
-const colors = ['blue', 'purple', 'brown', 'pink', 'green', 'red', 'yellow'];
-
 export default class Tag extends Component {
   constructor(props) {
     super(props);
     this.state = {
       numberHolder: 1,
     };
+    this.toggleSlected = this.toggleSlected.bind(this);
+  }
+
+  toggleSlected() {
+    if (this.props.onChange) {
+      this.props.onChange(this.props.index, !this.props.selected);
+    }
   }
 
   render() {
     return (
-      <Label
-        color={colors[Math.floor(Math.random() * colors.length)]}
-        tag
-        size="large"
-      >
-        {this.props.name}
-      </Label>
+      <span style={{ margin: '3px', display: 'inline-block' }}>
+        <Label
+          tag
+          size="large"
+          className={
+            this.props.selectable
+              ? this.props.selected
+                ? 'selectable-tag selected'
+                : 'selectable-tag'
+              : ''
+          }
+          onClick={this.props.selectable ? this.toggleSlected : () => {}}
+        >
+          {this.props.name}
+        </Label>
+      </span>
     );
   }
 }
