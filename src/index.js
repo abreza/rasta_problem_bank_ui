@@ -1,14 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'semantic-ui-css/semantic.min.css';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import allReducers from './reducers';
 
 import * as serviceWorker from './serviceWorker';
 
 import App from './app';
 
+const store = createStore(allReducers);
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
