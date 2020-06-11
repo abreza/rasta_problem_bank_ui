@@ -11,7 +11,7 @@ function account(
       return { ...state, isLoading: true };
     case actionTypes.LOGIN_RESPONSE:
       if (action.payload.data.user) {
-        return { ...state, logged_in: true, user: action.payload.data.user };
+        return { ...state, logged_in: true, isLoading = false, user: action.payload.data.user };
       } else {
         return state;
       }

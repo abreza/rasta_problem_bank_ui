@@ -23,4 +23,5 @@ let logoutParams = {
   requestType: actionTypes.LOGIN_REQUEST,
   receiveType: actionTypes.LOGIN_RESPONSE,
 };
+
 export const logout = () => fetchDataIfNeeded(...logoutParams);

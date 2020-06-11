@@ -17,24 +17,11 @@ export default class QuestionView extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      
       tags: sampleQuestion.tags.map((tag) => <Tag name={tag}></Tag>),
       subtags: sampleQuestion.subtags.map((tag) => <Tag name={tag}></Tag>),
     };
-    // this.loadBooks = this.loadBooks.bind(this);
   }
-
-  // componentWillMount() {
-  //     this.loadBooks();
-  // }
-
-  // async loadBooks() {
-  //     const promise = await axios.get("http://localhost:8000/book/");
-  //     const status = promise.status;
-  //     if (status === 200) {
-  //         const data = promise.data.data;
-  //         this.setState({ books: data });
-  //     }
-  // }
 
   render() {
     return (
@@ -70,13 +57,13 @@ export default class QuestionView extends Component {
             style={{ textAlign: 'right', direction: 'rtl' }}
           >
             <Segment>
-              <Header content={'شناسنامه'} as="h2" textAlign="center" />
+              <Header content={'اطلاعات'} as="h2" textAlign="center" />
               <Divider></Divider>
               <br />
               <Hardness hardness={sampleQuestion.hardness}></Hardness>
               <br />
               <Segment textAlign="center">
-                <Label attached="top">مباحث کلی سوال</Label>
+                <Label attached="top">مباحث کلی</Label>
                 {this.state.tags}
               </Segment>
               <Segment textAlign="center">
@@ -87,10 +74,6 @@ export default class QuestionView extends Component {
           </Grid.Column>
         </Grid.Row>
       </Grid>
-      // <div>
-      //     <h1>Books</h1>
-      //     {this.state.books.map((value, index) => { return <h4 key={index}>{value}</h4> })}
-      // </div>
     );
   }
 }
