@@ -13,15 +13,40 @@ import sampleQuestion from './sampleQuestion';
 import Hardness from './Hardness';
 import Tag from './Tag';
 
+
 export default class QuestionView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      question: sampleQuestion,
-      tags: sampleQuestion.tags.map((tagName) => <Tag name={tagName}></Tag>),
-      subtags: sampleQuestion.subtags.map((tagName) => <Tag name={tagName}></Tag>),
+      question: sampleQuestion, // temporary
+      questionURL: "https://bank.rastaiha.ir/problemset/problem/",
+      tags: sampleQuestion.tags.map((tagName, i) => <Tag key={tagName} name={tagName}></Tag>),
+      subtags: sampleQuestion.subtags.map((tagName, i) => <Tag key={tagName} name={tagName}></Tag>),
     };
   }
+
+  // componentDidMount() {
+  //   this.setState({
+  //     questionURL: this.state.questionURL + this.props.id,
+  //   });
+
+  //   fetch(this.state.questionURL)
+  //     .then((response) => {
+  //       response.json()
+  //     })
+  //     .then(
+  //       (json) => {
+  //         this.setState({
+  //         })
+  //       }
+  //     )
+  //     .catch(
+  //       (error) => {
+  //         console.log(error);
+  //       }
+  //     )
+  // }
+
 
   render() {
     return (
@@ -49,7 +74,7 @@ export default class QuestionView extends Component {
             <Segment textAlign="center">
               <Label size="large" attached="top">
                 <Icon name="pencil" size="large" />
-                {" صورت سوال"}
+                {" صورت مسئله"}
               </Label>
               <Container fluid textAlign="right" style={{ fontSize: 20, }} >
                 <br />
@@ -77,7 +102,6 @@ export default class QuestionView extends Component {
               <Header content={'شناسنامه'} as="h2" textAlign="center" />
               <Divider section></Divider>
               <Hardness hardness={this.state.question.hardness}></Hardness>
-              <br />
               <Segment>
                 <Label attached="top">مباحث کلی سوال</Label>
                 {this.state.tags}

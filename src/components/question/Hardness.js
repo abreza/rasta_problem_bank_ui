@@ -24,39 +24,29 @@ export default class Hardness extends Component {
   }
   render() {
     return (
-      <Grid
-        doubling
-        centered
-        container
-        stackable
-        style={{ direction: 'rtl' }}
-      >
-        <Segment>
-          <Grid.Row>
-            <Progress
-              textAlign="center"
-              value={this.props.hardness.hardnessValue}
-              total={10}
-              color="red"
-            >
-              سختی: {this.props.hardness.hardnessValue}
-            </Progress>
-            <Segment textAlign="right">
-              <Icon name="child" size="large"></Icon>
-              پایین‌ترین پایه‌ی مناسب:{' '}
-              <b>
-                {this.state.grades[this.props.hardness.minimumAppropriateGrade - 1]}
-              </b>
-              <br /><br />
-              <Icon name="male" size="large"></Icon>
-              بالاترین پایه‌ی مناسب:{' '}
-              <b>
-                {this.state.grades[this.props.hardness.maximumAppropriateGrade - 1]}
-              </b>
-            </Segment>
-          </Grid.Row>
+      <div>
+        <Progress
+          textAlign="center"
+          value={this.props.hardness.hardnessValue}
+          total={10}
+          color="red"
+        >
+          سختی: {this.props.hardness.hardnessValue}
+        </Progress>
+        <Segment >
+          <Icon name="child" size="large"></Icon>
+          پایین‌ترین پایه‌ی مناسب:{' '}
+          <b>
+            {this.state.grades[this.props.hardness.minimumAppropriateGrade - 1]}
+          </b>
+          <br /><br />
+          <Icon name="male" size="large"></Icon>
+          بالاترین پایه‌ی مناسب:{' '}
+          <b>
+            {this.state.grades[this.props.hardness.maximumAppropriateGrade - 1]}
+          </b>
         </Segment>
-      </Grid>
+      </div>
     );
   }
 }
