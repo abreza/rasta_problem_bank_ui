@@ -15,7 +15,6 @@ import Tag from './Tag';
 import Editor from '../editor/tiny_editor/react_tiny/TinyEditorComponent';
 
 import Selector from '../selector/Selector';
-import sampleQuestion from './sampleQuestion';
 
 import '../../styles/Question.css';
 
@@ -35,6 +34,34 @@ export default class Question extends Component {
         { name: 'سراوان' },
         { name: 'کابار' },
       ],
+      tags: [
+        {
+          name: 'ترکیبیات',
+          subtags: [
+            {
+              name: 'هندسه ترکیبیاتی',
+            },
+            {
+              name: 'لانه کبوتری',
+            },
+            {
+              name: 'استقرا',
+            },
+          ],
+        },
+        {
+          name: 'هندسه',
+          subtags: [
+            {
+              name: 'مسطحه',
+            },
+            {
+              name: 'هندسه ترکیبیاتی',
+            },
+          ],
+        },
+      ],
+      subtags: [],
     };
     this.state.multipleValues = [2, 12];
     this.state.settings = {
@@ -46,11 +73,68 @@ export default class Question extends Component {
         this.setState({ multipleValues });
       },
     };
-    this.state.tags = sampleQuestion.tags.map((tag) => <Tag name={tag}></Tag>);
-    this.state.subtags = sampleQuestion.subtags.map((tag) => (
-      <Tag name={tag}></Tag>
-    ));
+    this.handleTagChange = this.handleTagChange.bind(this);
+    this.handleSubtagChange = this.handleSubtagChange.bind(this);
   }
+
+  findByName(subtags, name) {
+    let res = -1;
+    subtags.forEach((subtag, index) => {
+      if (subtag.name === name) {
+        res = index;
+        return;
+      }
+    });
+    return res;
+  }
+
+  pushNewSubtags(subtags) {
+    subtags.forEach((subtag) => {
+      if (this.findByName(this.state.subtags, subtag.name) === -1) {
+        this.state.subtags.push({
+          name: subtag.name,
+          selected: false,
+        });
+      }
+    });
+  }
+  deleteNotSelectedSubtags(subtags) {
+    subtags.forEach((subtag) => {
+      let flag = false;
+      this.state.tags.forEach((tag) => {
+        if (tag.selected && this.findByName(tag.subtags, subtag.name) > -1) {
+          flag = true;
+        }
+      });
+      if (!flag) {
+        let index = this.findByName(this.state.subtags, subtag.name);
+        delete this.state.subtags[index];
+      }
+    });
+  }
+
+  updateSubtags(index, selected) {
+    if (selected) {
+      this.pushNewSubtags(this.state.tags[index].subtags);
+    } else {
+      this.deleteNotSelectedSubtags(this.state.tags[index].subtags);
+    }
+  }
+
+  handleTagChange(index, selected) {
+    this.state.tags[index].selected = selected;
+    this.updateSubtags(index, selected);
+    this.setState({
+      tags: this.state.tags,
+      subtags: this.state.subtags,
+    });
+  }
+
+  handleSubtagChange(index, selected) {
+    this.state.subtags[index].selected = selected;
+    this.setState({ subtags: this.state.subtags });
+  }
+
   render() {
     return (
       <Container>
@@ -62,7 +146,11 @@ export default class Question extends Component {
                 مسئله جدید
               </Header>
             </Grid.Column>
-            <Grid.Column width={5} style={{ textAlign: 'right' }}>
+            <Grid.Column
+              width={5}
+              only="computer"
+              style={{ textAlign: 'right' }}
+            >
               <Button icon labelPosition="left" positive>
                 <Icon name="save" />
                 ذخیره
@@ -126,13 +214,52 @@ export default class Question extends Component {
                 />
                 <Segment textAlign="center">
                   <Label attached="top">مباحث کلی سوال</Label>
-                  {this.state.tags}
+                  <div>
+                    {this.state.tags.map((tag, index) => (
+                      <Tag
+                        name={tag.name}
+                        selectable
+                        key={index}
+                        index={index}
+                        selected={tag.selected}
+                        onChange={this.handleTagChange}
+                      ></Tag>
+                    ))}
+                  </div>
                 </Segment>
                 <Segment textAlign="center">
                   <Label attached="top">مباحث ریزتر</Label>
-                  {this.state.subtags}
+                  <div>
+                    {this.state.subtags.map((subtag, index) => (
+                      <Tag
+                        name={subtag.name}
+                        selected={subtag.selected}
+                        onChange={this.handleSubtagChange}
+                        key={index}
+                        index={index}
+                        selectable
+                      ></Tag>
+                    ))}
+                  </div>
                 </Segment>
               </Segment>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column
+              width={16}
+              only="mobile tablet"
+              style={{ textAlign: 'center' }}
+            >
+              <Button
+                icon
+                labelPosition="left"
+                positive
+                className="mobile-save-btn"
+              >
+                <Icon name="save" />
+                ذخیره
+              </Button>
             </Grid.Column>
           </Grid.Row>
         </Grid>

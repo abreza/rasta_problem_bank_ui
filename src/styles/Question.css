@@ -5,3 +5,7 @@
 .ui.input.hardness > input {
   width: 85px;
 }
+
+.mobile-save-btn {
+  width: 100%;
+}

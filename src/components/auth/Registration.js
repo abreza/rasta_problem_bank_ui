@@ -33,11 +33,10 @@ export default class Registration extends Component {
       elem.setCustomValidity('');
     }
   }
-  handleSubmit(event) {
+  async handleSubmit(event) {
     const { email, password } = this.state;
-
-    axios
-      .post(
+    try {
+      const response = axios.post(
         'http://localhost:3001/registrations',
         {
           user: {
@@ -46,34 +45,25 @@ export default class Registration extends Component {
           },
         },
         { withCredentials: true }
-      )
-      .then(
-        (response) => {
-          if (response.data.status === 'created') {
-            this.props.handleLogin(response.data);
-          }
-        },
-        (error) => {
-          console.log('registration error', error);
-          this.setState({
-            form_error: {
-              title: 'ای بابا!',
-              message: 'یکم وقت دیگه دوباره تلاش کن...',
-            },
-          });
-        }
       );
+      if (response.data.status === 'created') {
+        this.props.handleLogin(response.data);
+      }
+    } catch (error) {
+      console.log('registration error', error);
+      this.setState({
+        form_error: {
+          title: 'ای بابا!',
+          message: 'یکم وقت دیگه دوباره تلاش کن...',
+        },
+      });
+    }
     event.preventDefault();
   }
 
   render() {
     return (
-      <Grid
-        centered
-        doubling
-        container
-        stackable
-      >
+      <Grid centered doubling container stackable>
         <Grid.Column
           style={{ textAlign: 'center', direction: 'rtl' }}
           width={6}
@@ -95,6 +85,7 @@ export default class Registration extends Component {
                 icon="user"
                 iconPosition="left"
                 placeholder="ایمیل"
+                className="persian-input"
                 value={this.state.email}
                 onChange={this.handleChange}
               />
@@ -107,6 +98,7 @@ export default class Registration extends Component {
                 iconPosition="left"
                 placeholder="رمز عبور"
                 type="password"
+                className="persian-input"
                 value={this.state.password}
                 onChange={this.handleChange}
               />
@@ -119,6 +111,7 @@ export default class Registration extends Component {
                 iconPosition="left"
                 placeholder="تکرار رمز عبور"
                 type="password"
+                className="persian-input"
                 value={this.state.password_confirmation}
                 onChange={this.confirmPassword}
               />

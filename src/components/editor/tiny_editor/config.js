@@ -79,7 +79,7 @@ let config = {
     'insertdatetime media table paste code help wordcount directionality',
   ],
   toolbar:
-    'undo redo | styleselect | formatgroup paragraphgroup | bullist numlist align | latex link image emoticons table | charmap hr | ',
+    'undo redo | styleselect | formatgroup | bullist numlist align paragraphgroup | latex link image emoticons table | charmap hr | ',
   toolbar_groups: {
     formatgroup: {
       icon: 'format',
@@ -90,8 +90,7 @@ let config = {
     paragraphgroup: {
       icon: 'paragraph',
       tooltip: 'حالت پاراگراف',
-      items:
-        'rtl ltr | indent outdent',
+      items: 'rtl ltr | indent outdent',
     },
     mobile_paragraphgroup: {
       icon: 'paragraph',
@@ -109,10 +108,24 @@ let config = {
     'link image imagetools table latex spellchecker | bold italic underline strikethrough | forecolor backcolor | removeformat',
   menubar: false,
   mobile: {
+    toolbar_groups: {
+      formatgroup: {
+        icon: 'format',
+        tooltip: 'Formatting',
+        items:
+          'bold italic underline strikethrough | forecolor backcolor | superscript subscript | removeformat',
+      },
+      mobile_paragraphgroup: {
+        icon: 'paragraph',
+        tooltip: 'حالت پاراگراف',
+        items:
+          'bullist numlist | alignleft aligncenter alignright | rtl ltr | indent outdent',
+      },
+    },
     menubar: false,
     toolbar:
-    'undo redo | styleselect | formatgroup mobile_paragraphgroup | latex link image emoticons table | charmap hr | ',
-  }
+      'undo redo | styleselect | formatgroup mobile_paragraphgroup | latex link image emoticons table | charmap hr | ',
+  },
 };
 
 export default config;
