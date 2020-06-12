@@ -1,5 +1,8 @@
 let rasta_bank = {
 
+  isLoading: false,
+  
+
   questionProperties: {
     tags: [
       {

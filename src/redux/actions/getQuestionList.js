@@ -1,7 +1,7 @@
 import { fetchDataIfNeeded } from './request';
 import * as actionTypes from './actionTypes';
 
-let updateQuestionListParams = {
+let updateQuestionsListParams = {
   url: 'url', // TODO: fix url
   data: {},
   method: 'GET',
@@ -17,7 +17,7 @@ let updateQuestionListParams = {
 };
 
 export const updateQuestionList = fetchDataIfNeeded(
-  ...updateQuestionListParams
+  ...updateQuestionsListParams
 );
 
 let getQuestionParams = {

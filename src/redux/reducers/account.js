@@ -1,5 +1,3 @@
-/* eslint-disable indent */
-
 import * as actionTypes from '../actions/actionTypes';
 
 function account(
@@ -11,7 +9,7 @@ function account(
       return { ...state, isLoading: true };
     case actionTypes.LOGIN_RESPONSE:
       if (action.payload.data.user) {
-        return { ...state, logged_in: true, isLoading: false, user: action.payload.data.user };
+        return { ...state, isLoading: false, logged_in: true, user: action.payload.data.user }; // TODO: why "actiom.payload.user" not?
       } else {
         return state;
       }
