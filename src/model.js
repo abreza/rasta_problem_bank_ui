@@ -1,7 +1,6 @@
 let rasta_bank = {
 
   isLoading: false,
-  
 
   questionProperties: {
     tags: [
@@ -21,7 +20,7 @@ let rasta_bank = {
     authors: ['عرفان معینی', 'رضا ابوالقاسمی'],
   },
 
-  questions: [
+  allQuestions: [
     {
       info: {
         id: 123,
@@ -43,10 +42,13 @@ let rasta_bank = {
     },
   ],
 
-  account: {
+  allAccounts: [
+
+  ],
+
+  thisAccount: {
     isLoggedIn: false,
-    user: {
-      type: 'STUDENT',
-    },
+    name: 'Mamadreza Kiani',
+    type: 'STUDENT',
   },
 };
