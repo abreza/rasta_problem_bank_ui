@@ -10,14 +10,13 @@ import {
 } from 'semantic-ui-react';
 
 import sampleQuestion from './sampleQuestion';
-import Hardness from './Hardness';
-import Tag from './Tag';
+import Hardness from '../components/question/Hardness';
+import Tag from '../components/question/Tag';
 
 export default class QuestionView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
       tags: sampleQuestion.tags.map((tag) => <Tag name={tag}></Tag>),
       subtags: sampleQuestion.subtags.map((tag) => <Tag name={tag}></Tag>),
     };
@@ -25,13 +24,7 @@ export default class QuestionView extends Component {
 
   render() {
     return (
-      <Grid
-        centered
-        container
-        stackable
-        doubling
-        style={{ direction: 'rtl' }}
-      >
+      <Grid centered container stackable doubling style={{ direction: 'rtl' }}>
         <Grid.Row columns={2}>
           <Grid.Column
             width={11}

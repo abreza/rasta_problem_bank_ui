@@ -11,12 +11,12 @@ import {
   Icon,
 } from 'semantic-ui-react';
 import { Slider } from 'react-semantic-ui-range';
-import Tag from './Tag';
-import Editor from '../editor/tiny_editor/react_tiny/TinyEditorComponent';
+import Tag from '../components/question/Tag';
+import Editor from '../components/editor/tiny_editor/react_tiny/TinyEditorComponent';
 
-import Selector from '../selector/Selector';
+import Selector from '../components/selector/Selector';
 
-import '../../styles/Question.css';
+import '../styles/Question.css';
 
 export default class Question extends Component {
   constructor(props) {

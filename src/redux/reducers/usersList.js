@@ -1,13 +1,17 @@
-import * as actionTypes from '../actions/actionTypes'
+import * as actionTypes from '../actions/actionTypes';
 
 function usersList(state = {}, action) {
   switch (action.type) {
-  case actionTypes.UPDATE_USERS_RATING_REQUEST:
-    return { ...state, isLoading: true };
-  case actionTypes.UPDATE_USERS_RATING_RECEIVE:
-    return { ...state, isLoading: false, usersList: action.payload.usersList }
-  default:
-    return state;
+    case actionTypes.USER_LIST_REQUEST:
+      return { ...state, isLoading: true };
+    case actionTypes.USER_LIST_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        usersList: action.payload.usersList,
+      };
+    default:
+      return state;
   }
 }
 

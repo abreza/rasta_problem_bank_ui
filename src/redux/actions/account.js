@@ -1,27 +1,61 @@
-import { fetchDataIfNeeded } from './request';
 import * as actionTypes from './actionTypes';
 
-let loginParams = {
-  url: 'url', // TODO: fix url
-  method: 'POST',
-  requestType: actionTypes.LOGIN_REQUEST,
-  receiveType: actionTypes.LOGIN_RESPONSE,
-  shouldFetch: (state) => {
-    if (state.account.user) {
-      return false;
-    }
-    return true;
+import { CALL_API, Schemas } from '../middleware/api/api';
+
+const fetchUser = (user_id) => ({
+  [CALL_API]: {
+    types: [
+      actionTypes.USER_REQUEST,
+      actionTypes.USER_SUCCESS,
+      actionTypes.USER_FAILURE,
+    ],
+    url: '', // TODO: fix url
+    fetchOptions: {
+      method: 'POST',
+      body: { user_id },
+    },
+    schema: Schemas.USER,
   },
+});
+
+export const loadUser = (user_id, requiredFields = []) => (
+  dispatch,
+  getState
+) => {
+  const user = getState().users[user_id];
+  if (user && requiredFields.every((key) => user.hasOwnProperty(key))) {
+    return null;
+  }
+
+  return dispatch(fetchUser(user_id));
 };
 
-export const login = (username, password) =>
-  fetchDataIfNeeded(...loginParams, ...{ data: { username, password } });
+export const login = (username, password) => ({
+  [CALL_API]: {
+    types: [
+      actionTypes.LOGIN_REQUEST,
+      actionTypes.LOGIN_SUCCESS,
+      actionTypes.LOGIN_FAILURE,
+    ],
+    url: '', // TODO: fix url
+    fetchOptions: {
+      method: 'POST',
+      body: { username, password },
+    },
+    schema: Schemas.USER,
+  },
+});
 
-let logoutParams = {
-  url: 'url', // TODO: fix url
-  method: 'POST',
-  requestType: actionTypes.LOGIN_REQUEST,
-  receiveType: actionTypes.LOGIN_RESPONSE,
-};
-
-export const logout = () => fetchDataIfNeeded(...logoutParams);
+export const logout = () => ({
+  [CALL_API]: {
+    types: [
+      actionTypes.LOGOUT_REQUEST,
+      actionTypes.LOGOUT_SUCCESS,
+      actionTypes.LOGOUT_FAILURE,
+    ],
+    url: '', // TODO: fix url
+    fetchOptions: {
+      method: 'GET',
+    },
+  },
+});

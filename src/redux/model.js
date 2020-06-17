@@ -1,7 +1,6 @@
+// eslint-disable-next-line no-unused-vars
 let rasta_bank = {
-
   isLoading: false,
-  
 
   questionProperties: {
     tags: [
@@ -18,7 +17,6 @@ let rasta_bank = {
     ],
     events: ['مدرسه تابستانه', 'کابارآمادالاپسته'],
     sources: ['المپیاد ریاضی روسیه', 'سایت بریلیانت'],
-    authors: ['عرفان معینی', 'رضا ابوالقاسمی'],
   },
 
   questions: [
@@ -32,11 +30,11 @@ let rasta_bank = {
         events: [],
         source: '',
         hardness: {
-          hardnessValue: 5,// همونی که از ۱۰عه
+          hardnessValue: 5, // همونی که از ۱۰عه
           leastAppropriateGrade: 9,
           lastAppropriateGrade: 12,
         },
-        reviewStatus: '', // وضعیت بازبینی سوال توسط منتورهای بالاسری 
+        reviewStatus: '', // وضعیت بازبینی سوال توسط منتورهای بالاسری
       },
       questionText: '',
       questionAnswer: '',
