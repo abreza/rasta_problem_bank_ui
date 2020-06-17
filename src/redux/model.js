@@ -19,7 +19,7 @@ let rasta_bank = {
     sources: ['المپیاد ریاضی روسیه', 'سایت بریلیانت'],
   },
 
-  questions: [
+  allQuestions: [
     {
       info: {
         id: 123,
@@ -41,10 +41,13 @@ let rasta_bank = {
     },
   ],
 
-  account: {
+  allAccounts: [
+
+  ],
+
+  thisAccount: {
     isLoggedIn: false,
-    user: {
-      type: 'STUDENT',
-    },
+    name: 'Mamadreza Kiani',
+    type: 'STUDENT',
   },
 };

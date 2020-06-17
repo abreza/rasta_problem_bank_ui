@@ -12,13 +12,16 @@ import {
 import sampleQuestion from './sampleQuestion';
 import Hardness from '../components/question/Hardness';
 import Tag from '../components/question/Tag';
+import { connect } from 'react-redux';
 
-export default class QuestionView extends Component {
+class QuestionView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tags: sampleQuestion.tags.map((tag) => <Tag name={tag}></Tag>),
-      subtags: sampleQuestion.subtags.map((tag) => <Tag name={tag}></Tag>),
+      tags: this.props.question.info.tags.map((tag) => <Tag name={tag}></Tag>),
+      subtags: this.props.question.info.subtags.map((tag) => (
+        <Tag name={tag}></Tag>
+      )),
     };
   }
 
@@ -32,7 +35,7 @@ export default class QuestionView extends Component {
           >
             <Segment>
               <Header
-                content={sampleQuestion.name}
+                content={this.props.question.info.name}
                 as="h2"
                 textAlign="center"
               />
@@ -40,7 +43,7 @@ export default class QuestionView extends Component {
 
               <Container>
                 <Icon name="pencil alternate" size="large" />
-                {' ' + sampleQuestion.question}
+                {' ' + this.props.question.questionText}
               </Container>
             </Segment>
           </Grid.Column>
@@ -53,7 +56,7 @@ export default class QuestionView extends Component {
               <Header content={'اطلاعات'} as="h2" textAlign="center" />
               <Divider></Divider>
               <br />
-              <Hardness hardness={sampleQuestion.hardness}></Hardness>
+              <Hardness hardness={this.props.question.info.hardness}></Hardness>
               <br />
               <Segment textAlign="center">
                 <Label attached="top">مباحث کلی</Label>
@@ -70,3 +73,9 @@ export default class QuestionView extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  question: state.question, // TODO:‌ how to handle vied question?
+});
+
+export default connect(mapStateToProps)(QuestionView);
