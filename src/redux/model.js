@@ -3,17 +3,22 @@ let rasta_bank = {
   isLoading: false,
 
   questionProperties: {
-    authors: [],
     tags: [
       {
         id: 1,
         name: 'ترکیبیات',
-        subtags: ['استقرا', 'لانه کبوتری'],
+        subtags: [
+          { name: 'استقرا', id: 2 },
+          { name: 'لانه کبوتری', id: 6 },
+        ],
       },
       {
         id: 2,
         name: 'هندسه',
-        subtags: ['مسطحه', 'فضایی'],
+        subtags: [
+          { name: 'مسطحه', id: 2 },
+          { name: 'فضایی', id: 6 },
+        ],
       },
     ],
     events: ['مدرسه تابستانه', 'کابارآمادالاپسته'],
