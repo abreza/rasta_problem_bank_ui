@@ -9,7 +9,7 @@ export const fetchUserList = () => ({
       actionTypes.USER_LIST_SUCCESS,
       actionTypes.USER_LIST_FAILURE,
     ],
-    url: '', // TODO: fix url
+    url: '', 
     fetchOptions: {
       method: 'GET',
     },

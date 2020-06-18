@@ -2,7 +2,7 @@ import * as actionTypes from './actionTypes';
 
 import { CALL_API, Schemas } from '../middleware/api/api';
 
-export const fetchQuestionProperties = () => ({
+export const fetchQuestionProperties = () => ({ //TODO: se tash kon
   [CALL_API]: {
     types: [
       actionTypes.QUESTION_PROPERTIES_REQUEST,

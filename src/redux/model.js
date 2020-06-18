@@ -3,6 +3,7 @@ let rasta_bank = {
   isLoading: false,
 
   questionProperties: {
+    authors: [],
     tags: [
       {
         id: 1,

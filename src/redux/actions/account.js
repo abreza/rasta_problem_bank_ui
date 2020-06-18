@@ -1,18 +1,18 @@
 import * as actionTypes from './actionTypes';
+import * as URLs from './URLs'
 
 import { CALL_API, Schemas } from '../middleware/api/api';
 
-const fetchUser = (user_id) => ({
+const fetchUser = (account_id) => ({
   [CALL_API]: {
     types: [
       actionTypes.USER_REQUEST,
       actionTypes.USER_SUCCESS,
       actionTypes.USER_FAILURE,
     ],
-    url: '', // TODO: fix url
+    url: URLs.GET_USER_DATA + account_id,
     fetchOptions: {
-      method: 'POST',
-      body: { user_id },
+      method: 'GET',
     },
     schema: Schemas.USER,
   },
@@ -37,7 +37,23 @@ export const login = (username, password) => ({
       actionTypes.LOGIN_SUCCESS,
       actionTypes.LOGIN_FAILURE,
     ],
-    url: '', // TODO: fix url
+    url: URLs.LOGIN_USER,
+    fetchOptions: {
+      method: 'POST',
+      body: { username, password },
+    },
+    schema: Schemas.USER,
+  },
+});
+
+export const register = (username, password) => ({
+  [CALL_API]: {
+    types: [
+      actionTypes.REGISTER_REQUEST,
+      actionTypes.REGISTER_SUCCESS,
+      actionTypes.REGISTER_FAILURE,
+    ],
+    url: URLs.REGISTER_USER,
     fetchOptions: {
       method: 'POST',
       body: { username, password },
@@ -53,7 +69,7 @@ export const logout = () => ({
       actionTypes.LOGOUT_SUCCESS,
       actionTypes.LOGOUT_FAILURE,
     ],
-    url: '', // TODO: fix url
+    url: URLs.LOGOUT_USER,
     fetchOptions: {
       method: 'GET',
     },
