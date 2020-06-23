@@ -4,9 +4,6 @@ import { Label } from 'semantic-ui-react';
 export default class Tag extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      numberHolder: 1,
-    };
     this.toggleSlected = this.toggleSlected.bind(this);
   }
 

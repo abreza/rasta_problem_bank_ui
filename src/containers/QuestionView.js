@@ -9,7 +9,6 @@ import {
   Label,
 } from 'semantic-ui-react';
 
-import sampleQuestion from './sampleQuestion';
 import Hardness from '../components/question/Hardness';
 import Tag from '../components/question/Tag';
 import { connect } from 'react-redux';
@@ -19,9 +18,7 @@ class QuestionView extends Component {
     super(props);
     this.state = {
       tags: this.props.question.info.tags.map((tag) => <Tag name={tag}></Tag>),
-      subtags: this.props.question.info.subtags.map((tag) => (
-        <Tag name={tag}></Tag>
-      )),
+      subtags: this.props.question.info.subtags.map((tag) => (<Tag name={tag}></Tag>)),
     };
   }
 
@@ -75,7 +72,9 @@ class QuestionView extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  question: state.question, // TODO:‌ how to handle vied question?
+  question: state.questions //TODO: what to do?!
 });
 
-export default connect(mapStateToProps)(QuestionView);
+export default connect(
+  mapStateToProps
+)(QuestionView);

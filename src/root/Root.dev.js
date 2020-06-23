@@ -7,8 +7,9 @@ import RegistrationPage from '../containers/Registration';
 import Homepage from '../containers/HomePage';
 import QuestionView from '../containers/QuestionView';
 import Question from '../containers/Question';
-import RatingPage from '../containers/RatingPage';
+import AccountsRating from '../containers/AccountsRating';
 import Menu from '../components/Menu';
+import ProblemSet from '../containers/ProblemSet';
 
 import '../styles/App.css';
 
@@ -20,7 +21,8 @@ const Root = () => (
       <Route path="/registration" component={RegistrationPage} />
       <Route path="/viewQuestion" component={QuestionView} />
       <Route path="/question" component={Question} />
-      <Route path="/rating" component={RatingPage} />
+      <Route path="/accountsrating" component={AccountsRating} />
+      <Route path="/problemset" component={ProblemSet} />
       <Route path="/" component={Homepage} />
     </Switch>
     <DevTools />

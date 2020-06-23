@@ -30,18 +30,20 @@ let rasta_bank = {
       info: {
         id: 123,
         name: '',
-        author: '',
         tags: [],
-        subTags: [],
-        events: [],
-        source: '',
-        hardness: {
-          hardnessValue: 5, // همونی که از ۱۰عه
-          leastAppropriateGrade: 9,
-          lastAppropriateGrade: 12,
-        },
+        hardnessValue: 5, // همونی که از ۱۰عه
         reviewStatus: '', // وضعیت بازبینی سوال توسط منتورهای بالاسری
       },
+
+      author: '',
+      hardness: {
+        hardnessValue: 5, // همونی که از ۱۰عه
+        leastAppropriateGrade: 9,
+        lastAppropriateGrade: 12,
+      },
+      events: [],
+      source: '',
+      subTags: [],
       questionText: '',
       questionAnswer: '',
     },
