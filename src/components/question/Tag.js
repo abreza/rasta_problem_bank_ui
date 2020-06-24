@@ -26,7 +26,7 @@ export default class Tag extends Component {
                 : 'selectable-tag'
               : ''
           }
-          onClick={this.props.selectable ? this.toggleSlected : () => {}}
+          onClick={this.props.selectable ? this.toggleSlected : () => { }}
         >
           {this.props.name}
         </Label>

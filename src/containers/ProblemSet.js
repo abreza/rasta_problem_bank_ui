@@ -132,28 +132,28 @@ class ProblemSet extends Component {
                       onClick={this.handleSort('id')}
                     >
                       شناسه
-                  </Table.HeaderCell>
+                    </Table.HeaderCell>
                     <Table.HeaderCell
                       width={3}
                       sorted={column === 'name' ? direction : null}
                       onClick={this.handleSort('name')}
                     >
                       نام
-                  </Table.HeaderCell>
+                    </Table.HeaderCell>
                     <Table.HeaderCell
                       width={5}
                       sorted={column === 'tags' ? direction : null}
                       onClick={this.handleSort('tags')}
                     >
                       موضوعات اصلی
-                  </Table.HeaderCell>
+                    </Table.HeaderCell>
                     <Table.HeaderCell
                       width={3}
                       sorted={column === 'hardnessValue' ? direction : null}
                       onClick={this.handleSort('hardnessValue')}
                     >
                       درجه سختی
-                  </Table.HeaderCell>
+                    </Table.HeaderCell>
                     {isAdmin && (
                       <Table.HeaderCell
                         width={3}
@@ -161,7 +161,7 @@ class ProblemSet extends Component {
                         onClick={this.handleSort('reviewStatus')}
                       >
                         وضعیت بازبینی
-                    </Table.HeaderCell>
+                      </Table.HeaderCell>
                     )}
                   </Table.Row>
                 </Table.Header>

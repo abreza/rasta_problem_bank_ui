@@ -27,22 +27,20 @@ let rasta_bank = {
 
   allQuestions: [
     {
-      info: {
+      shortInfo: {
         id: 123,
         name: '',
         tags: [],
-        hardnessValue: 5, // همونی که از ۱۰عه
-        reviewStatus: '', // وضعیت بازبینی سوال توسط منتورهای بالاسری
+        difficultyLevel: 5,
+        reviewStatus: 'W',
       },
-
-      author: '',
-      hardness: {
-        hardnessValue: 5, // همونی که از ۱۰عه
-        leastAppropriateGrade: 9,
-        lastAppropriateGrade: 12,
+      difficulty: {
+        difficultyLevel: 5,
+        appropriateGrades: [9, 12],
       },
-      events: [],
       source: '',
+      author: '',
+      events: [],
       subTags: [],
       questionText: '',
       questionAnswer: '',
@@ -50,12 +48,24 @@ let rasta_bank = {
   ],
 
   allAccounts: [
-
+    {
+      isLoggedIn: false,
+      name: 'Mamadreza Kiani',
+      username: 'MAMAD_KIA',
+      type: 'ADDER',
+    },
+    {
+      isLoggedIn: true,
+      name: 'Alireza HAshemi',
+      username: 'AmooHashem',
+      type: 'MENTOR',
+    },
   ],
 
   thisAccount: {
     isLoggedIn: false,
     name: 'Mamadreza Kiani',
-    type: 'STUDENT',
+    username: 'MAMAD_KIA',
+    type: 'ADDER',
   },
 };

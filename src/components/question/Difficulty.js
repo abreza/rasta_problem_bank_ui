@@ -16,29 +16,29 @@ const grades = [
   'دوازدهم',
 ]
 
-export default class Hardness extends Component {
+export default class Difficulty extends Component {
   render() {
     return (
       <div>
         <Progress
           textAlign="center"
-          value={this.props.hardness.hardnessValue}
+          value={this.props.difficulty.difficultyLevel}
           total={10}
           color="red"
         >
-          سختی: {this.props.hardness.hardnessValue}
+          سختی: {this.props.difficulty.difficultyLevel}
         </Progress>
         <Segment >
           <Icon name="child" size="large"></Icon>
           پایین‌ترین پایه‌ی مناسب:{' '}
           <b>
-            {grades[this.props.hardness.minimumAppropriateGrade - 1]}
+            {grades[this.props.difficulty.appropriateGrades[0] - 1]}
           </b>
           <br /><br />
           <Icon name="male" size="large"></Icon>
           بالاترین پایه‌ی مناسب:{' '}
           <b>
-            {grades[this.props.hardness.maximumAppropriateGrade - 1]}
+            {grades[this.props.difficulty.appropriateGrades[1] - 1]}
           </b>
         </Segment>
       </div>

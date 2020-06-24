@@ -9,7 +9,7 @@ import {
   Label,
 } from 'semantic-ui-react';
 
-import Hardness from '../components/question/Hardness';
+import Difficulty from '../components/question/Difficulty';
 import Tag from '../components/question/Tag';
 import { connect } from 'react-redux';
 
@@ -53,7 +53,7 @@ class QuestionView extends Component {
               <Header content={'اطلاعات'} as="h2" textAlign="center" />
               <Divider></Divider>
               <br />
-              <Hardness hardness={this.props.question.info.hardness}></Hardness>
+              <Difficulty difficulty={this.props.question.difficulty}></Difficulty>
               <br />
               <Segment textAlign="center">
                 <Label attached="top">مباحث کلی</Label>
@@ -71,9 +71,16 @@ class QuestionView extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => {
+  state.loadedQuestion.forEach(question => {
+    if (question.shortInfo.id === this.props.id) {
+      return {
+        question
+      }
+    }
+  });
   question: state.questions //TODO: what to do?!
-});
+}
 
 export default connect(
   mapStateToProps
