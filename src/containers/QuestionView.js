@@ -10,10 +10,11 @@ import {
 } from 'semantic-ui-react';
 
 import sampleQuestion from './sampleQuestion';
-import Hardness from '../components/question/Hardness';
+import Difficulty from '../components/question/Difficulty';
 import Tag from '../components/question/Tag';
+import { connect } from 'react-redux';
 
-export default class QuestionView extends Component {
+class QuestionView extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -74,7 +75,9 @@ export default class QuestionView extends Component {
             <Segment textAlign="center">
               <Header content={'شناسنامه'} as="h2" textAlign="center" />
               <Divider section></Divider>
-              <Hardness hardness={this.state.question.hardness}></Hardness>
+              <Difficulty
+                difficulty={this.props.question.difficulty}
+              ></Difficulty>
               <Segment>
                 <Label attached="top">مباحث کلی سوال</Label>
                 {this.state.tags}
@@ -90,3 +93,16 @@ export default class QuestionView extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  state.loadedQuestion.forEach((question) => {
+    if (question.shortInfo.id === this.props.id) {
+      return {
+        question,
+      };
+    }
+  });
+  question: state.questions; //TODO: what to do?!
+};
+
+export default connect(mapStateToProps)(QuestionView);

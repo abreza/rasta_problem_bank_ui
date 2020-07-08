@@ -1,15 +1,16 @@
 import * as actionTypes from './actionTypes';
+import * as URLs from './URLs';
 
 import { CALL_API, Schemas } from '../middleware/api/api';
 
-export const fetchQuestionList = () => ({
+export const fetchQuestionList = () => ({ //TODO: set properties to search with back
   [CALL_API]: {
     types: [
       actionTypes.QUESTION_LIST_REQUEST,
       actionTypes.QUESTION_LIST_SUCCESS,
       actionTypes.QUESTION_LIST_FAILURE,
     ],
-    url: '', // TODO: fix url
+    url: URLs.GET_QUESTION_LIST,
     fetchOptions: {
       method: 'GET',
     },

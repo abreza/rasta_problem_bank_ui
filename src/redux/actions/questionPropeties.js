@@ -1,4 +1,5 @@
 import * as actionTypes from './actionTypes';
+import * as URLs from './URLs';
 
 import { CALL_API, Schemas } from '../middleware/api/api';
 
@@ -9,7 +10,7 @@ export const fetchQuestionProperties = () => ({
       actionTypes.QUESTION_PROPERTIES_SUCCESS,
       actionTypes.QUESTION_PROPERTIES_FAILURE,
     ],
-    url: '', // TODO: fix url
+    url: URLs.GET_QUESTION_PROPERTIES,
     fetchOptions: {
       method: 'GET',
     },

@@ -7,12 +7,18 @@ let rasta_bank = {
       {
         id: 1,
         name: 'ترکیبیات',
-        subtags: ['استقرا', 'لانه کبوتری'],
+        subtags: [
+          { name: 'استقرا', id: 2 },
+          { name: 'لانه کبوتری', id: 6 },
+        ],
       },
       {
         id: 2,
         name: 'هندسه',
-        subtags: ['مسطحه', 'فضایی'],
+        subtags: [
+          { name: 'مسطحه', id: 2 },
+          { name: 'فضایی', id: 6 },
+        ],
       },
     ],
     events: ['مدرسه تابستانه', 'کابارآمادالاپسته'],
@@ -21,33 +27,45 @@ let rasta_bank = {
 
   allQuestions: [
     {
-      info: {
+      shortInfo: {
         id: 123,
         name: '',
-        author: '',
         tags: [],
-        subTags: [],
-        events: [],
-        source: '',
-        hardness: {
-          hardnessValue: 5, // همونی که از ۱۰عه
-          leastAppropriateGrade: 9,
-          lastAppropriateGrade: 12,
-        },
-        reviewStatus: '', // وضعیت بازبینی سوال توسط منتورهای بالاسری
+        difficultyLevel: 5,
+        reviewStatus: 'W',
       },
+      difficulty: {
+        difficultyLevel: 5,
+        appropriateGrades: [9, 12],
+      },
+      source: '',
+      author: '',
+      events: [],
+      subTags: [],
       questionText: '',
       questionAnswer: '',
     },
   ],
 
   allAccounts: [
-
+    {
+      isLoggedIn: false,
+      name: 'Mamadreza Kiani',
+      username: 'MAMAD_KIA',
+      type: 'ADDER',
+    },
+    {
+      isLoggedIn: true,
+      name: 'Alireza HAshemi',
+      username: 'AmooHashem',
+      type: 'MENTOR',
+    },
   ],
 
   thisAccount: {
     isLoggedIn: false,
     name: 'Mamadreza Kiani',
-    type: 'STUDENT',
+    username: 'MAMAD_KIA',
+    type: 'ADDER',
   },
 };

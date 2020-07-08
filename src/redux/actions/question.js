@@ -1,15 +1,16 @@
 import * as actionTypes from './actionTypes';
+import * as URLs from './URLs';
 
 import { CALL_API, Schemas } from '../middleware/api/api';
 
-export const fetchQuestion = () => ({
+export const fetchQuestion = (question_id) => ({
   [CALL_API]: {
     types: [
       actionTypes.QUESTION_REQUEST,
       actionTypes.QUESTION_SUCCESS,
       actionTypes.QUESTION_FAILURE,
     ],
-    url: '', // TODO: fix url
+    url: URLs.GET_QUESTION + question_id,
     fetchOptions: {
       method: 'GET',
     },
@@ -25,7 +26,7 @@ export const submitQuestion = (question) => ({
       actionTypes.QUESTION_SUBMIT_SUCCESS,
       actionTypes.QUESTION_SUBMIT_FAILURE,
     ],
-    url: '', // TODO: fix url
+    url: URLs.SUBMIT_QUESTION,
     fetchOptions: {
       method: 'POST',
       body: question,
