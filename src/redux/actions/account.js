@@ -1,7 +1,7 @@
 import * as actionTypes from './actionTypes';
-import * as URLs from './URLs'
+import * as URLs from './URLs';
 
-import { CALL_API, Schemas } from '../middleware/api/api';
+import { CALL_API } from '../middleware/api/api';
 
 const fetchUser = (account_id) => ({
   [CALL_API]: {
@@ -14,7 +14,7 @@ const fetchUser = (account_id) => ({
     fetchOptions: {
       method: 'GET',
     },
-    schema: Schemas.USER,
+    // schema: Schemas.USER,
   },
 });
 
@@ -42,7 +42,7 @@ export const login = (username, password) => ({
       method: 'POST',
       body: { username, password },
     },
-    schema: Schemas.USER,
+    // schema: Schemas.USER,
   },
 });
 

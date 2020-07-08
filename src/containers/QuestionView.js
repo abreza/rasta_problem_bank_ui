@@ -102,7 +102,7 @@ const mapStateToProps = (state) => {
       };
     }
   });
-  question: state.questions; //TODO: what to do?!
+  // question: state.questions; //TODO: what to do?!
 };
 
 export default connect(mapStateToProps)(QuestionView);

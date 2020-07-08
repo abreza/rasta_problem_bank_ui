@@ -13,7 +13,7 @@ import {
 import { Slider } from 'react-semantic-ui-range';
 import Tag from '../components/question/Tag';
 import Editor from '../components/editor/tiny_editor/react_tiny/TinyEditorComponent';
-import { submitQuestion } from '../redux/actions/account'
+import { submitQuestion } from '../redux/actions/question'
 import Selector from '../components/selector/Selector';
 import '../styles/Question.css';
 import { connect } from 'react-redux';
