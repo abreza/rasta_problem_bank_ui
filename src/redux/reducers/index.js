@@ -5,10 +5,10 @@ import questionProperties from './questionProperties';
 import questions from './questions';
 import usersList from './usersList';
 
-const allReducers = combineReducers(
+const allReducers = combineReducers({
   account,
   questionProperties,
   questions,
-  usersList
-);
+  usersList,
+});
 export default allReducers;

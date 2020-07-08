@@ -6,9 +6,9 @@ const callApi = async (url, schema, fetchOptions) => {
   if (!response.ok) {
     throw json;
   }
-  if (!!schema) {
-    return normalize(json, schema);
-  }
+  // if (!!schema) {
+  //   return normalize(json, schema);
+  // }
   return json;
 };
 

@@ -137,7 +137,7 @@ export default class Question extends Component {
 
   render() {
     return (
-      <Container>
+      <Container style={{ paddingTop: '10px', paddingBottom: '10px' }}>
         <Grid centered stackable>
           <Grid.Row centered relaxed>
             <Grid.Column width={5}></Grid.Column>
