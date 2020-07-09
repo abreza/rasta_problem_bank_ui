@@ -18,8 +18,7 @@ class QuestionView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      question: sampleQuestion, // temporary
-      questionURL: 'https://bank.rastaiha.ir/problemset/problem/',
+      question: sampleQuestion, // TODO: must be this.props.question
       tags: sampleQuestion.tags.map((tagName, i) => (
         <Tag key={tagName} name={tagName}></Tag>
       )),
@@ -102,7 +101,6 @@ const mapStateToProps = (state) => {
       };
     }
   });
-  // question: state.questions; //TODO: what to do?!
 };
 
 export default connect(mapStateToProps)(QuestionView);

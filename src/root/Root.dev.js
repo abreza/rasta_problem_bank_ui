@@ -7,9 +7,8 @@ import RegistrationPage from '../containers/Registration';
 import Homepage from '../containers/HomePage';
 import QuestionView from '../containers/QuestionView';
 import Question from '../containers/Question';
-import AccountsRating from '../containers/AccountsRating';
 import ProblemSet from '../containers/ProblemSet';
-
+import UsersRating from '../containers/UsersRating';
 import NavBar from '../components/NavBar/NavBar';
 import NavBarItems from '../components/NavBar/NavBarItems';
 
@@ -24,8 +23,8 @@ const Root = () => (
         <Route path="/registration" component={RegistrationPage} />
         <PrivateRoute path="/question/:id" component={QuestionView} />
         <PrivateRoute path="/edit_question/:id" component={Question} />
-        <PrivateRoute path="/rating" component={AccountsRating} />
         <PrivateRoute path="/problemset" component={ProblemSet} />
+        <PrivateRoute path="/usersrating" component={UsersRating} />
         <Route path="/" component={Homepage} />
       </Switch>
       <DevTools />

@@ -14,7 +14,7 @@ import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 
 
-const questions = [
+const questionsShortInfo = [
   {
     id: 123,
     name: 'مساحت و محیط رو دریاب',
@@ -59,22 +59,19 @@ const questions = [
   },
 ]
 
-
-const isAdmin = true;
-
 class ProblemSet extends Component {
   state = {
     activePage: 1,
     totalPages: 10,
+    userType: 'ADMIN', //TODO: should be "this.props.userType"
     column: null,
-    questions: questions, //TODO: should be "this.props.questions"
+    questionsShortInfo: questionsShortInfo, //TODO: should be "this.props.questionsShortInfo"
     direction: null,
     redirect: false,
   }
 
   handleSort = (clickedColumn) => () => {
-    const { column, questions: data, direction } = this.state
-
+    const { column, questionsShortInfo: data, direction } = this.state
     if (column !== clickedColumn) {
       this.setState({
         column: clickedColumn,
@@ -84,7 +81,6 @@ class ProblemSet extends Component {
 
       return
     }
-
     this.setState({
       data: data.reverse(),
       direction: direction === 'ascending' ? 'descending' : 'ascending',
@@ -96,7 +92,7 @@ class ProblemSet extends Component {
   }
 
   render() {
-    const { column, questions: data, direction } = this.state
+    const { column, questionsShortInfo: data, direction } = this.state
 
     if (this.state.redirect) {
       return <Redirect push to={"/problemset/page/" + this.state.activePage} />;
@@ -162,7 +158,7 @@ class ProblemSet extends Component {
                     >
                       درجه سختی
                     </Table.HeaderCell>
-                    {isAdmin && (
+                    {this.state.userType === 'ADMIN' && (
                       <Table.HeaderCell
                         width={3}
                         sorted={column === 'reviewStatus' ? direction : null}
@@ -191,18 +187,24 @@ class ProblemSet extends Component {
                         )}
                       </Table.Cell>
                       <Table.Cell>{hardnessValue}</Table.Cell>
-                      {isAdmin && (
+                      {this.state.userType === 'ADMIN' && (
                         <Table.Cell>{reviewStatus}</Table.Cell>
                       )}
                     </Table.Row>
                   ))}
                 </Table.Body>
               </Table>
-              <Pagination
-                activePage={this.state.activePage}
-                onPageChange={this.handlePaginationChange}
-                totalPages={this.state.totalPages}
-              />
+              <div
+                style={{
+                  textAlign: 'center',
+                }}
+              >
+                <Pagination
+                  activePage={this.state.activePage}
+                  onPageChange={this.handlePaginationChange}
+                  totalPages={this.state.totalPages}
+                />
+              </div>
             </Segment>
           </Grid.Column>
 
@@ -222,10 +224,15 @@ class ProblemSet extends Component {
   }
 }
 
-const mapStatoToProps = (state) => ({
-  activePage: state.problemSetPageActivePage,
-  totalPages: state.problemSetPageTotalPages,
-  questions: state.questions //TODO: is "info" needed?
-})
+const mapStatoToProps = (state) => {
+  const thisUser = state.thisUser;
+  const userType = thisUser ? thisUser.type : null;
+  return ({
+    activePage: state.problemSetPageActivePage,
+    totalPages: state.problemSetPageTotalPages,
+    questionsShortInfo: state.questionsShortInfo,
+    userType,
+  })
+}
 
 export default connect(mapStatoToProps)(ProblemSet)

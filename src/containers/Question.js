@@ -10,6 +10,8 @@ import {
   Button,
   Icon,
 } from 'semantic-ui-react';
+
+import { Redirect } from 'react-router';
 import { Slider } from 'react-semantic-ui-range';
 import Tag from '../components/question/Tag';
 import Editor from '../components/editor/tiny_editor/react_tiny/TinyEditorComponent';
@@ -87,6 +89,7 @@ class Question extends Component {
         questionText: '',//TODO: TINY!
         questionAnswer: '',//TODO: TINY!
       },
+      redirect_after_submit: false,
     };
 
     this.state.settings = {
@@ -114,8 +117,8 @@ class Question extends Component {
   }
 
   handleSubmit = () => {
-    this.props.submitQuestion();
-    //TODO: what to do after submiting?
+    this.props.submitQuestion(this.state.question);
+    this.setState({ redirect_after_submit: true });
   }
 
   handleQuestionNameChange = (e) => {
@@ -217,6 +220,11 @@ class Question extends Component {
   }
 
   render() {
+    
+    if (this.state.redirect_after_submit) {
+      return <Redirect push to={"/problemset/page/" + this.state.activePage} />;
+    }
+
     return (
       <Container style={{ paddingTop: '10px', paddingBottom: '10px' }}>
         <Grid centered stackable>
