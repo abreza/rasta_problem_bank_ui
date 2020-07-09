@@ -23,8 +23,7 @@ class QuestionView extends Component {
     super(props);
 
     this.state = {
-      question: sampleQuestion, // temporary
-      questionURL: 'https://bank.rastaiha.ir/problemset/problem/',
+      question: sampleQuestion, // TODO: must be this.props.question
       tags: sampleQuestion.tags.map((tagName, i) => (
         <Tag key={tagName} name={tagName}></Tag>
       )),

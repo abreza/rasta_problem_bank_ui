@@ -47,25 +47,31 @@ let rasta_bank = {
     },
   ],
 
-  allAccounts: [
+  allUsers: [
     {
       isLoggedIn: false,
       name: 'Mamadreza Kiani',
       username: 'MAMAD_KIA',
       type: 'ADDER',
+      numberOfAddedQuestions: 2,
+      lastSeen: '99/4/19',
     },
     {
       isLoggedIn: true,
       name: 'Alireza HAshemi',
       username: 'AmooHashem',
       type: 'MENTOR',
+      numberOfAddedQuestions: 9,
+      lastSeen: '99/4/19',
     },
   ],
 
-  thisAccount: {
+  thisUser: {
     isLoggedIn: false,
     name: 'Mamadreza Kiani',
     username: 'MAMAD_KIA',
     type: 'ADDER',
+    numberOfAddedQuestions: 2,
+    lastSeen: '99/4/19', //TODO: what to do?‌ :)
   },
 };
