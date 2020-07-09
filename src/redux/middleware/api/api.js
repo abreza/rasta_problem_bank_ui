@@ -1,5 +1,3 @@
-import { normalize } from 'normalizr';
-
 const callApi = async (url, schema, fetchOptions) => {
   const response = await fetch(url, fetchOptions);
   let json = await response.json();

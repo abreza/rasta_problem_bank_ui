@@ -3,16 +3,14 @@ import React, { Component } from 'react';
 import {
   Grid,
   Header,
-  Icon,
-  Container,
-  Button,
   Segment,
   Divider,
   Label,
   Table,
+  Pagination,
 } from 'semantic-ui-react';
 
-import Tag from '../components/question/Tag';
+import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 
 
@@ -66,9 +64,12 @@ const isAdmin = true;
 
 class ProblemSet extends Component {
   state = {
+    activePage: 1,
+    totalPages: 10,
     column: null,
     questions: questions, //TODO: should be "this.props.questions"
     direction: null,
+    redirect: false,
   }
 
   handleSort = (clickedColumn) => () => {
@@ -90,12 +91,16 @@ class ProblemSet extends Component {
     })
   }
 
-  handleOnClick = () => {
-
+  handlePaginationChange = (e, { activePage }) => {
+    this.setState({ activePage: activePage, redirect: true })
   }
 
   render() {
     const { column, questions: data, direction } = this.state
+
+    if (this.state.redirect) {
+      return <Redirect push to={"/problemset/page/" + this.state.activePage} />;
+    }
 
     return (
       <Grid
@@ -114,6 +119,9 @@ class ProblemSet extends Component {
 
           <Grid.Column width={11}>
             <Segment>
+              <Label as='a' color='teal' ribbon='right'>
+                صفحه‌ی {this.state.activePage} از {this.state.totalPages}
+              </Label>
               <Table
                 selectable
                 color='teal'
@@ -190,6 +198,11 @@ class ProblemSet extends Component {
                   ))}
                 </Table.Body>
               </Table>
+              <Pagination
+                activePage={this.state.activePage}
+                onPageChange={this.handlePaginationChange}
+                totalPages={this.state.totalPages}
+              />
             </Segment>
           </Grid.Column>
 
@@ -210,6 +223,8 @@ class ProblemSet extends Component {
 }
 
 const mapStatoToProps = (state) => ({
+  activePage: state.problemSetPageActivePage,
+  totalPages: state.problemSetPageTotalPages,
   questions: state.questions //TODO: is "info" needed?
 })
 
