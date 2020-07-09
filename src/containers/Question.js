@@ -9,28 +9,27 @@ import {
   Divider,
   Button,
   Icon,
+  Dropdown,
 } from 'semantic-ui-react';
 import { Slider } from 'react-semantic-ui-range';
 import Tag from '../components/question/Tag';
 import Editor from '../components/editor/tiny_editor/react_tiny/TinyEditorComponent';
-import { submitQuestion } from '../redux/actions/question'
-import Selector from '../components/selector/Selector';
+import { submitQuestion } from '../redux/actions/question';
 import '../styles/Question.css';
 import { connect } from 'react-redux';
 
-
 const sources = [
-  { name: 'المپیاد ملی روسیه ۲۰۱۹' },
-  { name: 'المپیاد ملی روسیه ۲۰۱۰' },
-  { name: 'المپیاد ملی رومانی ۲۰۱۹' },
-]
+  { key: '0', text: 'المپیاد ملی روسیه ۲۰۱۹', value: '0' },
+  { key: '1', text: 'المپیاد ملی روسیه ۲۰۱۰', value: '1' },
+  { key: '2', text: 'المپیاد ملی رومانی ۲۰۱۹', value: '2' },
+];
 
 const events = [
-  { name: 'عباس‌آباد' },
-  { name: 'بوشهر' },
-  { name: 'سراوان' },
-  { name: 'کابار' },
-]
+  { key: '0', text: 'عباس‌آباد', value: '0' },
+  { key: '1', text: 'بوشهر', value: '1' },
+  { key: '2', text: 'سراوان', value: '2' },
+  { key: '3', text: 'کابار', value: '3' },
+];
 
 const tags = [
   {
@@ -58,9 +57,9 @@ const tags = [
       },
     ],
   },
-]
+];
 
-let nextQuestionID = 1000
+let nextQuestionID = 1000;
 
 class Question extends Component {
   constructor(props) {
@@ -80,12 +79,12 @@ class Question extends Component {
           difficultyLevel: 5,
           appropriateGrades: [9, 12],
         },
-        author: this.props.account.name,
+        // author: this.props.account.name,
         events: [],
         source: '',
         subtags: [],
-        questionText: '',//TODO: TINY!
-        questionAnswer: '',//TODO: TINY!
+        questionText: '', //TODO: TINY!
+        questionAnswer: '', //TODO: TINY!
       },
     };
 
@@ -101,8 +100,8 @@ class Question extends Component {
             difficulty: {
               ...this.state.question.difficulty,
               appropriateGrades: appropriateGrades,
-            }
-          }
+            },
+          },
         });
       },
     };
@@ -110,13 +109,15 @@ class Question extends Component {
     this.handleTagChange = this.handleTagChange.bind(this);
     this.handleSubtagChange = this.handleSubtagChange.bind(this);
     this.handleQuestionNameChange = this.handleQuestionNameChange.bind(this);
-    this.handleDifficultyLevelChange = this.handleDifficultyLevelChange.bind(this);
+    this.handleDifficultyLevelChange = this.handleDifficultyLevelChange.bind(
+      this
+    );
   }
 
   handleSubmit = () => {
     this.props.submitQuestion();
     //TODO: what to do after submiting?
-  }
+  };
 
   handleQuestionNameChange = (e) => {
     this.setState({
@@ -125,10 +126,10 @@ class Question extends Component {
         shortInfo: {
           ...this.state.question.shortInfo,
           name: e.target.value,
-        }
-      }
+        },
+      },
     });
-  }
+  };
 
   handleDifficultyLevelChange = (e) => {
     this.setState({
@@ -141,10 +142,10 @@ class Question extends Component {
         difficulty: {
           ...this.state.question.difficulty,
           difficultyLevel: e.target.value,
-        }
-      }
+        },
+      },
     });
-  }
+  };
 
   findByName(subtags, name) {
     let res = -1;
@@ -187,7 +188,9 @@ class Question extends Component {
     if (selected) {
       this.pushNewSubtags(this.state.question.shortInfo.tags[index].subtags);
     } else {
-      this.deleteNotSelectedSubtags(this.state.question.shortInfo.tags[index].subtags);
+      this.deleteNotSelectedSubtags(
+        this.state.question.shortInfo.tags[index].subtags
+      );
     }
   }
 
@@ -202,7 +205,7 @@ class Question extends Component {
           tags: this.state.question.shortInfo.tags,
         },
         subtags: this.state.question.subtags,
-      }
+      },
     });
   }
 
@@ -212,7 +215,7 @@ class Question extends Component {
       question: {
         ...this.state.question,
         subtags: this.state.question.subtags,
-      }
+      },
     });
   }
 
@@ -232,7 +235,12 @@ class Question extends Component {
               only="computer"
               style={{ textAlign: 'right' }}
             >
-              <Button icon labelPosition="left" positive onClick={this.handleSubmit}>
+              <Button
+                icon
+                labelPosition="left"
+                positive
+                onClick={this.handleSubmit}
+              >
                 <Icon name="save" />
                 ذخیره
               </Button>
@@ -243,13 +251,15 @@ class Question extends Component {
               <Segment>
                 <Header content={'صورت مسئله'} as="h3" textAlign="center" />
                 <Editor
+                  ref={(questionEl) => (this.questionEl = questionEl)}
                   id="QuestionTextArea"
-                  onEditorChange={(content) => console.log(content)}
+                  initContent="<p>salam</p><p style='text-align: center'><span class='tiny-math' data-latex='\sum'></span></p>"
                 />
                 <Header content={'پاسخ'} as="h3" textAlign="center" />
                 <Editor
+                  ref={(answerEl) => (this.answerEl = answerEl)}
                   id="AnswerTextArea"
-                  onEditorChange={(content) => console.log(content)}
+                  initContent="<p>khubi?</p>"
                 />
               </Segment>
             </Grid.Column>
@@ -263,7 +273,7 @@ class Question extends Component {
                 <Input
                   placeholder="نام مسئله"
                   className="rtl"
-                  onChange={e => this.updateInput(e.target.value)}
+                  onChange={(e) => this.updateInput(e.target.value)}
                   value={this.state.input}
                 />
                 <Input
@@ -277,8 +287,8 @@ class Question extends Component {
                 <br />
                 <label>
                   پایه‌ی مناسب:
-                  <span> {this.state.appropriateGrades[0] + 'ام تا'} </span>
-                  <span> {this.state.appropriateGrades[1] + 'ام'} </span>
+                  {/* <span> {this.state.appropriateGrades[0] + 'ام تا'} </span>
+                  <span> {this.state.appropriateGrades[1] + 'ام'} </span> */}
                   <Slider
                     labeled
                     multiple
@@ -286,17 +296,31 @@ class Question extends Component {
                     settings={this.state.settings}
                   />
                 </label>
-                <Selector
-                  items={this.state.allSources}
+                <Dropdown
                   placeholder="منبع"
-                  add_new
-                //TODO: need onChange
+                  fluid
+                  selection
+                  allowAdditions
+                  onAddItem={(e, { value }) => {
+                    this.setState({
+                      allSources: [
+                        { text: value, value },
+                        ...this.state.allSources,
+                      ],
+                    });
+                  }}
+                  search
+                  options={this.state.allSources}
+                  className="rtl-dropdown"
                 />
-                <Selector
-                  items={this.state.allEvents}
+                <Dropdown
                   placeholder="رویداد"
+                  fluid
                   multiple
-                //TODO: need onChange
+                  selection
+                  search
+                  options={this.state.allEvents}
+                  className="rtl-dropdown"
                 />
                 <Segment textAlign="center">
                   <Label attached="top">مباحث کلی سوال</Label>
@@ -316,7 +340,7 @@ class Question extends Component {
                 <Segment textAlign="center">
                   <Label attached="top">مباحث ریزتر</Label>
                   <div>
-                    {this.state.subtags.map((subtag, index) => (
+                    {/* {this.state.subtags.map((subtag, index) => (
                       <Tag
                         name={subtag.name}
                         selected={subtag.selected}
@@ -325,7 +349,7 @@ class Question extends Component {
                         index={index}
                         selectable
                       ></Tag>
-                    ))}
+                    ))} */}
                   </div>
                 </Segment>
               </Segment>
@@ -356,15 +380,15 @@ class Question extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const properties = { state };
-  const { account } = state.thisAccount;
-  const { sources, events, tags } = properties;
-  return ({
-    account,
-    sources,
-    events,
-    tags,
-  })
-}
+  // const properties = { state };
+  // const { account } = state.thisAccount;
+  // const { sources, events, tags } = properties;
+  // return {
+  //   account,
+  //   sources,
+  //   events,
+  //   tags,
+  // };
+};
 
-export default connect(mapStateToProps, { submitQuestion })(Question)
+export default connect(mapStateToProps, { submitQuestion })(Question);

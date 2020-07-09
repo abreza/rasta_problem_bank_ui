@@ -1,4 +1,6 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
+
 import {
   Grid,
   Header,
@@ -14,9 +16,12 @@ import Difficulty from '../components/question/Difficulty';
 import Tag from '../components/question/Tag';
 import { connect } from 'react-redux';
 
+import TinyPreview from '../components/editor/tiny_editor/react_tiny/Preview';
+
 class QuestionView extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       question: sampleQuestion, // temporary
       questionURL: 'https://bank.rastaiha.ir/problemset/problem/',
@@ -52,7 +57,15 @@ class QuestionView extends Component {
               </Label>
               <Container fluid textAlign="right" style={{ fontSize: 20 }}>
                 <br />
-                {this.state.question.questionText}
+                <TinyPreview
+                  frameProps={{
+                    frameBorder: '0',
+                    scrolling: 'no',
+                    width: '100%',
+                  }}
+                  content="<p>سلام</p><p style='text-align: center'><span class='tiny-math'data-latex='\sum_{w \rightarrow 5}' ></span></p>"
+                />
+                {/* {this.state.question.questionText} */}
               </Container>
             </Segment>
 
@@ -63,7 +76,7 @@ class QuestionView extends Component {
               </Label>
               <Container fluid textAlign="right" style={{ fontSize: 20 }}>
                 <br />
-                {this.state.question.answer.answer}
+                {/* {this.state.question.answer.answer} */}
               </Container>
             </Segment>
           </Grid.Column>
@@ -75,9 +88,9 @@ class QuestionView extends Component {
             <Segment textAlign="center">
               <Header content={'شناسنامه'} as="h2" textAlign="center" />
               <Divider section></Divider>
-              <Difficulty
+              {/* <Difficulty
                 difficulty={this.props.question.difficulty}
-              ></Difficulty>
+              ></Difficulty> */}
               <Segment>
                 <Label attached="top">مباحث کلی سوال</Label>
                 {this.state.tags}
@@ -95,13 +108,13 @@ class QuestionView extends Component {
 }
 
 const mapStateToProps = (state) => {
-  state.loadedQuestion.forEach((question) => {
-    if (question.shortInfo.id === this.props.id) {
-      return {
-        question,
-      };
-    }
-  });
+  // state.loadedQuestion.forEach((question) => {
+  // if (question.shortInfo.id === this.props.id) {
+  //   return {
+  //     question,
+  //   };
+  // }
+  // });
   // question: state.questions; //TODO: what to do?!
 };
 
