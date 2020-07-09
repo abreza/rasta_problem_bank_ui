@@ -6,26 +6,28 @@ import RegistrationPage from '../containers/Registration';
 import Homepage from '../containers/Homepage';
 import QuestionView from '../containers/QuestionView';
 import Question from '../containers/Question';
-import RatingPage from '../containers/RatingPage';
-import ResponsiveContainer from '../containers/ResponsiveContainer';
+import AccountsRating from '../containers/AccountsRating';
+import ProblemSet from '../containers/ProblemSet';
+
+import NavBar from '../components/NavBar/NavBar';
+import NavBarItems from '../components/NavBar/NavBarItems';
 
 import '../styles/App.css';
-import HomepageHeading from '../components/homepage/HomepageHeading';
+import PrivateRoute from './PrivateRoute';
 
 const Root = () => (
   <div>
-    <ResponsiveContainer heading={HomepageHeading}>
+    <NavBar config={NavBarItems({ loggedIn: false })}>
       <Switch>
         <Route path="/login" component={LoginPage} />
         <Route path="/registration" component={RegistrationPage} />
-        <Route path="/question/:id" component={QuestionView} />
-        <Route path="/edit_question/:id" component={Question} />
-        <Route path="/rating" component={RatingPage} />
+        <PrivateRoute path="/question/:id" component={QuestionView} />
+        <PrivateRoute path="/edit_question/:id" component={Question} />
+        <PrivateRoute path="/rating" component={AccountsRating} />
+        <PrivateRoute path="/problemset" component={ProblemSet} />
         <Route path="/" component={Homepage} />
       </Switch>
-    </ResponsiveContainer>
+    </NavBar>
   </div>
 );
 export default Root;
-
-//TODO: some changes in "Root.dev.js" are not applied here
