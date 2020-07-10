@@ -111,10 +111,18 @@ class Question extends Component {
 
     this.handleTagChange = this.handleTagChange.bind(this);
     this.handleSubtagChange = this.handleSubtagChange.bind(this);
+    this.getQuestion = this.getQuestion.bind(this);
+    this.getAnswer = this.getAnswer.bind(this);
+    this.handleQuestionNameChange = this.handleQuestionNameChange.bind(this);
     this.handleQuestionNameChange = this.handleQuestionNameChange.bind(this);
     this.handleDifficultyLevelChange = this.handleDifficultyLevelChange.bind(
       this
     );
+
+    setTimeout(() => {
+      this.getQuestion();
+      this.getAnswer();
+    }, 5000);
   }
 
   handleSubmit = () => {
@@ -220,6 +228,14 @@ class Question extends Component {
         subtags: this.state.question.subtags,
       },
     });
+  }
+
+  getQuestion() {
+    alert(this.questionEl.getContent());
+  }
+
+  getAnswer() {
+    alert(this.answerEl.getContent());
   }
 
   render() {

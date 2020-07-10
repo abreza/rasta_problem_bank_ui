@@ -19,7 +19,10 @@ export default class TinyEditorComponent extends Component {
   }
 
   getContent() {
-    return this.state.editor.getContent();
+    return this.state.editor
+      .getContent()
+      .replace(/<svg.*\/svg>/g, '')
+      .replace(/&nbsp;/g, '');
   }
 
   init(doc) {
