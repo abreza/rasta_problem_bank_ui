@@ -31,3 +31,8 @@
   width: 100%;
   margin: 0.45238095em 0;
 }
+
+.ui.dropdown.rtl-dropdown .menu .item {
+  direction: rtl;
+  text-align: right;
+}
