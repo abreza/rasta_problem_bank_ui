@@ -310,8 +310,8 @@ class Question extends Component {
                 <br />
                 <label>
                   پایه‌ی مناسب:
-                  {/* <span> {this.state.appropriateGrades[0] + 'ام تا'} </span>
-                  <span> {this.state.appropriateGrades[1] + 'ام'} </span> */}
+                  <span> {this.state.appropriateGrades[0] + 'ام تا'} </span>
+                  <span> {this.state.appropriateGrades[1] + 'ام'} </span>
                   <Slider
                     labeled
                     multiple

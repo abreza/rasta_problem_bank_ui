@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import DevTools from '../containers/DevTools';
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import LoginPage from '../containers/Login';
 import RegistrationPage from '../containers/Registration';
@@ -15,20 +16,32 @@ import NavBarItems from '../components/NavBar/NavBarItems';
 import '../styles/App.css';
 import PrivateRoute from './PrivateRoute';
 
-const Root = () => (
-  <div>
-    <NavBar config={NavBarItems({ loggedIn: false })}>
-      <Switch>
-        <Route path="/login" component={LoginPage} />
-        <Route path="/registration" component={RegistrationPage} />
-        <PrivateRoute path="/question/:id" component={QuestionView} />
-        <PrivateRoute path="/edit_question/:id" component={Question} />
-        <PrivateRoute path="/problemset" component={ProblemSet} />
-        <PrivateRoute path="/usersrating" component={UsersRating} />
-        <Route path="/" component={Homepage} />
-      </Switch>
-      <DevTools />
-    </NavBar>
-  </div>
-);
-export default Root;
+class Root extends Component {
+
+  render() {
+    return (
+      <div>
+        <NavBar config={NavBarItems({ loggedIn: this.props.loggedIn, user: this.props.user })}>
+          <Switch>
+            <Route path="/login" component={LoginPage} />
+            <Route path="/registration" component={RegistrationPage} />
+            <PrivateRoute path="/question/:id" component={QuestionView} />
+            <PrivateRoute path="/create_question/" component={Question} />
+            <PrivateRoute path="/edit_question/:id" component={Question} />
+            <PrivateRoute path="/problemset" component={ProblemSet} />
+            <PrivateRoute path="/users_rating" component={UsersRating} />
+            <Route path="/" component={Homepage} />
+          </Switch>
+          <DevTools />
+        </NavBar>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  loggedIn: state.loggedIn,
+  user: state.user
+})
+
+export default connect(mapStateToProps)(Root);

@@ -8,23 +8,32 @@ import {
   Segment,
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { register } from '../redux/actions/account';
+import { connect } from 'react-redux';
 
-import axios from 'axios';
 
-export default class Registration extends Component {
+
+class Registration extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
+      username: '',
       password: '',
-      form_error: '',
+      firstName: '',
+      lastName: '',
+      phoneNumber: '',
+      email: '',
+      formErrorTitle: '',
+      formErrorMessage: '',
     };
 
     this.confirmPassword = this.confirmPassword.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
+
   confirmPassword(e) {
     let elem = e.target;
     if (this.state.password !== elem.value) {
@@ -34,30 +43,8 @@ export default class Registration extends Component {
     }
   }
   async handleSubmit(event) {
-    const { email, password } = this.state;
-    try {
-      const response = axios.post(
-        'http://localhost:3001/registrations',
-        {
-          user: {
-            email: email,
-            password: password,
-          },
-        },
-        { withCredentials: true }
-      );
-      if (response.data.status === 'created') {
-        this.props.handleLogin(response.data);
-      }
-    } catch (error) {
-      console.log('registration error', error);
-      this.setState({
-        form_error: {
-          title: 'ای بابا!',
-          message: 'یکم وقت دیگه دوباره تلاش کن...',
-        },
-      });
-    }
+    const { username, password, firstName, lastName, phoneNumber, email } = this.state;
+    this.props.register(username, password, firstName, lastName, phoneNumber, email);
     event.preventDefault();
   }
 
@@ -78,15 +65,15 @@ export default class Registration extends Component {
               error={!!this.state.form_error}
             >
               <Form.Input
-                name="email"
-                type="email"
+                name="username"
+                type="username"
                 required
                 fluid
                 icon="user"
-                iconPosition="left"
-                placeholder="ایمیل"
+                iconPosition="right"
+                placeholder="نام کاربری"
                 className="persian-input"
-                value={this.state.email}
+                value={this.state.username}
                 onChange={this.handleChange}
               />
 
@@ -95,7 +82,7 @@ export default class Registration extends Component {
                 required
                 fluid
                 icon="lock"
-                iconPosition="left"
+                iconPosition="right"
                 placeholder="رمز عبور"
                 type="password"
                 className="persian-input"
@@ -108,7 +95,7 @@ export default class Registration extends Component {
                 required
                 fluid
                 icon="lock"
-                iconPosition="left"
+                iconPosition="right"
                 placeholder="تکرار رمز عبور"
                 type="password"
                 className="persian-input"
@@ -116,10 +103,62 @@ export default class Registration extends Component {
                 onChange={this.confirmPassword}
               />
 
+              <Form.Input
+                name="firstName"
+                required
+                fluid
+                icon="user" //todo
+                iconPosition="right"
+                placeholder="نام"
+                type="name"
+                className="persian-input"
+                value={this.state.firstName}
+                onChange={this.handleChange}
+              />
+
+              <Form.Input
+                name="lastName"
+                required
+                fluid
+                icon="user" //todo
+                iconPosition="right"
+                placeholder="نام خانوادگی"
+                type="name"
+                className="persian-input"
+                value={this.state.lastName}
+                onChange={this.handleChange}
+              />
+
+              <Form.Input
+                name="phoneNumber"
+                required
+                fluid
+                icon="phone"
+                iconPosition="right"
+                placeholder="شماره موبایل"
+                type="phone" //todo:
+                className="persian-input"
+                value={this.state.phoneNumber}
+                onChange={this.handleChange}
+              />
+
+              <Form.Input
+                name="email"
+                required
+                fluid
+                icon="mail"
+                iconPosition="right"
+                placeholder="ایمیل"
+                type="mail" //todo  
+                className="persian-input"
+                value={this.state.email}
+                onChange={this.handleChange}
+              />
+
               <Message
                 error
-                header={this.state.form_error.title}
-                content={this.state.form_error.message}
+                header={this.state.formErrorTitle}
+                content={this.state.formErrorMessage}
               />
               <Button type="submit" color="blue" fluid size="large">
                 ثبت‌نام
@@ -134,3 +173,18 @@ export default class Registration extends Component {
     );
   }
 }
+
+const mapStatoToProps = (state) => {
+  const thisUser = state.thisUser;
+  const userType = thisUser ? thisUser.type : null;
+  return ({
+    activePage: state.problemSetPageActivePage,
+    totalPages: state.problemSetPageTotalPages,
+    questionsShortInfo: state.questionsShortInfo,
+    userType,
+  })
+}
+
+export default connect(mapStatoToProps, {
+  register,
+})(Registration)

@@ -1,7 +1,7 @@
 import * as actionTypes from './actionTypes';
 import * as URLs from './URLs';
 
-import { CALL_API, Schemas } from '../middleware/api/api';
+import { CALL_API } from '../middleware/api/api';
 
 export const fetchQuestionList = () => ({ //TODO: set properties to search with back
   [CALL_API]: {
@@ -14,6 +14,5 @@ export const fetchQuestionList = () => ({ //TODO: set properties to search with 
     fetchOptions: {
       method: 'GET',
     },
-    schema: Schemas.QUESTION_ARRAY,
   },
 });

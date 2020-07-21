@@ -1,4 +1,4 @@
-const ROOT = "https://bank.rastaiha.ir/mhbank/" //TODO: is "mhbank" needed?
+const ROOT = "https://bank.rastaiha.ir/api/";
 
 export const GET_USERS_LIST = ROOT.concat('account/list'); //TODO: set properties to search with back
 export const GET_USER_DATA = ROOT.concat('account/');

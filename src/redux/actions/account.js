@@ -10,11 +10,10 @@ const fetchUser = (account_id) => ({
       actionTypes.USER_SUCCESS,
       actionTypes.USER_FAILURE,
     ],
-    url: URLs.GET_USER_DATA + account_id,
     fetchOptions: {
+      url: URLs.GET_USER_DATA + account_id,
       method: 'GET',
     },
-    // schema: Schemas.USER,
   },
 });
 
@@ -26,7 +25,6 @@ export const loadUser = (user_id, requiredFields = []) => (
   if (user && requiredFields.every((key) => user.hasOwnProperty(key))) {
     return null;
   }
-
   return dispatch(fetchUser(user_id));
 };
 
@@ -42,11 +40,10 @@ export const login = (username, password) => ({
       method: 'POST',
       body: { username, password },
     },
-    // schema: Schemas.USER,
   },
 });
 
-export const register = (username, password) => ({
+export const register = (username, password, first_name, last_name, phone_number, email) => ({
   [CALL_API]: {
     types: [
       actionTypes.REGISTER_REQUEST,
@@ -56,9 +53,14 @@ export const register = (username, password) => ({
     url: URLs.REGISTER_USER,
     fetchOptions: {
       method: 'POST',
-      body: { username, password },
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      mode: 'no-cors',
+      body: JSON.stringify({
+        user: { username, password, first_name, last_name, phone_number, email },
+      }),
     },
-    schema: Schemas.USER,
   },
 });
 

@@ -1,13 +1,9 @@
-const callApi = async (url, schema, fetchOptions) => {
-  const response = await fetch(url, fetchOptions);
-  let json = await response.json();
-  if (!response.ok) {
-    throw json;
-  }
-  // if (!!schema) {
-  //   return normalize(json, schema);
-  // }
-  return json;
+import axios from 'axios'
+
+const callApi = async (fetchOptions) => {
+  console.log(fetchOptions);
+  const response = await axios(fetchOptions);
+  return response;
 };
 
 export const CALL_API = 'Call API';
@@ -18,8 +14,8 @@ export default (store) => (next) => async (action) => {
     return next(action);
   }
 
-  let { url, fetchOptions } = callAPI;
-  const { schema, types } = callAPI;
+  let { fetchOptions } = callAPI;
+  const { types } = callAPI;
 
   const actionWith = (data) => {
     const finalAction = Object.assign({}, action, data);
@@ -31,7 +27,7 @@ export default (store) => (next) => async (action) => {
   next(actionWith({ type: requestType }));
 
   try {
-    const response = await callApi(url, schema, fetchOptions);
+    const response = await callApi(fetchOptions);
     return next(
       actionWith({
         response,

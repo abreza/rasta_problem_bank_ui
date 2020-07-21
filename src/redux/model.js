@@ -38,6 +38,7 @@ let rasta_bank = {
         difficultyLevel: 5,
         appropriateGrades: [9, 12],
       },
+      publishedDate: '',
       source: '',
       author: '',
       events: [],

@@ -14,10 +14,12 @@ function account(
           isFetching: false,
           loggedIn: true,
           user: action.response.user,
-        }; // TODO: why "actiom.payload.user" not?
+        };
       } else {
         return state;
       }
+    case actionTypes.LOGIN_FAILURE:
+      return { ...state, isFetching: false }
     case actionTypes.LOGOUT_SUCCESS:
       return { ...state, loggedIn: false, user: null };
     default:

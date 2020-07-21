@@ -7,51 +7,28 @@ import {
   Message,
   Segment,
 } from 'semantic-ui-react';
+import { login } from '../redux/actions/account';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import axios from 'axios';
-
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
+      username: '',
       password: '',
-      form_error: '',
+      formErrorTitle: '',
+      formErrorMessage: '',
     };
-
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
   async handleSubmit(event) {
-    const { email, password } = this.state;
-
-    try {
-      const response = await axios.post(
-        'http://localhost:3001/login',
-        {
-          user: {
-            email: email,
-            password: password,
-          },
-        },
-        { withCredentials: true }
-      );
-      if (response.data.logged_in) {
-        this.props.handleLogin(response.data);
-      }
-    } catch (error) {
-      console.log('login error', error);
-      this.setState({
-        form_error: {
-          title: 'ای بابا!',
-          message: 'یکم وقت دیگه دوباره تلاش کن...',
-        },
-      });
-    }
-
+    const { username, password } = this.state;
+    this.props.login(username, password);
     event.preventDefault();
   }
 
@@ -72,15 +49,14 @@ export default class Login extends Component {
               error={!!this.state.form_error}
             >
               <Form.Input
-                name="email"
-                type="email"
+                name="username"
                 required
                 fluid
                 icon="user"
                 iconPosition="left"
-                placeholder="ایمیل"
+                placeholder="نام کاربری"
                 className="persian-input"
-                value={this.state.email}
+                value={this.state.username}
                 onChange={this.handleChange}
               />
 
@@ -99,8 +75,8 @@ export default class Login extends Component {
 
               <Message
                 error
-                header={this.state.form_error.title}
-                content={this.state.form_error.message}
+                header={this.state.formErrorTitle}
+                content={this.state.formErrorMessage}
               />
 
               <Button color="blue" fluid size="large">
@@ -116,3 +92,18 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapStatoToProps = (state) => { //TODO:
+  const thisUser = state.thisUser;
+  const userType = thisUser ? thisUser.type : null;
+  return ({
+    activePage: state.problemSetPageActivePage,
+    totalPages: state.problemSetPageTotalPages,
+    questionsShortInfo: state.questionsShortInfo,
+    userType,
+  })
+}
+
+export default connect(mapStatoToProps, {
+  login,
+})(Login)

@@ -7,7 +7,7 @@ function questions(state = {}, action) {
         ...state,
         questions: {
           ...state.questions,
-          [action.response.key]: action.response.question,
+          [action.response.question.id]: action.response.question,
         },
         isFetching: false,
       };

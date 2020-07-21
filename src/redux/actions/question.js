@@ -14,7 +14,6 @@ export const fetchQuestion = (question_id) => ({
     fetchOptions: {
       method: 'GET',
     },
-    // schema: Schemas.QUESTION,
   },
 });
 

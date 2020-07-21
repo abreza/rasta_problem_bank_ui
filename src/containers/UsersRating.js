@@ -73,7 +73,7 @@ class UsersRating extends Component {
 
           <Grid.Column width={11}>
             <Segment>
-              <Label as='a' color='teal' ribbon='right'>
+              <Label color='teal' ribbon='right'>
                 صفحه‌ی {this.state.activePage} از {this.state.totalPages}
               </Label>
               <Table

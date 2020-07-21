@@ -15,15 +15,16 @@ import sampleQuestion from './sampleQuestion';
 import Difficulty from '../components/question/Difficulty';
 import Tag from '../components/question/Tag';
 import { connect } from 'react-redux';
+import { fetchQuestion } from '../redux/actions/question'
 
 import TinyPreview from '../components/editor/tiny_editor/react_tiny/Preview';
 
 class QuestionView extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      question: sampleQuestion, // TODO: must be this.props.question
+      question: '',
+      questionId: '',
       tags: sampleQuestion.tags.map((tagName, i) => (
         <Tag key={tagName} name={tagName}></Tag>
       )),
@@ -31,6 +32,13 @@ class QuestionView extends Component {
         <Tag key={tagName} name={tagName}></Tag>
       )),
     };
+  }
+
+  componentDidMount() {
+    const questionId = window.location.pathname;
+    console.log(questionId);
+    this.setState({ questionId: questionId });
+    this.props.fetchQuestion(questionId);
   }
 
   render() {
@@ -87,9 +95,9 @@ class QuestionView extends Component {
             <Segment textAlign="center">
               <Header content={'شناسنامه'} as="h2" textAlign="center" />
               <Divider section></Divider>
-              {/* <Difficulty
-                difficulty={this.props.question.difficulty}
-              ></Difficulty> */}
+              <Difficulty
+                difficulty={this.state.question.difficulty}
+              ></Difficulty>
               <Segment>
                 <Label attached="top">مباحث کلی سوال</Label>
                 {this.state.tags}
@@ -107,14 +115,9 @@ class QuestionView extends Component {
 }
 
 const mapStateToProps = (state) => {
-  // state.loadedQuestion.forEach((question) => {
-  // if (question.shortInfo.id === this.props.id) {
-  //   return {
-  //     question,
-  //   };
-  // }
-  // });
-  // question: state.questions; //TODO: what to do?!
+  console.log(this.status.questionId);
+  question = state.questions[this.state.questionId];
+  return question;
 };
 
-export default connect(mapStateToProps)(QuestionView);
+export default connect(mapStateToProps, { fetchQuestion })(QuestionView);
