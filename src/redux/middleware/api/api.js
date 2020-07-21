@@ -1,8 +1,5 @@
-import axios from 'axios'
-
-const callApi = async (fetchOptions) => {
-  console.log(fetchOptions);
-  const response = await axios(fetchOptions);
+const callApi = async (url, fetchOptions) => {
+  const response = await fetch(url, fetchOptions);
   return response;
 };
 
@@ -14,7 +11,7 @@ export default (store) => (next) => async (action) => {
     return next(action);
   }
 
-  let { fetchOptions } = callAPI;
+  let { url, fetchOptions } = callAPI;
   const { types } = callAPI;
 
   const actionWith = (data) => {
@@ -27,7 +24,7 @@ export default (store) => (next) => async (action) => {
   next(actionWith({ type: requestType }));
 
   try {
-    const response = await callApi(fetchOptions);
+    const response = await callApi(url, fetchOptions);
     return next(
       actionWith({
         response,

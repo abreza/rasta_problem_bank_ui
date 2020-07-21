@@ -10,8 +10,8 @@ const fetchUser = (account_id) => ({
       actionTypes.USER_SUCCESS,
       actionTypes.USER_FAILURE,
     ],
+    url: URLs.GET_USER_DATA + account_id,
     fetchOptions: {
-      url: URLs.GET_USER_DATA + account_id,
       method: 'GET',
     },
   },
@@ -43,7 +43,14 @@ export const login = (username, password) => ({
   },
 });
 
-export const register = (username, password, first_name, last_name, phone_number, email) => ({
+export const register = (
+  username,
+  password,
+  first_name,
+  last_name,
+  phone_number,
+  email
+) => ({
   [CALL_API]: {
     types: [
       actionTypes.REGISTER_REQUEST,
@@ -54,11 +61,14 @@ export const register = (username, password, first_name, last_name, phone_number
     fetchOptions: {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      mode: 'no-cors',
       body: JSON.stringify({
-        user: { username, password, first_name, last_name, phone_number, email },
+        user: { username, password },
+        first_name,
+        last_name,
+        phone_number,
+        email,
       }),
     },
   },
