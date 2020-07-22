@@ -1,6 +1,6 @@
 const callApi = async (url, fetchOptions) => {
   const response = await fetch(url, fetchOptions);
-  return response;
+  return await response.json();
 };
 
 export const CALL_API = 'Call API';
