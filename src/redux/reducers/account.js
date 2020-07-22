@@ -5,6 +5,16 @@ function account(
   action
 ) {
   switch (action.type) {
+    case actionTypes.REGISTER_REQUEST:
+      return { ...state, isFetching: true };
+    case actionTypes.REGISTER_SUCCESS:
+      return {
+        ...state, 
+        isFetching: false,
+        token: action.response.token,
+      };
+    case actionTypes.REGISTER_FAILURE:
+      return { ...state, isFetching: false };
     case actionTypes.LOGIN_REQUEST:
       return { ...state, isFetching: true };
     case actionTypes.LOGIN_SUCCESS:
