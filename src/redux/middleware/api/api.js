@@ -1,4 +1,14 @@
-const callApi = async (url, fetchOptions) => {
+const callApi = async (url, fetchOptions, token) => {
+  fetchOptions = {
+    ...fetchOptions,
+    headers: { ...fetchOptions.headers, Autorization: token },
+  }
+
+  fetchOptions = {
+    ...fetchOptions,
+    body: JSON.stringify(fetchOptions.body),
+  }
+
   const response = await fetch(url, fetchOptions);
   return await response.json();
 };
@@ -24,7 +34,9 @@ export default (store) => (next) => async (action) => {
   next(actionWith({ type: requestType }));
 
   try {
-    const response = await callApi(url, fetchOptions);
+    const { account } = store.getState();
+    const { token } = account;
+    const response = await callApi(url, fetchOptions, token);
     return next(
       actionWith({
         response,

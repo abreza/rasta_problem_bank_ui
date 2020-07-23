@@ -53,7 +53,7 @@ class Login extends Component {
                 required
                 fluid
                 icon="user"
-                iconPosition="left"
+                iconPosition="right"
                 placeholder="نام کاربری"
                 className="persian-input"
                 value={this.state.username}
@@ -65,7 +65,7 @@ class Login extends Component {
                 required
                 fluid
                 icon="lock"
-                iconPosition="left"
+                iconPosition="right"
                 placeholder="رمز عبور"
                 type="password"
                 className="persian-input"
@@ -93,15 +93,7 @@ class Login extends Component {
   }
 }
 
-const mapStatoToProps = (state) => { //TODO:
-  const thisUser = state.thisUser;
-  const userType = thisUser ? thisUser.type : null;
-  return ({
-    activePage: state.problemSetPageActivePage,
-    totalPages: state.problemSetPageTotalPages,
-    questionsShortInfo: state.questionsShortInfo,
-    userType,
-  })
+const mapStatoToProps = (state) => {
 }
 
 export default connect(mapStatoToProps, {

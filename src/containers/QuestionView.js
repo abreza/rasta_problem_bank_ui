@@ -36,7 +36,8 @@ class QuestionView extends Component {
 
   componentDidMount() {
     const questionId = window.location.pathname;
-    console.log(questionId);
+    console.log(questionId + "SSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+    this.setState({ question: this.props.questions[questionId] });
     this.setState({ questionId: questionId });
     this.props.fetchQuestion(questionId);
   }
@@ -95,9 +96,9 @@ class QuestionView extends Component {
             <Segment textAlign="center">
               <Header content={'شناسنامه'} as="h2" textAlign="center" />
               <Divider section></Divider>
-              <Difficulty
-                difficulty={this.state.question.difficulty}
-              ></Difficulty>
+              {/* <Difficulty
+                // difficulty={this.state.question.difficulty}
+              ></Difficulty> */}
               <Segment>
                 <Label attached="top">مباحث کلی سوال</Label>
                 {this.state.tags}
@@ -114,10 +115,8 @@ class QuestionView extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  console.log(this.status.questionId);
-  question = state.questions[this.state.questionId];
-  return question;
-};
+const mapStateToProps = (state) => ({
+  questions: state.questions,
+});
 
 export default connect(mapStateToProps, { fetchQuestion })(QuestionView);

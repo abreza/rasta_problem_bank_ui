@@ -38,6 +38,9 @@ export const login = (username, password) => ({
     url: URLs.LOGIN_USER,
     fetchOptions: {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: { username, password },
     },
   },
@@ -49,7 +52,7 @@ export const register = (
   first_name,
   last_name,
   phone_number,
-  email
+  email,
 ) => ({
   [CALL_API]: {
     types: [
@@ -63,13 +66,13 @@ export const register = (
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
+      body: {
         user: { username, password },
         first_name,
         last_name,
         phone_number,
         email,
-      }),
+      },
     },
   },
 });

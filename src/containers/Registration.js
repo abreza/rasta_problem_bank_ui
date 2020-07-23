@@ -175,14 +175,7 @@ class Registration extends Component {
 }
 
 const mapStatoToProps = (state) => {
-  const thisUser = state.thisUser;
-  const userType = thisUser ? thisUser.type : null;
-  return ({
-    activePage: state.problemSetPageActivePage,
-    totalPages: state.problemSetPageTotalPages,
-    questionsShortInfo: state.questionsShortInfo,
-    userType,
-  })
+
 }
 
 export default connect(mapStatoToProps, {
