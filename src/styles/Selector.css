@@ -1,0 +1,134 @@
+.selector {
+  display: inline-block;
+  position: relative;
+  direction: rtl;
+  text-align: right;
+  margin-top: 10px;
+  min-width: 100%;
+}
+
+.ui .selector input {
+  padding-left: 25px;
+  width: 100%;
+}
+
+.ui .selector .input{
+  width: 100%;
+}
+
+.selector .search-icon {
+  position: absolute;
+  top: 11px;
+  font-size: 11px;
+  left: 10px;
+}
+
+.new-source {
+  position: absolute;
+  box-shadow: 0 0px 4px rgba(0, 0, 0, 0.35), 0 0px 6px rgba(0, 0, 0, 0.05);
+  right: -14px;
+  top: 5px;
+  font-size: 9px;
+  background-color: #72b8ec;
+  color: white;
+  border-radius: 4px;
+  padding: 0 4px;
+  line-height: 14px;
+  transform: rotate(45deg);
+}
+
+.empty-list {
+  padding: 5px;
+}
+
+.new-source,
+.empty-list {
+  display: none;
+}
+
+.selector.no-list-select .new-source,
+.selector.not-found .new-source,
+.selector.not-found .empty-list {
+  display: block;
+}
+
+.selector-list {
+  border-radius: 5px;
+  width: 110%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35), 0 4px 6px rgba(0, 0, 0, 0.05);
+  margin: 3px 0;
+  direction: rtl;
+  transition: 0.3s;
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  border: 1px solid #ccc;
+  background-color: white;
+  display: none;
+  transition: 0.2s;
+  overflow: hidden;
+  /* z-index: 100; */
+}
+
+.selected-labels {
+  position: absolute;
+  bottom: 0px;
+  right: 5px;
+  font-size: 10px;
+  line-height: 10px;
+  width: 100%;
+}
+.selected-labels {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: inline-block;
+}
+
+.selected-labels li {
+  padding: 0 3px;
+  border-radius: 3px;
+  background-color: tomato;
+  color: white;
+  margin: 0 1px;
+  display: none;
+}
+
+.selected-labels li.show {
+  display: inline;
+}
+
+.selector-list.show {
+  display: block;
+}
+
+.selector-list ul {
+  list-style: none;
+  padding: 0;
+  text-align: right;
+  margin: 0;
+  max-height: 100px;
+  overflow-y: scroll;
+}
+
+.selector-list ul li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  display: none;
+}
+
+.selector-list ul li:hover,
+.selector-list ul li:focus {
+  cursor: pointer;
+  background: #72b8ec;
+  color: white;
+}
+
+.selector-list ul li.selected {
+  background: #2185d0;
+  color: white;
+}
+
+.selector-list ul li.show {
+  display: block;
+}
