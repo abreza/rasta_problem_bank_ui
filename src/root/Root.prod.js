@@ -3,10 +3,10 @@ import { Route, Switch } from 'react-router-dom';
 
 import LoginPage from '../containers/Login';
 import RegistrationPage from '../containers/Registration';
-import Homepage from '../containers/Homepage';
+import Homepage from '../containers/HomePage';
 import QuestionView from '../containers/QuestionView';
 import Question from '../containers/Question';
-import AccountsRating from '../containers/AccountsRating';
+import AccountsRating from '../containers/UsersRating';
 import ProblemSet from '../containers/ProblemSet';
 
 import NavBar from '../components/NavBar/NavBar';
