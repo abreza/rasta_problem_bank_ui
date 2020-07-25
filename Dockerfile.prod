@@ -1,0 +1,21 @@
+FROM node:latest as build
+
+WORKDIR /usr/src/app/ui
+
+COPY . /usr/src/app/ui
+ENV PATH /app/node_modules/.bin:$PATH
+
+ARG PARSE_APP_ID
+ARG PARSE_JAVASCRIPT_KEY
+ARG PARSE_SERVER_URL
+
+ENV PARSE_APP_ID ${PARSE_APP_ID}
+ENV PARSE_JAVASCRIPT_KEY ${PARSE_JAVASCRIPT_KEY}
+ENV PARSE_SERVER_URL ${PARSE_SERVER_URL}
+
+#RUN npm install -g npm to update
+#why yarm??
+RUN yarn --production
+RUN yarn build
+
+
