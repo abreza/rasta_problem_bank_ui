@@ -1,0 +1,38 @@
+.ui.input {
+  padding: 0 0 5px 5px;
+}
+
+.ui.input.hardness > input {
+  width: 85px;
+}
+
+.mobile-save-btn {
+  width: 100%;
+}
+
+#QuestionTextArea,
+#AnswerTextArea {
+  display: none;
+}
+
+.ui.fluid.dropdown.rtl-dropdown {
+  direction: rtl;
+  text-align: right;
+  margin: 10px 0;
+}
+
+.ui.fluid.dropdown.rtl-dropdown > .dropdown.icon {
+  float: left;
+  left: 10px;
+  right: auto;
+}
+
+.ui.fluid.dropdown.rtl-dropdown .default.text {
+  width: 100%;
+  margin: 0.45238095em 0;
+}
+
+.ui.dropdown.rtl-dropdown .menu .item {
+  direction: rtl;
+  text-align: right;
+}
