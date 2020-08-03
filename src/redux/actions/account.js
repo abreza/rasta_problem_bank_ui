@@ -3,30 +3,32 @@ import * as URLs from './URLs';
 
 import { CALL_API } from '../middleware/api/api';
 
-const fetchUser = (username) => ({
+const fetchUser = () => ({
   [CALL_API]: {
     types: [
       actionTypes.USER_REQUEST,
       actionTypes.USER_SUCCESS,
       actionTypes.USER_FAILURE,
     ],
-    url: URLs.GET_USER_DATA + username,
+    url: URLs.GET_ACCOUNT_BY_USERNAME,
     fetchOptions: {
       method: 'GET',
     },
   },
 });
 
-export const loadUser = (user_id, requiredFields = []) => (
+
+export const loadUser = () => (
   dispatch,
   getState
 ) => {
-  const user = getState().users[user_id];
-  if (user && requiredFields.every((key) => user.hasOwnProperty(key))) {
+  const user = getState().users[getState().account.username];
+  if (user) {
     return null;
   }
-  return dispatch(fetchUser(user_id));
+  return dispatch(fetchUser());
 };
+
 
 export const login = (username, password) => ({
   [CALL_API]: {
@@ -45,7 +47,6 @@ export const login = (username, password) => ({
     },
   },
 });
-
 
 
 export const register = (
@@ -75,6 +76,7 @@ export const register = (
     },
   },
 });
+
 
 export const logout = () => ({
   [CALL_API]: {

@@ -30,24 +30,6 @@ function question(state = {}, action) {
         isFetching: false,
       };
 
-    /////////////////////////////
-
-    case actionTypes.QUESTION_PROPERTIES_REQUEST:
-      return { ...state, isLoading: true };
-
-    case actionTypes.QUESTION_PROPERTIES_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-        properties: action.response.properties,
-      };
-
-    case actionTypes.QUESTION_PROPERTIES_FAILURE:
-      return {
-        ...state,
-        isLoading: false,
-      }
-
     default:
       return state;
   }

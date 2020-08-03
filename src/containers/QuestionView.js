@@ -5,18 +5,22 @@ import {
   Icon,
   Container,
   Segment,
-  Divider,
   Label,
+  List,
 } from 'semantic-ui-react';
-import sampleQuestion from './sampleQuestion';
 import Difficulty from '../components/question/Difficulty';
 import Tag from '../components/question/Tag';
 import { connect } from 'react-redux';
 import TinyPreview from '../components/editor/tiny_editor/react_tiny/Preview';
 import {
   fetchQuestion,
-  fetchQuestionProperties,
 } from '../redux/actions/question'
+import {
+  getTags,
+  getSubTags,
+  getEvents,
+  getSources,
+} from '../redux/actions/properties'
 
 
 function getAttribute(object, attribute) {
@@ -29,25 +33,43 @@ function getAttribute(object, attribute) {
   return attributeValue;
 }
 
+
+function getTagLabels(indexes, set) {
+  const allTagNames = set;
+  var allLabes = indexes.map((index) =>
+    <Tag
+      key={getAttribute(allTagNames[index - 1], 'name')}
+      name={getAttribute(allTagNames[index - 1], 'name')}
+    />
+  );
+  return allLabes;
+}
+
+function getBulletList(indexes, set) {
+  const allTagNames = set;
+  var allLabes = indexes.map((index) =>
+    <li
+      key={getAttribute(allTagNames[index - 1], 'name')}
+    >
+      {getAttribute(allTagNames[index - 1], 'name')}
+    </li>
+  );
+  return allLabes;
+}
+
+
+
 const questionId = window.location.pathname.split('/')[2];
 
 class QuestionView extends Component {
 
   componentDidMount() {
     this.props.fetchQuestion(questionId);
-    if (this.props.properties) {
-      this.props.fetchQuestionProperties();
-    }
+    this.props.getTags();
+    this.props.getSubTags();
+    this.props.getEvents();
+    this.props.getSources();
   }
-
-  getTags(tagIndexes) {
-    const allTagNames = sampleQuestion.tags;// this.props.properties.tags; (todo)
-    var allLabes = tagIndexes.map((index) => (
-      <Tag key={allTagNames[index]} name={allTagNames[index]} />
-    ));
-    return allLabes;
-  }
-
 
   render() {
     var question;
@@ -90,8 +112,9 @@ class QuestionView extends Component {
             </Segment>
 
             <Segment textAlign="center">
+
               <Label size="large" attached="top">
-                <Icon name="book" size="large" />
+                <Icon name="puzzle" size="large" />
                 {' پاسخ'}
               </Label>
               <Container fluid textAlign="right" style={{ fontSize: 20 }}>
@@ -102,7 +125,7 @@ class QuestionView extends Component {
                     scrolling: 'no',
                     width: '100%',
                   }}
-                  content={getAttribute(question, 'answer') ? getAttribute(question, 'answer') : 'فعلاً پاسخی برای این سوال نیست. از شما عذرخواهی‌ می‌کنیم :('}
+                  content={getAttribute(question, 'answer') ? getAttribute(question, 'answer') : ''}
                 />
               </Container>
             </Segment>
@@ -112,19 +135,35 @@ class QuestionView extends Component {
             width={5}
             style={{ textAlign: 'right', direction: 'rtl' }}
           >
+
             <Segment textAlign="center">
-              <Header content={'شناسنامه'} as="h2" textAlign="center" />
-              <Divider section></Divider>
+              <br />
+              <br />
+              <br />
+              <Label size='large' attached="top">
+                <Icon name="book" size="large" />
+                {' شناسنامه'}
+              </Label>
               <Difficulty
                 difficulty={Object(getAttribute(question, 'hardness'))}
               ></Difficulty>
               <Segment>
                 <Label attached="top">مباحث کلی سوال</Label>
-                {this.getTags([getAttribute(question, 'tags')])}
+                {getTagLabels([getAttribute(question, 'tags')], this.props.tags)}
               </Segment>
               <Segment>
                 <Label attached="top">مباحث ریزتر</Label>
-                {this.getTags([getAttribute(question, 'sub_tags')])}
+                {getTagLabels([getAttribute(question, 'sub_tags')], this.props.subTags)}
+              </Segment>
+              <Segment>
+                <Label attached="top">منبع</Label>
+                <div>
+                  {getAttribute(this.props.sources[getAttribute(question, 'source') - 1], 'name')}
+                </div>
+              </Segment>
+              <Segment>
+                <Label attached="top">رویداد‌های به کار رفته!</Label>
+                {getBulletList([getAttribute(question, 'source')], this.props.events)}
               </Segment>
             </Segment>
           </Grid.Column>
@@ -136,12 +175,18 @@ class QuestionView extends Component {
 
 const mapStateToProps = (state) => ({
   questions: state.question.questions,
-  properties: state.question.properties,
+  tags: state.properties.tags,
+  subTags: state.properties.subTags,
+  events: state.properties.events,
+  sources: state.properties.sources,
 });
 
 export default connect(
   mapStateToProps,
   {
     fetchQuestion,
-    fetchQuestionProperties,
+    getTags,
+    getSubTags,
+    getEvents,
+    getSources,
   })(QuestionView);

@@ -8,19 +8,14 @@ const callApi = async (url, fetchOptions, token) => {
     },
   }
 
-
   fetchOptions = {
     ...fetchOptions,
     body: JSON.stringify(fetchOptions.body),
   }
 
   console.log(fetchOptions);
-
-
   const response = await fetch(url, fetchOptions);
-
   console.log(response);
-
   return await response.json();
 };
 

@@ -18,7 +18,6 @@ import Editor from '../components/editor/tiny_editor/react_tiny/TinyEditorCompon
 import {
   submitQuestion,
   fetchQuestion,
-  fetchQuestionProperties,
 } from '../redux/actions/question';
 import '../styles/Question.css';
 import { connect } from 'react-redux';
@@ -119,7 +118,7 @@ class Question extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchQuestionProperties();
+    // this.props.fetchQuestionProperties(); //todo
     if (questionId) {
       this.props.fetchQuestion(questionId);
     }
@@ -416,5 +415,4 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   submitQuestion,
   fetchQuestion,
-  fetchQuestionProperties,
 })(Question);

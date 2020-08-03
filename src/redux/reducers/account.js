@@ -1,7 +1,7 @@
 import * as actionTypes from '../actions/actionTypes';
 
 function account(
-  state = { isLoggedIn: false, user: null, isFetching: false, token: null, isLoginSuccessful: false },
+  state = { isLoggedIn: false, user: null, isFetching: false, token: null },
   action
 ) {
   switch (action.type) {
