@@ -12,11 +12,11 @@ import {
 
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
-
+import { fetchQuestion } from '../redux/actions/question'
 
 const questionsShortInfo = [
   {
-    id: 123,
+    id: 3,
     name: 'مساحت و محیط رو دریاب',
     tags: ['هندسه'],
     difficulty: 3, // همونی که از ۱۰عه
@@ -145,8 +145,7 @@ class ProblemSet extends Component {
                     <Table.Row key={id}>
                       <Table.Cell >{id}</Table.Cell>
                       <Table.Cell textAlign='right' selectable>
-
-                        <a href={'/question/' + id}>{name}</a>
+                        <a href={'question/' + id} >{name}</a>
                       </Table.Cell>
                       <Table.Cell textAlign='right'>
                         <Label>{tags[0]}</Label>
@@ -206,4 +205,4 @@ const mapStatoToProps = (state) => {
   })
 }
 
-export default connect(mapStatoToProps)(ProblemSet)
+export default connect(mapStatoToProps, { fetchQuestion })(ProblemSet)

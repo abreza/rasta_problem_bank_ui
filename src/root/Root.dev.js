@@ -15,13 +15,18 @@ import NavBarItems from '../components/NavBar/NavBarItems';
 
 import '../styles/App.css';
 import PrivateRoute from './PrivateRoute';
+import { logout } from '../redux/actions/account'
 
 class Root extends Component {
 
   render() {
     return (
       <div>
-        <NavBar config={NavBarItems({ loggedIn: this.props.loggedIn, user: this.props.user })}>
+        <NavBar config={NavBarItems({
+          isLoggedIn: this.props.isLoggedIn,
+          username: this.props.username,
+          logout: this.props.logout,
+        })}>
           <Switch>
             <Route path="/login" component={LoginPage} />
             <Route path="/registration" component={RegistrationPage} />
@@ -40,8 +45,10 @@ class Root extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  loggedIn: state.loggedIn,
-  user: state.user
+  isLoggedIn: state.account.isLoggedIn,
+  username: state.account.username,
 })
 
-export default connect(mapStateToProps)(Root);
+
+
+export default connect(mapStateToProps, { logout })(Root);

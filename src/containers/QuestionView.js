@@ -1,6 +1,4 @@
-/* eslint-disable no-undef */
 import React, { Component } from 'react';
-
 import {
   Grid,
   Header,
@@ -10,45 +8,60 @@ import {
   Divider,
   Label,
 } from 'semantic-ui-react';
-
 import sampleQuestion from './sampleQuestion';
 import Difficulty from '../components/question/Difficulty';
 import Tag from '../components/question/Tag';
 import { connect } from 'react-redux';
-import { fetchQuestion } from '../redux/actions/question'
-
 import TinyPreview from '../components/editor/tiny_editor/react_tiny/Preview';
+import {
+  fetchQuestion,
+  fetchQuestionProperties,
+} from '../redux/actions/question'
+
+
+function getAttribute(object, attribute) {
+  var attributeValue;
+  for (var i in object) {
+    if (i == attribute) {
+      attributeValue = object[i];
+    }
+  }
+  return attributeValue;
+}
+
+const questionId = window.location.pathname.split('/')[2];
 
 class QuestionView extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      question: '',
-      questionId: '',
-      tags: sampleQuestion.tags.map((tagName, i) => (
-        <Tag key={tagName} name={tagName}></Tag>
-      )),
-      subtags: sampleQuestion.subtags.map((tagName, i) => (
-        <Tag key={tagName} name={tagName}></Tag>
-      )),
-    };
-  }
 
   componentDidMount() {
-    const questionId = window.location.pathname;
-    console.log(questionId + "SSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-    this.setState({ question: this.props.questions[questionId] });
-    this.setState({ questionId: questionId });
     this.props.fetchQuestion(questionId);
+    if (this.props.properties) {
+      this.props.fetchQuestionProperties();
+    }
   }
 
+  getTags(tagIndexes) {
+    const allTagNames = sampleQuestion.tags;// this.props.properties.tags; (todo)
+    var allLabes = tagIndexes.map((index) => (
+      <Tag key={allTagNames[index]} name={allTagNames[index]} />
+    ));
+    return allLabes;
+  }
+
+
   render() {
+    var question;
+    for (var i in this.props.questions) {
+      if (this.props.questions[i].id == questionId) {
+        question = this.props.questions[i];
+      }
+    }
     return (
       <Grid centered container stackable doubling style={{ direction: 'rtl' }}>
         <Grid.Row centered relaxed>
           <Grid.Column>
             <Header as="h1" textAlign="center">
-              {'«' + this.state.question.name + '»'}
+              {getAttribute(question, 'name') ? '«' + getAttribute(question, 'name') + '»' : null}
             </Header>
           </Grid.Column>
         </Grid.Row>
@@ -61,7 +74,7 @@ class QuestionView extends Component {
             <Segment textAlign="center">
               <Label size="large" attached="top">
                 <Icon name="pencil" size="large" />
-                {' صورت مسئله'}
+                {' صورت‌مسئله'}
               </Label>
               <Container fluid textAlign="right" style={{ fontSize: 20 }}>
                 <br />
@@ -71,9 +84,8 @@ class QuestionView extends Component {
                     scrolling: 'no',
                     width: '100%',
                   }}
-                  content="<p>سلام</p><p style='text-align: center'><span class='tiny-math'data-latex='\sum_{w \rightarrow 5}' ></span></p>"
+                  content={getAttribute(question, 'text') ? getAttribute(question, 'text') : ''}
                 />
-                {/* {this.state.question.questionText} */}
               </Container>
             </Segment>
 
@@ -84,7 +96,14 @@ class QuestionView extends Component {
               </Label>
               <Container fluid textAlign="right" style={{ fontSize: 20 }}>
                 <br />
-                {/* {this.state.question.answer.answer} */}
+                <TinyPreview
+                  frameProps={{
+                    frameBorder: '0',
+                    scrolling: 'no',
+                    width: '100%',
+                  }}
+                  content={getAttribute(question, 'answer') ? getAttribute(question, 'answer') : 'فعلاً پاسخی برای این سوال نیست. از شما عذرخواهی‌ می‌کنیم :('}
+                />
               </Container>
             </Segment>
           </Grid.Column>
@@ -96,16 +115,16 @@ class QuestionView extends Component {
             <Segment textAlign="center">
               <Header content={'شناسنامه'} as="h2" textAlign="center" />
               <Divider section></Divider>
-              {/* <Difficulty
-                // difficulty={this.state.question.difficulty}
-              ></Difficulty> */}
+              <Difficulty
+                difficulty={Object(getAttribute(question, 'hardness'))}
+              ></Difficulty>
               <Segment>
                 <Label attached="top">مباحث کلی سوال</Label>
-                {this.state.tags}
+                {this.getTags([getAttribute(question, 'tags')])}
               </Segment>
               <Segment>
                 <Label attached="top">مباحث ریزتر</Label>
-                {this.state.subtags}
+                {this.getTags([getAttribute(question, 'sub_tags')])}
               </Segment>
             </Segment>
           </Grid.Column>
@@ -116,7 +135,13 @@ class QuestionView extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  questions: state.questions,
+  questions: state.question.questions,
+  properties: state.question.properties,
 });
 
-export default connect(mapStateToProps, { fetchQuestion })(QuestionView);
+export default connect(
+  mapStateToProps,
+  {
+    fetchQuestion,
+    fetchQuestionProperties,
+  })(QuestionView);

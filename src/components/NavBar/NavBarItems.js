@@ -6,7 +6,7 @@ const leftItems = () => [];
 
 const rightItems = (config) => {
   const Items = [];
-  if (!config.loggedIn) {
+  if (!config.isLoggedIn) {
     Items.push(
       <Menu.Item name="message">
         <Label style={{ direction: 'rtl' }}>
@@ -28,11 +28,11 @@ const rightItems = (config) => {
     Items.push(
       <Menu.Item name="message">
         <Label style={{ direction: 'rtl' }}>
-          {config.user.first_name} خوش اومدی!
+          {config.username}ی عزیز، خوش اومدی!
         </Label>
       </Menu.Item>,
       <Menu.Item name="logout">
-        <Button as={Link} to="/" primary>
+        <Button as={Link} to="/" onClick={config.logout} primary>
           خروج
         </Button>
       </Menu.Item>,

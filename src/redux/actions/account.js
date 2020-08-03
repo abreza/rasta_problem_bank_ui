@@ -3,14 +3,14 @@ import * as URLs from './URLs';
 
 import { CALL_API } from '../middleware/api/api';
 
-const fetchUser = (account_id) => ({
+const fetchUser = (username) => ({
   [CALL_API]: {
     types: [
       actionTypes.USER_REQUEST,
       actionTypes.USER_SUCCESS,
       actionTypes.USER_FAILURE,
     ],
-    url: URLs.GET_USER_DATA + account_id,
+    url: URLs.GET_USER_DATA + username,
     fetchOptions: {
       method: 'GET',
     },
@@ -35,16 +35,18 @@ export const login = (username, password) => ({
       actionTypes.LOGIN_SUCCESS,
       actionTypes.LOGIN_FAILURE,
     ],
+    payload1: {
+      username: username,
+    },
     url: URLs.LOGIN_USER,
     fetchOptions: {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: { username, password },
     },
   },
 });
+
+
 
 export const register = (
   username,
@@ -63,9 +65,6 @@ export const register = (
     url: URLs.REGISTER_USER,
     fetchOptions: {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: {
         user: { username, password },
         first_name,

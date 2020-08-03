@@ -22,23 +22,23 @@ export default class Difficulty extends Component {
       <div>
         <Progress
           textAlign="center"
-          value={this.props.difficulty.difficultyLevel}
-          total={10}
+          value={this.props.difficulty.level}
+          total={100}
           color="red"
         >
-          سختی: {this.props.difficulty.difficultyLevel}
+          سختی: {this.props.difficulty.level}
         </Progress>
         <Segment >
           <Icon name="child" size="large"></Icon>
           پایین‌ترین پایه‌ی مناسب:{' '}
           <b>
-            {grades[this.props.difficulty.appropriateGrades[0] - 1]}
+            {grades[this.props.difficulty.appropriate_grades_min - 1]}
           </b>
           <br /><br />
           <Icon name="male" size="large"></Icon>
           بالاترین پایه‌ی مناسب:{' '}
           <b>
-            {grades[this.props.difficulty.appropriateGrades[1] - 1]}
+            {grades[this.props.difficulty.appropriate_grades_max - 1]}
           </b>
         </Segment>
       </div>
