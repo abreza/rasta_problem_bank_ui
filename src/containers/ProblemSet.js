@@ -12,60 +12,41 @@ import {
 
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import { fetchQuestion } from '../redux/actions/question'
+import { fetchQuestionListByPage } from '../redux/actions/question'
+import { ROOT } from '../redux/actions/URLs'
+import {
+  getTags,
+  getSubTags,
+  getEvents,
+  getSources,
+} from '../redux/actions/properties'
 
-const questionsShortInfo = [
-  {
-    id: 3,
-    name: 'مساحت و محیط رو دریاب',
-    tags: ['هندسه'],
-    difficulty: 3, // همونی که از ۱۰عه
-    reviewStatus: 'A', // وضعیت بازبینی سوال توسط منتورهای بالاسری
-  },
-  {
-    id: 456,
-    name: 'این یا اون؟',
-    tags: ['ترکیبیات', 'منطق'],
-    difficulty: 5, // همونی که از ۱۰عه
-    reviewStatus: 'W', // وضعیت بازبینی سوال توسط منتورهای بالاسری
-  },
-  {
-    id: 789,
-    name: 'Last SHAM!',
-    tags: ['رمزنگاری', 'منطق', 'احتمال'],
-    difficulty: 8, // همونی که از ۱۰عه
-    reviewStatus: 'W', // وضعیت بازبینی سوال توسط منتورهای بالاسری
-  },
-  {
-    id: 1323,
-    name: 'مساحت و محیط رو دریاب',
-    tags: ['هندسه'],
-    difficulty: 3, // همونی که از ۱۰عه
-    reviewStatus: 'A', // وضعیت بازبینی سوال توسط منتورهای بالاسری
-  },
-  {
-    id: 3456,
-    name: 'این یا اون؟',
-    tags: ['ترکیبیات', 'منطق'],
-    difficulty: 5, // همونی که از ۱۰عه
-    reviewStatus: 'W', // وضعیت بازبینی سوال توسط منتورهای بالاسری
-  },
-  {
-    id: 13789,
-    name: 'Last SHAM!',
-    tags: ['رمزنگاری', 'منطق'],
-    difficulty: 8, // همونی که از ۱۰عه
-    reviewStatus: 'W', // وضعیت بازبینی سوال توسط منتورهای بالاسری
-  },
-]
+
+function getAttribute(object, attribute) {
+  var attributeValue;
+  for (var i in object) {
+    if (i == attribute) {
+      attributeValue = object[i];
+    }
+  }
+  return attributeValue;
+}
 
 class ProblemSet extends Component {
   state = {
-    activePage: 1,
-    totalPages: 10,
     userType: 'ADMIN', //TODO: should be "this.props.userType"
-    questionsShortInfo: questionsShortInfo, //TODO: should be "this.props.questionsShortInfo"
     redirect: false,
+    enterQuestion: false,
+    enteredQuestionId: '',
+  }
+
+  getActivePage() {
+    return window.location.pathname.split('/')[3];
+  }
+
+  componentDidMount() {
+    this.props.fetchQuestionListByPage(this.getActivePage);
+    this.props.getTags();
   }
 
   handlePaginationChange = (e, { activePage }) => {
@@ -73,10 +54,14 @@ class ProblemSet extends Component {
   }
 
   render() {
-    const { questionsShortInfo: data } = this.state
+    const questions = this.props.thisPageQuestions;
 
     if (this.state.redirect) {
       return <Redirect push to={"/problemset/page/" + this.state.activePage} />;
+    }
+
+    if (this.state.enterQuestion) {
+      return <Redirect push to={"/question/" + this.state.enteredQuestionId} />;
     }
 
     return (
@@ -97,7 +82,7 @@ class ProblemSet extends Component {
           <Grid.Column width={11}>
             <Segment>
               <Label color='teal' ribbon='right'>
-                صفحه‌ی {this.state.activePage} از {this.state.totalPages}
+                صفحه‌ی {this.getActivePage()} از {this.props.totalNumberOfPages}
               </Label>
               <Table
                 selectable
@@ -130,36 +115,35 @@ class ProblemSet extends Component {
                     >
                       درجه سختی
                     </Table.HeaderCell>
-                    {this.state.userType === 'ADMIN' && (
-                      <Table.HeaderCell
-                        width={3}
-                      >
-                        وضعیت بازبینی
-                      </Table.HeaderCell>
-                    )}
                   </Table.Row>
                 </Table.Header>
 
                 <Table.Body>
-                  {_.map(data, ({ id, name, tags, difficulty, reviewStatus }) => (
+                  {_.map(questions, ({ id, name, tags, hardness: difficulty, reviewStatus }) => (
                     <Table.Row key={id}>
                       <Table.Cell >{id}</Table.Cell>
                       <Table.Cell textAlign='right' selectable>
-                        <a href={'question/' + id} >{name}</a>
+                        <a
+                          href={''}
+                          onClick={() => this.setState({ enterQuestion: true, enteredQuestionId: id })} //todo:
+                        >
+                          {name}
+                        </a>
                       </Table.Cell>
-                      <Table.Cell textAlign='right'>
-                        <Label>{tags[0]}</Label>
-                        {tags[1] && (
-                          <Label>{tags[1]}</Label>
-                        )}
-                        {tags[2] && (
-                          <Label>{tags[2]}</Label>
-                        )}
+                      < Table.Cell textAlign='right' >
+                        <Label>{getAttribute(this.props.tags.filter(tag => { return tag.id === tags[0] })[0], 'name')}</Label>
+                        {
+                          tags[1] && (
+                            <Label>{getAttribute(this.props.tags.filter(tag => { return tag.id === tags[1] })[0], 'name')}</Label>
+                          )
+                        }
+                        {
+                          tags[2] && (
+                            <Label>{getAttribute(this.props.tags.filter(tag => { return tag.id === tags[2] })[0], 'name')}</Label>
+                          )
+                        }
                       </Table.Cell>
-                      <Table.Cell>{difficulty}</Table.Cell>
-                      {this.state.userType === 'ADMIN' && (
-                        <Table.Cell>{reviewStatus}</Table.Cell>
-                      )}
+                      <Table.Cell>{getAttribute(difficulty, 'level')}</Table.Cell>
                     </Table.Row>
                   ))}
                 </Table.Body>
@@ -170,9 +154,9 @@ class ProblemSet extends Component {
                 }}
               >
                 <Pagination
-                  activePage={this.state.activePage}
+                  activePage={this.getActivePage()}
                   onPageChange={this.handlePaginationChange}
-                  totalPages={this.state.totalPages}
+                  totalPages={this.props.totalNumberOfPages}
                 />
               </div>
             </Segment>
@@ -195,14 +179,16 @@ class ProblemSet extends Component {
 }
 
 const mapStatoToProps = (state) => {
-  const thisUser = state.thisUser;
-  const userType = thisUser ? thisUser.type : null;
+  // const thisUser = state.thisUser;
+  // const userType = thisUser ? thisUser.type : null;
   return ({
-    activePage: state.problemSetPageActivePage,
-    totalPages: state.problemSetPageTotalPages,
-    questionsShortInfo: state.questionsShortInfo,
-    userType,
+    tags: state.properties.tags,
+    thisPageQuestions: state.question.allQuestions,
+    totalNumberOfPages: state.question.totalNumberOfPages,
   })
 }
 
-export default connect(mapStatoToProps, { fetchQuestion })(ProblemSet)
+export default connect(mapStatoToProps, {
+  fetchQuestionListByPage,
+  getTags,
+})(ProblemSet)

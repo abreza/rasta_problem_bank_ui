@@ -23,13 +23,30 @@ function question(state = {}, action) {
         ...state,
         isFetching: false,
       }
-    case action.QUESTION_LIST_REQUEST:
+
+    //###########################
+
+    case actionTypes.QUESTION_LIST_REQUEST:
       return {
         ...state,
-        questions: action.response.questions,
+        isFetching: true,
+      };
+
+    case actionTypes.QUESTION_LIST_SUCCESS:
+      return {
+        ...state,
+        allQuestions: action.response.questions,
+        totalNumberOfPages: action.response.num_pages,
         isFetching: false,
       };
 
+
+    case actionTypes.QUESTION_LIST_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+      }
+      
     default:
       return state;
   }

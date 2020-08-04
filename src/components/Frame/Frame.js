@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/iframe-has-title */
-
 import React, { Component } from 'react';
 
 export default class Frame extends Component {

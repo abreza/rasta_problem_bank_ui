@@ -36,11 +36,16 @@ function getAttribute(object, attribute) {
 
 function getTagLabels(indexes, set) {
   const allTagNames = set;
-  var allLabes = indexes.map((index) =>
-    <Tag
-      key={getAttribute(allTagNames[index - 1], 'name')}
-      name={getAttribute(allTagNames[index - 1], 'name')}
-    />
+  var allLabes = indexes.map((index) => {
+    var name;
+    // for () todo
+    return (
+      <Tag
+        key={getAttribute(allTagNames[index - 1], 'name')}
+        name={getAttribute(allTagNames[index - 1], 'name')}
+      />
+    );
+  }
   );
   return allLabes;
 }
@@ -48,16 +53,12 @@ function getTagLabels(indexes, set) {
 function getBulletList(indexes, set) {
   const allTagNames = set;
   var allLabes = indexes.map((index) =>
-    <li
-      key={getAttribute(allTagNames[index - 1], 'name')}
-    >
+    <li key={getAttribute(allTagNames[index - 1], 'name')} >
       {getAttribute(allTagNames[index - 1], 'name')}
     </li>
   );
   return allLabes;
 }
-
-
 
 const questionId = window.location.pathname.split('/')[2];
 
@@ -161,6 +162,7 @@ class QuestionView extends Component {
                   {getAttribute(this.props.sources[getAttribute(question, 'source') - 1], 'name')}
                 </div>
               </Segment>
+
               <Segment>
                 <Label attached="top">رویداد‌های به کار رفته!</Label>
                 {getBulletList([getAttribute(question, 'source')], this.props.events)}

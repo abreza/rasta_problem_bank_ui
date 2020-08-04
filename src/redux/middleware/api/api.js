@@ -4,7 +4,9 @@ const callApi = async (url, fetchOptions, token) => {
     headers: {
       ...fetchOptions.headers,
       'Content-Type': 'application/json',
-      Authorization: 'Token 62b51b4cd0622e00ae6994a51eb47a641409b46a',
+      Authorization: 'Token 1751ee67d0a62ce704ea3a1b5901cb2feebf80ab',
+      // 1751ee67d0a62ce704ea3a1b5901cb2feebf80ab
+      // 62b51b4cd0622e00ae6994a51eb47a641409b46a
     },
   }
 

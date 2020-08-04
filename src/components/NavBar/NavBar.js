@@ -27,7 +27,9 @@ const NavBarMobile = ({
     >
       <Menu fixed="top" className="borderless">
         <Menu.Item style={{ padding: '5px 10px' }}>
-          <Image size="mini" src={process.env.PUBLIC_URL + '/logo.png'} />
+          <a href={'/'}>
+            <Image size="mini" src={process.env.PUBLIC_URL + '/logo.png'} />
+          </a>
         </Menu.Item>
         <Menu.Item
           onClick={onToggle}
@@ -48,7 +50,9 @@ const NavBarMobile = ({
 const NavBarDesktop = ({ leftItems, rightItems }) => (
   <Menu fixed="top" className="borderless">
     <Menu.Item style={{ padding: '5px 10px' }}>
-      <Image size="mini" src={process.env.PUBLIC_URL + '/logo.png'} />
+      <a href={'/'}>
+        <Image size="mini" src={process.env.PUBLIC_URL + '/logo.png'} />
+      </a>    
     </Menu.Item>
     {leftItems}
     <Menu.Menu position="right">{rightItems}</Menu.Menu>

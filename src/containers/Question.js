@@ -21,6 +21,12 @@ import {
 } from '../redux/actions/question';
 import '../styles/Question.css';
 import { connect } from 'react-redux';
+import {
+  getTags,
+  getSubTags,
+  getEvents,
+  getSources,
+} from '../redux/actions/properties'
 
 const sources = [
   { key: '0', text: 'المپیاد ملی روسیه ۲۰۱۹', value: '0' },
@@ -118,8 +124,11 @@ class Question extends Component {
   }
 
   componentDidMount() {
-    // this.props.fetchQuestionProperties(); //todo
-    if (questionId) {
+    this.props.getTags();
+    this.props.getSubTags();
+    this.props.getEvents();
+    this.props.getSources();
+    if (questionId !== undefined) {
       this.props.fetchQuestion(questionId);
     }
   }
@@ -415,4 +424,8 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   submitQuestion,
   fetchQuestion,
+  getTags,
+  getSubTags,
+  getEvents,
+  getSources,
 })(Question);

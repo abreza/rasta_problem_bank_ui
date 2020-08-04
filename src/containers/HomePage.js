@@ -29,7 +29,7 @@ const HomepageLayout = ({ mobile }) => (
         display: 'table',
       }}
       as={Link}
-      to="/problemset"
+      to="/problemset/page/1"
     >
       بزن بریم!
       <Icon name="left arrow" />
