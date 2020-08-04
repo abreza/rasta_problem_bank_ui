@@ -11,14 +11,22 @@ import {
   Icon,
   Dropdown,
 } from 'semantic-ui-react';
-
 import { Redirect } from 'react-router';
 import { Slider } from 'react-semantic-ui-range';
 import Tag from '../components/question/Tag';
 import Editor from '../components/editor/tiny_editor/react_tiny/TinyEditorComponent';
-import { submitQuestion } from '../redux/actions/question';
+import {
+  submitQuestion,
+  fetchQuestion,
+} from '../redux/actions/question';
 import '../styles/Question.css';
 import { connect } from 'react-redux';
+import {
+  getTags,
+  getSubTags,
+  getEvents,
+  getSources,
+} from '../redux/actions/properties'
 
 const sources = [
   { key: '0', text: 'المپیاد ملی روسیه ۲۰۱۹', value: '0' },
@@ -61,49 +69,41 @@ const tags = [
   },
 ];
 
-let nextQuestionID = 1000;
+
+const questionId = window.location.pathname.split('/')[2];
+let nextQuestionID = 0;
 
 class Question extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      allSources: sources, //TODO: should change with this.props.allCources
-      allEvents: events, //TODO: should change with this.props.allEvents
-      question: {
-        shortInfo: {
-          id: ++nextQuestionID,
-          name: '',
-          tags: tags, //TODO: should change with this.props.allTags
-          difficultyLevel: 5,
-          reviewStatus: 'W',
-        },
-        difficulty: {
-          difficultyLevel: 5,
-          appropriateGrades: [9, 12],
-        },
-        // author: this.props.account.name,
-        events: [],
-        source: '',
-        subtags: [],
-        questionText: '', //TODO: TINY!
-        questionAnswer: '', //TODO: TINY!
+      id: ++nextQuestionID,
+      name: '',
+      tags: [], //TODO: should change with this.props.allTags
+      subtags: [],
+      verification_status: 'W',
+      hardness: {
+        level: 5,
+        appropriate_grades_min: 9,
+        appropriate_grades_max: 12,
       },
+      events: [],
+      source: '',
+      text: '',
+      answer: '',
       redirect_after_submit: false,
     };
 
     this.state.settings = {
       start: [9, 11],
-      min: 7,
+      min: 6,
       max: 12,
       step: 1,
       onChange: (appropriateGrades) => {
         this.setState({
-          question: {
-            ...this.state.question,
-            difficulty: {
-              ...this.state.question.difficulty,
-              appropriateGrades: appropriateGrades,
-            },
+          difficulty: {
+            ...this.state.difficulty,
+            appropriateGrades: appropriateGrades,
           },
         });
       },
@@ -111,52 +111,40 @@ class Question extends Component {
 
     this.handleTagChange = this.handleTagChange.bind(this);
     this.handleSubtagChange = this.handleSubtagChange.bind(this);
-    this.getQuestion = this.getQuestion.bind(this);
-    this.getAnswer = this.getAnswer.bind(this);
+    this.setQuestion = this.setQuestion.bind(this);
+    this.setAnswer = this.setAnswer.bind(this);
     this.handleQuestionNameChange = this.handleQuestionNameChange.bind(this);
     this.handleQuestionNameChange = this.handleQuestionNameChange.bind(this);
-    this.handleDifficultyLevelChange = this.handleDifficultyLevelChange.bind(
-      this
-    );
+    this.handleDifficultyLevelChange = this.handleDifficultyLevelChange.bind(this);
 
     setTimeout(() => {
-      this.getQuestion();
-      this.getAnswer();
+      this.setQuestion();
+      this.setAnswer();
     }, 5000);
   }
 
-  handleSubmit = () => {
-    this.props.submitQuestion(this.state.question);
-    this.setState({ redirect_after_submit: true });
-  };
+  componentDidMount() {
+    this.props.getTags();
+    this.props.getSubTags();
+    this.props.getEvents();
+    this.props.getSources();
+    if (questionId !== undefined) {
+      this.props.fetchQuestion(questionId);
+    }
+  }
 
   handleQuestionNameChange = (e) => {
-    this.setState({
-      question: {
-        ...this.state.question,
-        shortInfo: {
-          ...this.state.question.shortInfo,
-          name: e.target.value,
-        },
-      },
-    });
+    this.setState({ name: e.target.value });
   };
 
   handleDifficultyLevelChange = (e) => {
     this.setState({
-      question: {
-        ...this.state.question,
-        shortInfo: {
-          ...this.state.question.shortInfo,
-          difficultyLevel: e.target.value,
-        },
-        difficulty: {
-          ...this.state.question.difficulty,
-          difficultyLevel: e.target.value,
-        },
-      },
-    });
-  };
+      hardness: {
+        ...this.state.hardness,
+        difficultyLevel: e.target.value,
+      }
+    })
+  }
 
   findByName(subtags, name) {
     let res = -1;
@@ -172,9 +160,13 @@ class Question extends Component {
   pushNewSubtags(subtags) {
     subtags.forEach((subtag) => {
       if (this.findByName(this.state.question.subtags, subtag.name) === -1) {
-        this.state.question.subtags.push({
+        var new_subtags = this.state.subtags;
+        new_subtags.push({
           name: subtag.name,
           selected: false,
+        });
+        this.setState({
+          subtags: new_subtags,
         });
       }
     });
@@ -183,7 +175,7 @@ class Question extends Component {
   deleteNotSelectedSubtags(subtags) {
     subtags.forEach((subtag) => {
       let flag = false;
-      this.state.question.shortInfo.tags.forEach((tag) => {
+      this.state.tags.forEach((tag) => {
         if (tag.selected && this.findByName(tag.subtags, subtag.name) > -1) {
           flag = true;
         }
@@ -197,24 +189,21 @@ class Question extends Component {
 
   updateSubtags(index, selected) {
     if (selected) {
-      this.pushNewSubtags(this.state.question.shortInfo.tags[index].subtags);
+      this.pushNewSubtags(this.state.question.tags[index].subtags);
     } else {
       this.deleteNotSelectedSubtags(
-        this.state.question.shortInfo.tags[index].subtags
+        this.state.question.tags[index].subtags
       );
     }
   }
 
   handleTagChange(index, selected) {
-    this.state.question.shortInfo.tags[index].selected = selected;
+    this.state.question.tags[index].selected = selected;
     this.updateSubtags(index, selected);
     this.setState({
       question: {
         ...this.state.question,
-        shortInfo: {
-          ...this.state.question.shortInfo,
-          tags: this.state.question.shortInfo.tags,
-        },
+        tags: this.state.question.tags,
         subtags: this.state.question.subtags,
       },
     });
@@ -230,12 +219,25 @@ class Question extends Component {
     });
   }
 
-  getQuestion() {
-    alert(this.questionEl.getContent());
+  handleSubmit = () => {
+    const question = {
+      id: this.state.id,
+
+    }
+    this.props.submitQuestion(this.state.question);
+    this.setState({ redirect_after_submit: true });
+  };
+
+  setQuestion() {
+    this.setState({
+      text: this.questionEl.getContent()
+    });
   }
 
-  getAnswer() {
-    alert(this.answerEl.getContent());
+  setAnswer() {
+    this.setState({
+      anser: this.answerEl.getContent()
+    });
   }
 
   render() {
@@ -310,8 +312,8 @@ class Question extends Component {
                 <br />
                 <label>
                   پایه‌ی مناسب:
-                  <span> {this.state.appropriateGrades[0] + 'ام تا'} </span>
-                  <span> {this.state.appropriateGrades[1] + 'ام'} </span>
+                  <span> {this.state.difficulty.appropriateGrades[0] + 'ام تا'} </span>
+                  <span> {this.state.difficulty.appropriateGrades[1] + 'ام'} </span>
                   <Slider
                     labeled
                     multiple
@@ -333,7 +335,7 @@ class Question extends Component {
                     });
                   }}
                   search
-                  options={this.state.allSources}
+                  options={this.props.source} //todo:
                   className="rtl-dropdown"
                 />
                 <Dropdown
@@ -342,13 +344,21 @@ class Question extends Component {
                   multiple
                   selection
                   search
-                  options={this.state.allEvents}
+                  onAddItem={(e, { value }) => {
+                    this.setState({
+                      allSources: [
+                        { text: value, value },
+                        ...this.state.allSources,
+                      ],
+                    });
+                  }}
+                  options={this.props.events} //todo:
                   className="rtl-dropdown"
                 />
                 <Segment textAlign="center">
                   <Label attached="top">مباحث کلی سوال</Label>
                   <div>
-                    {this.state.question.shortInfo.tags.map((tag, index) => (
+                    {this.props.tags.map((tag, index) => (
                       <Tag
                         name={tag.name}
                         selectable
@@ -363,7 +373,7 @@ class Question extends Component {
                 <Segment textAlign="center">
                   <Label attached="top">مباحث ریزتر</Label>
                   <div>
-                    {/* {this.state.subtags.map((subtag, index) => (
+                    {/* {this.props.subtags.map((subtag, index) => (
                       <Tag
                         name={subtag.name}
                         selected={subtag.selected}
@@ -371,8 +381,8 @@ class Question extends Component {
                         key={index}
                         index={index}
                         selectable
-                      ></Tag>
-                    ))} */}
+                      ></Tag> */}
+                    ))}
                   </div>
                 </Segment>
               </Segment>
@@ -403,15 +413,19 @@ class Question extends Component {
 }
 
 const mapStateToProps = (state) => {
-  // const properties = { state };
-  // const { account } = state.thisAccount;
-  // const { sources, events, tags } = properties;
-  // return {
-  //   account,
-  //   sources,
-  //   events,
-  //   tags,
-  // };
+  const questions = state.question.properties;
+  const { allEvents, allSources, allTags } = questions;
+  return {
+    allEvents,
+    allSources,
+  }
 };
 
-export default connect(mapStateToProps, { submitQuestion })(Question);
+export default connect(mapStateToProps, {
+  submitQuestion,
+  fetchQuestion,
+  getTags,
+  getSubTags,
+  getEvents,
+  getSources,
+})(Question);

@@ -10,6 +10,8 @@ import {
 import { login } from '../redux/actions/account';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
+
 
 class Login extends Component {
   constructor(props) {
@@ -33,6 +35,9 @@ class Login extends Component {
   }
 
   render() {
+    if (this.props.isLoggedIn) {
+      return <Redirect push to={"/"} />;
+    }
     return (
       <Grid centered container doubling stackable>
         <Grid.Column
@@ -93,8 +98,9 @@ class Login extends Component {
   }
 }
 
-const mapStatoToProps = (state) => {
-}
+const mapStatoToProps = (state) => ({
+  isLoggedIn: state.account.isLoggedIn,
+})
 
 export default connect(mapStatoToProps, {
   login,

@@ -17,7 +17,37 @@ export const fetchQuestion = (question_id) => ({
   },
 });
 
-// TODO: save on store
+export const fetchQuestionListByPage = (page) => ({
+  [CALL_API]: {
+    types: [
+      actionTypes.QUESTION_LIST_REQUEST,
+      actionTypes.QUESTION_LIST_SUCCESS,
+      actionTypes.QUESTION_LIST_FAILURE,
+    ],
+    url: URLs.GET_QUESTIONS_LIST,
+    fetchOptions: {
+      method: 'POST',
+      body: {
+        sub_tags: [],
+        tag: -1,
+        verification_status: [],
+        publish_date_from: "2018-05-05T02:10:35.905349+04:30",
+        publish_date_until: "2021-05-05T02:10:35.905349+04:30",
+        appropriate_grades_min: 1,
+        appropriate_grades_max: 12,
+        level_min: 0,
+        level_max: 10000,
+        sources: [
+        ],
+        question_makers: [
+        ],
+        events: [],
+        page: 1
+      }
+    },
+  },
+});
+
 export const submitQuestion = (question) => ({
   [CALL_API]: {
     types: [

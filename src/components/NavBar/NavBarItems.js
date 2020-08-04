@@ -2,11 +2,23 @@ import React from 'react';
 import { Label, Menu, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
-const leftItems = () => [];
+const leftItems = (config) => {
+  const Items = [];
+  if (config.isLoggedIn) {
+    Items.push(
+      <Menu.Item name="login">
+        <Button as={Link} to="/create_question" primary>
+          ایجاد سوال
+        </Button>
+      </Menu.Item>,
+    );
+  }
+  return Items;
+};
 
 const rightItems = (config) => {
   const Items = [];
-  if (!config.loggedIn) {
+  if (!config.isLoggedIn) {
     Items.push(
       <Menu.Item name="message">
         <Label style={{ direction: 'rtl' }}>
@@ -28,11 +40,11 @@ const rightItems = (config) => {
     Items.push(
       <Menu.Item name="message">
         <Label style={{ direction: 'rtl' }}>
-          {config.user.first_name} خوش اومدی!
+          {config.username} عزیز، خوش اومدی!
         </Label>
       </Menu.Item>,
       <Menu.Item name="logout">
-        <Button as={Link} to="/" primary>
+        <Button as={Link} to="/" onClick={config.logout} primary>
           خروج
         </Button>
       </Menu.Item>,

@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
 
 import account from './account';
-import questionProperties from './questionProperties';
-import questions from './questions';
+import question from './question';
 import usersList from './usersList';
+import properties from './properties';
 
 const allReducers = combineReducers({
   account,
-  questionProperties,
-  questions,
+  question,
   usersList,
+  properties,
 });
 export default allReducers;
