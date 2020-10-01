@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import LoginPage from '../containers/Login';
 import RegistrationPage from '../containers/Registration';
 import Homepage from '../containers/HomePage';
-import QuestionView from '../containers/QuestionView';
-import Question from '../containers/Question';
+import QuestionView from '../containers/ViewQuestion';
+import Question from '../containers/MakeQuestion';
 import ProblemSet from '../containers/ProblemSet';
 import UsersRating from '../containers/UsersRating';
 import NavBar from '../components/NavBar/NavBar';
@@ -31,7 +31,7 @@ class Root extends Component {
             <Route path="/login" component={LoginPage} />
             <Route path="/registration" component={RegistrationPage} />
             <PrivateRoute path="/question/:id" component={QuestionView} />
-            <PrivateRoute path="/create_question/" component={Question} />
+            <PrivateRoute path="/make_question/" component={Question} />
             <PrivateRoute path="/edit_question/:id" component={Question} />
             <PrivateRoute path="/problemset" component={ProblemSet} />
             <PrivateRoute path="/users_rating" component={UsersRating} />

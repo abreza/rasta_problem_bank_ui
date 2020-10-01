@@ -9,13 +9,16 @@ import conf from '../config';
 export default class TinyEditorComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { editor: null };
+    this.state = {
+      editor: null
+    };
     this.config = {
       ...conf,
       id: this.props.id,
     };
 
     this.init = this.init.bind(this);
+    this.getContent = this.getContent.bind(this);
   }
 
   getContent() {

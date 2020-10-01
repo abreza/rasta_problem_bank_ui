@@ -21,7 +21,6 @@ const HomepageLayout = ({ mobile }) => (
     <Divider hidden />
     <Button
       primary
-      size="huge"
       style={{
         direction: 'rtl',
         textAlign: 'center',
@@ -34,6 +33,21 @@ const HomepageLayout = ({ mobile }) => (
       بزن بریم!
       <Icon name="left arrow" />
     </Button>
+    <Button
+      color='teal'
+      style={{
+        direction: 'rtl',
+        textAlign: 'center',
+        margin: 'auto',
+        display: 'table',
+      }}
+      as={Link}
+      to="/make_question"
+    >
+      <Icon name="right arrow" />
+      ایجاد سوال جدید
+    </Button>
+
   </Container>
 );
 

@@ -1,36 +1,47 @@
-const callApi = async (url, fetchOptions, token) => {
-  fetchOptions = {
-    ...fetchOptions,
-    headers: {
-      ...fetchOptions.headers,
-      'Content-Type': 'application/json',
-      Authorization: 'Token 1751ee67d0a62ce704ea3a1b5901cb2feebf80ab',
-      // 1751ee67d0a62ce704ea3a1b5901cb2feebf80ab
-      // 62b51b4cd0622e00ae6994a51eb47a641409b46a
-    },
-  }
+import * as actionTypes from '../../actions/actionTypes';
 
+const callApi = async (url, fetchOptions) => {
   fetchOptions = {
     ...fetchOptions,
     body: JSON.stringify(fetchOptions.body),
   }
-
-  console.log(fetchOptions);
   const response = await fetch(url, fetchOptions);
-  console.log(response);
-  return await response.json();
+  if (response.status === 500) {
+    throw new Error('ایراد سروری رخ داده‌است! ما رو مطلع کنید.');
+  }
+
+  if (response.status === 404) {
+    throw new Error('صفحه مورد نظر یافت نشد!');
+  }
+  const json_response = await response.json();
+  if (!response.ok) {
+    if (
+      response.status === 401 &&
+      json_response.code &&
+      json_response.code === 'token_not_valid'
+    ) {
+      throw new Error('TOKEN_EXPIRED');
+    }
+    if (json_response.error) {
+      throw new Error(json_response.error);
+    } else if (json_response.detail) {
+      throw new Error(json_response.detail);
+    } else if (json_response.message) {
+      throw new Error(json_response.message);
+    } else {
+      throw new Error(response.text);
+    }
+  }
+  return json_response;
 };
 
 export const CALL_API = 'Call API';
 
-export default (store) => (next) => async (action) => {
+export default ({ getState }) => (next) => async (action) => {
   const callAPI = action[CALL_API];
   if (typeof callAPI === 'undefined') {
     return next(action);
   }
-
-  let { url, fetchOptions, payload1 } = callAPI;
-  const { types } = callAPI;
 
   const actionWith = (data) => {
     const finalAction = Object.assign({}, action, data);
@@ -38,27 +49,46 @@ export default (store) => (next) => async (action) => {
     return finalAction;
   };
 
+  let { fetchOptions } = callAPI;
+  const { url, types, payload } = callAPI;
   const [requestType, successType, failureType] = types;
-  next(actionWith({
-    type: requestType,
-    payload: payload1,
-  }));
+  next(actionWith({ payload, type: requestType }));
 
   try {
-    const { account } = store.getState();
-    const { token } = account;
-    const response = await callApi(url, fetchOptions, token);
+    if (!fetchOptions.dontContentType) {
+      fetchOptions.headers = {
+        'Content-Type': 'application/json',
+        ...fetchOptions.headers,
+      };
+    }
+    const account = getState().account;
+    if (!!account && !!account.token) {
+      fetchOptions.headers = {
+        ...fetchOptions.headers,
+        Authorization: 'token ' + account.token,
+      };
+    }
+    const response = await callApi(url, fetchOptions);
     return next(
       actionWith({
+        payload,
         response,
         type: successType,
       })
     );
   } catch (error) {
+    if (error.message === 'TOKEN_EXPIRED') {
+      return next(
+        actionWith({
+          type: actionTypes.LOGOUT_REQUEST,
+          error: error.message || 'Something bad happened!',
+        })
+      );
+    }
     return next(
       actionWith({
         type: failureType,
-        error: error.message || 'Something bad happened',
+        error: error.message || 'Something bad happened!',
       })
     );
   }

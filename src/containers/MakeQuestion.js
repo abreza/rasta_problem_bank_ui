@@ -109,11 +109,10 @@ class Question extends Component {
       },
     };
 
+    this.setAnswer = this.setAnswer.bind(this);
+    this.setQuestion = this.setQuestion.bind(this);
     this.handleTagChange = this.handleTagChange.bind(this);
     this.handleSubtagChange = this.handleSubtagChange.bind(this);
-    this.setQuestion = this.setQuestion.bind(this);
-    this.setAnswer = this.setAnswer.bind(this);
-    this.handleQuestionNameChange = this.handleQuestionNameChange.bind(this);
     this.handleQuestionNameChange = this.handleQuestionNameChange.bind(this);
     this.handleDifficultyLevelChange = this.handleDifficultyLevelChange.bind(this);
 
@@ -278,7 +277,7 @@ class Question extends Component {
                 <Editor
                   ref={(questionEl) => (this.questionEl = questionEl)}
                   id="QuestionTextArea"
-                  initContent="<p>salam</p><p style='text-align: center'><span class='tiny-math' data-latex='\sum'></span></p>"
+                  initContent="<p>salam</p>"
                 />
                 <Header content={'پاسخ'} as="h3" textAlign="center" />
                 <Editor
@@ -312,8 +311,8 @@ class Question extends Component {
                 <br />
                 <label>
                   پایه‌ی مناسب:
-                  <span> {this.state.difficulty.appropriateGrades[0] + 'ام تا'} </span>
-                  <span> {this.state.difficulty.appropriateGrades[1] + 'ام'} </span>
+                  {/* <span> {this.state.difficulty.appropriateGrades[0] + 'ام تا'} </span>
+                  <span> {this.state.difficulty.appropriateGrades[1] + 'ام'} </span> */}
                   <Slider
                     labeled
                     multiple
@@ -413,19 +412,22 @@ class Question extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const questions = state.question.properties;
-  const { allEvents, allSources, allTags } = questions;
+  const { events, sources, tags, subTags } = state.properties;
   return {
-    allEvents,
-    allSources,
+    events,
+    sources,
+    tags,
+    subTags,
   }
 };
 
-export default connect(mapStateToProps, {
-  submitQuestion,
-  fetchQuestion,
-  getTags,
-  getSubTags,
-  getEvents,
-  getSources,
-})(Question);
+export default connect(
+  mapStateToProps,
+  {
+    submitQuestion,
+    fetchQuestion,
+    getTags,
+    getSubTags,
+    getEvents,
+    getSources,
+  })(Question);
