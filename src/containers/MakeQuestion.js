@@ -277,13 +277,11 @@ class Question extends Component {
                 <Editor
                   ref={(questionEl) => (this.questionEl = questionEl)}
                   id="QuestionTextArea"
-                  initContent="<p>salam</p>"
                 />
                 <Header content={'پاسخ'} as="h3" textAlign="center" />
                 <Editor
                   ref={(answerEl) => (this.answerEl = answerEl)}
                   id="AnswerTextArea"
-                  initContent="<p>khubi?</p>"
                 />
               </Segment>
             </Grid.Column>
