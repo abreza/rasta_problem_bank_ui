@@ -9,7 +9,7 @@ export default class Tag extends Component {
 
   toggleSelected() {
     if (this.props.onChange) {
-      this.props.onChange(this.props.index, !this.props.selected);
+      this.props.onChange(this.props.id, !this.props.selected);
     }
   }
 

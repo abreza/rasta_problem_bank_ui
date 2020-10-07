@@ -23,7 +23,7 @@ import '../styles/Question.css';
 import { connect } from 'react-redux';
 import {
   getTags,
-  getSubTags,
+  getSubtags,
   getEvents,
   getSources,
 } from '../redux/actions/properties'
@@ -61,7 +61,6 @@ class Problem extends Component {
         },
       }
     };
-
     this.setSolution = this.setSolution.bind(this);
     this.setProblem = this.setProblem.bind(this);
     this.handleTagChange = this.handleTagChange.bind(this);
@@ -70,9 +69,9 @@ class Problem extends Component {
   }
 
   componentDidMount() {
-    const { getTags, getSubTags, getSources, getEvents } = this.props;
+    const { getTags, getSubtags, getSources, getEvents } = this.props;
     getTags();
-    getSubTags();
+    getSubtags();
     getEvents();
     getSources();
   }
@@ -86,80 +85,37 @@ class Problem extends Component {
     })
   }
 
-  findByName(subtags, name) {
-    let res = -1;
-    subtags.forEach((subtag, index) => {
-      if (subtag.name === name) {
-        res = index;
-        return;
+  handleTagChange(id, selected) {
+    this.setState({
+      selectedTags: {
+        ...this.state.selectedTags,
+        [id]: selected,
       }
-    });
-    return res;
-  }
-
-  pushNewSubtags(subtags) {
-    subtags.forEach((subtag) => {
-      if (this.findByName(this.state.subtags, subtag.name) === -1) {
-        var new_subtags = this.state.subtags;
-        new_subtags.push({
-          name: subtag.name,
-          selected: false,
-        });
-        this.setState({
-          subtags: new_subtags,
-        });
-      }
-    });
-  }
-
-  deleteNotSelectedSubtags(subtags) {
-    subtags.forEach((subtag) => {
-      let flag = false;
-      this.state.tags.forEach((tag) => {
-        if (tag.selected && this.findByName(tag.subtags, subtag.name) > -1) {
-          flag = true;
+    })
+    const newSelectedSubtags = this.state.selectedSubtags;
+    if (!selected) {
+      for (let i = 0; i < this.props.subtags.length; i++) {
+        let subtag = this.props.subtags[i];
+        if (subtag.parent == id) {
+          newSelectedSubtags[subtag.parent + ' ' + subtag.id] = false;
         }
-      });
-      if (!flag) {
-        let index = this.findByName(this.state.question.subtags, subtag.name);
-        delete this.state.question.subtags[index];
       }
-    });
-  }
-
-  updateSubtags(index, selected) {
-    if (selected) {
-      this.pushNewSubtags(this.state.question.tags[index].subtags);
-    } else {
-      this.deleteNotSelectedSubtags(
-        this.state.question.tags[index].subtags
-      );
+      this.setState({
+        selectedSubtags: newSelectedSubtags,
+      })
     }
   }
 
-  handleTagChange(index, selected) {
-    this.state.question.tags[index].selected = selected;
-    this.updateSubtags(index, selected);
+  handleSubtagChange(id, selected) {
     this.setState({
-      question: {
-        ...this.state.question,
-        tags: this.state.question.tags,
-        subtags: this.state.question.subtags,
+      selectedSubtags: {
+        ...this.state.selectedSubtags,
+        [id]: selected,
       },
     });
   }
 
-  handleSubtagChange(index, selected) {
-    this.state.question.subtags[index].selected = selected;
-    this.setState({
-      question: {
-        ...this.state.question,
-        subtags: this.state.question.subtags,
-      },
-    });
-  }
-
-  handleSubmit = () => {
+  handleSubmit = () => { //todo
     // this.props.submitQuestion(this.state.question);
     // this.setState({ redirect_after_submit: true });
   };
@@ -182,7 +138,7 @@ class Problem extends Component {
     if (redirect_after_submit) {
       return <Redirect push to={'/problemset/page/' + this.state.activePage} />; //todo:
     }
-    console.log(this.props.tags)
+
     return (
       <Container style={{ paddingTop: '10px', paddingBottom: '10px' }}>
         <Grid centered stackable>
@@ -307,13 +263,13 @@ class Problem extends Component {
                 <Segment textAlign="center">
                   <Label attached="top">مباحث کلی سوال</Label>
                   <div>
-                    {this.props.tags.map((tag, index) => (
+                    {this.props.tags.map((tag) => (
                       <Tag
                         name={tag.name}
                         selectable
                         key={tag.id}
-                        index={index}
-                        selected={tag.selected}
+                        id={tag.id}
+                        selected={this.state.selectedTags[tag.id]}
                         onChange={this.handleTagChange}
                       />
                     ))}
@@ -322,16 +278,20 @@ class Problem extends Component {
                 <Segment textAlign="center">
                   <Label attached="top">مباحث ریزتر</Label>
                   <div>
-                    {this.props.subtags.map((subtag, index) => (
-                      <Tag
-                        name={subtag.name}
-                        selectable
-                        key={subtag.id}
-                        index={index}
-                        selected={subtag.selected}
-                        onChange={this.handleSubtagChange}
-                      />
-                    ))}
+                    {this.props.subtags.map((subtag) => {
+                      if (this.state.selectedTags[subtag.parent]) {
+                        return (
+                          <Tag
+                            name={subtag.name}
+                            selectable
+                            key={subtag.id}
+                            id={subtag.parent + ' ' + subtag.id}
+                            selected={this.state.selectedSubtags[subtag.parent + ' ' + subtag.id]}
+                            onChange={this.handleSubtagChange}
+                          />
+                        )
+                      }
+                    })}
                   </div>
                 </Segment>
               </Segment>
@@ -362,14 +322,13 @@ class Problem extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { events, sources, tags, subTags } = state.properties;
+  const { events, sources, tags, subtags } = state.properties;
   const { isProblemNew } = ownProps;
-  console.log(ownProps)
   return {
     events,
     sources,
     tags,
-    subTags,
+    subtags,
     isProblemNew,
   }
 };
@@ -380,7 +339,7 @@ export default connect(
     submitQuestion,
     fetchQuestion,
     getTags,
-    getSubTags,
+    getSubtags,
     getEvents,
     getSources,
   })(Problem);

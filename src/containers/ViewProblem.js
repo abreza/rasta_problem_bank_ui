@@ -17,7 +17,7 @@ import {
 } from '../redux/actions/question'
 import {
   getTags,
-  getSubTags,
+  getSubtags,
   getEvents,
   getSources,
 } from '../redux/actions/properties'
@@ -188,7 +188,7 @@ export default connect(
   {
     fetchQuestion,
     getTags,
-    getSubTags,
+    getSubtags,
     getEvents,
     getSources,
   })(QuestionView);
