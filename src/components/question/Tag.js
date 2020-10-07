@@ -4,10 +4,10 @@ import { Label } from 'semantic-ui-react';
 export default class Tag extends Component {
   constructor(props) {
     super(props);
-    this.toggleSlected = this.toggleSlected.bind(this);
+    this.toggleSelected = this.toggleSelected.bind(this);
   }
 
-  toggleSlected() {
+  toggleSelected() {
     if (this.props.onChange) {
       this.props.onChange(this.props.index, !this.props.selected);
     }
@@ -26,7 +26,7 @@ export default class Tag extends Component {
                 : 'selectable-tag'
               : ''
           }
-          onClick={this.props.selectable ? this.toggleSlected : () => { }}
+          onClick={this.props.selectable ? this.toggleSelected : () => { }}
         >
           {this.props.name}
         </Label>

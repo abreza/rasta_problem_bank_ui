@@ -182,7 +182,7 @@ class Problem extends Component {
     if (redirect_after_submit) {
       return <Redirect push to={'/problemset/page/' + this.state.activePage} />; //todo:
     }
-    console.log(this.state.difficulty.level)
+    console.log(this.props.tags)
     return (
       <Container style={{ paddingTop: '10px', paddingBottom: '10px' }}>
         <Grid centered stackable>
@@ -311,26 +311,26 @@ class Problem extends Component {
                       <Tag
                         name={tag.name}
                         selectable
-                        key={index}
+                        key={tag.id}
                         index={index}
                         selected={tag.selected}
                         onChange={this.handleTagChange}
-                      ></Tag>
+                      />
                     ))}
                   </div>
                 </Segment>
                 <Segment textAlign="center">
                   <Label attached="top">مباحث ریزتر</Label>
                   <div>
-                    {/* {this.props.subtags.map((subtag, index) => (
+                    {this.props.subtags.map((subtag, index) => (
                       <Tag
                         name={subtag.name}
+                        selectable
+                        key={subtag.id}
+                        index={index}
                         selected={subtag.selected}
                         onChange={this.handleSubtagChange}
-                        key={index}
-                        index={index}
-                        selectable
-                      ></Tag> */}
+                      />
                     ))}
                   </div>
                 </Segment>
