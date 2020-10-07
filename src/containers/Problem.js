@@ -28,119 +28,60 @@ import {
   getSources,
 } from '../redux/actions/properties'
 
-const sources = [
-  { key: '0', text: 'المپیاد ملی روسیه ۲۰۱۹', value: '0' },
-  { key: '1', text: 'المپیاد ملی روسیه ۲۰۱۰', value: '1' },
-  { key: '2', text: 'المپیاد ملی رومانی ۲۰۱۹', value: '2' },
-];
 
-const events = [
-  { key: '0', text: 'عباس‌آباد', value: '0' },
-  { key: '1', text: 'بوشهر', value: '1' },
-  { key: '2', text: 'سراوان', value: '2' },
-  { key: '3', text: 'کابار', value: '3' },
-];
-
-const tags = [
-  {
-    name: 'ترکیبیات',
-    subtags: [
-      {
-        name: 'هندسه ترکیبیاتی',
-      },
-      {
-        name: 'لانه کبوتری',
-      },
-      {
-        name: 'استقرا',
-      },
-    ],
-  },
-  {
-    name: 'هندسه',
-    subtags: [
-      {
-        name: 'مسطحه',
-      },
-      {
-        name: 'هندسه ترکیبیاتی',
-      },
-    ],
-  },
-];
-
-
-const questionId = window.location.pathname.split('/')[2];
-let nextQuestionID = 0;
-
-class Question extends Component {
+class Problem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: ++nextQuestionID,
       name: '',
-      tags: [], //TODO: should change with this.props.allTags
-      subtags: [],
-      verification_status: 'W',
-      hardness: {
+      selectedTags: [],
+      selectedSubtags: [],
+      verificationStatus: 'W',
+      difficulty: {
         level: 5,
-        appropriate_grades_min: 9,
-        appropriate_grades_max: 12,
+        appropriateGrades: [9, 12],
       },
-      events: [],
-      source: '',
-      text: '',
-      answer: '',
-      redirect_after_submit: false,
+      selectedEvents: [],
+      selectedSource: '',
+      problem: '',
+      solution: '',
+      redirectAfterSubmit: false,
+      settings: {
+        start: [9, 11],
+        min: 1,
+        max: 12,
+        step: 1,
+        onChange: (appropriateGrades) => {
+          this.setState({
+            difficulty: {
+              ...this.state.difficulty,
+              appropriateGrades: appropriateGrades,
+            },
+          });
+        },
+      }
     };
 
-    this.state.settings = {
-      start: [9, 11],
-      min: 6,
-      max: 12,
-      step: 1,
-      onChange: (appropriateGrades) => {
-        this.setState({
-          difficulty: {
-            ...this.state.difficulty,
-            appropriateGrades: appropriateGrades,
-          },
-        });
-      },
-    };
-
-    this.setAnswer = this.setAnswer.bind(this);
-    this.setQuestion = this.setQuestion.bind(this);
+    this.setSolution = this.setSolution.bind(this);
+    this.setProblem = this.setProblem.bind(this);
     this.handleTagChange = this.handleTagChange.bind(this);
     this.handleSubtagChange = this.handleSubtagChange.bind(this);
-    this.handleQuestionNameChange = this.handleQuestionNameChange.bind(this);
     this.handleDifficultyLevelChange = this.handleDifficultyLevelChange.bind(this);
-
-    setTimeout(() => {
-      this.setQuestion();
-      this.setAnswer();
-    }, 5000);
   }
 
   componentDidMount() {
-    this.props.getTags();
-    this.props.getSubTags();
-    this.props.getEvents();
-    this.props.getSources();
-    if (questionId !== undefined) {
-      this.props.fetchQuestion(questionId);
-    }
+    const { getTags, getSubTags, getSources, getEvents } = this.props;
+    getTags();
+    getSubTags();
+    getEvents();
+    getSources();
   }
 
-  handleQuestionNameChange = (e) => {
-    this.setState({ name: e.target.value });
-  };
-
-  handleDifficultyLevelChange = (e) => {
+  handleDifficultyLevelChange = (event) => {
     this.setState({
-      hardness: {
-        ...this.state.hardness,
-        difficultyLevel: e.target.value,
+      difficulty: {
+        ...this.state.difficulty,
+        level: event.target.value,
       }
     })
   }
@@ -158,7 +99,7 @@ class Question extends Component {
 
   pushNewSubtags(subtags) {
     subtags.forEach((subtag) => {
-      if (this.findByName(this.state.question.subtags, subtag.name) === -1) {
+      if (this.findByName(this.state.subtags, subtag.name) === -1) {
         var new_subtags = this.state.subtags;
         new_subtags.push({
           name: subtag.name,
@@ -219,31 +160,29 @@ class Question extends Component {
   }
 
   handleSubmit = () => {
-    const question = {
-      id: this.state.id,
-
-    }
-    this.props.submitQuestion(this.state.question);
-    this.setState({ redirect_after_submit: true });
+    // this.props.submitQuestion(this.state.question);
+    // this.setState({ redirect_after_submit: true });
   };
 
-  setQuestion() {
+  setProblem() {
     this.setState({
-      text: this.questionEl.getContent()
+      problem: this.problem.getContent()
     });
   }
 
-  setAnswer() {
+  setSolution() {
     this.setState({
-      anser: this.answerEl.getContent()
+      solution: this.solution.getContent()
     });
   }
 
   render() {
-    if (this.state.redirect_after_submit) {
-      return <Redirect push to={'/problemset/page/' + this.state.activePage} />;
+    const { redirect_after_submit, } = this.state;
+    const { isProblemNew, } = this.props;
+    if (redirect_after_submit) {
+      return <Redirect push to={'/problemset/page/' + this.state.activePage} />; //todo:
     }
-
+    console.log(this.state.difficulty.level)
     return (
       <Container style={{ paddingTop: '10px', paddingBottom: '10px' }}>
         <Grid centered stackable>
@@ -251,7 +190,7 @@ class Question extends Component {
             <Grid.Column width={5}></Grid.Column>
             <Grid.Column width={5}>
               <Header as="h1" textAlign="center">
-                مسئله جدید
+                {isProblemNew ? 'مسئله‌ی جدید' : 'ویرایش مسئله'}
               </Header>
             </Grid.Column>
             <Grid.Column
@@ -261,26 +200,27 @@ class Question extends Component {
             >
               <Button
                 icon
-                labelPosition="left"
+                labelPosition="right"
                 positive
                 onClick={this.handleSubmit}
               >
                 <Icon name="save" />
-                ذخیره
+                {isProblemNew ? 'ذخیره' : 'اعمال تغیرات'}
               </Button>
             </Grid.Column>
           </Grid.Row>
+
           <Grid.Row columns={2} style={{ direction: 'rtl' }}>
             <Grid.Column width={11}>
               <Segment>
                 <Header content={'صورت مسئله'} as="h3" textAlign="center" />
                 <Editor
-                  ref={(questionEl) => (this.questionEl = questionEl)}
+                  ref={(problem) => (this.problem = problem)}
                   id="QuestionTextArea"
                 />
                 <Header content={'پاسخ'} as="h3" textAlign="center" />
                 <Editor
-                  ref={(answerEl) => (this.answerEl = answerEl)}
+                  ref={(solution) => (this.solution = solution)}
                   id="AnswerTextArea"
                 />
               </Segment>
@@ -295,7 +235,7 @@ class Question extends Component {
                 <Input
                   placeholder="نام مسئله"
                   className="rtl"
-                  onChange={(e) => this.updateInput(e.target.value)}
+                  onChange={(e) => this.setState({ name: e.value })}
                   value={this.state.input}
                 />
                 <Input
@@ -304,13 +244,16 @@ class Question extends Component {
                   max="10"
                   min="0"
                   className="rtl hardness"
+                  onChange={this.handleDifficultyLevelChange}
                 />
                 <br />
                 <br />
                 <label>
                   پایه‌ی مناسب:
-                  {/* <span> {this.state.difficulty.appropriateGrades[0] + 'ام تا'} </span>
-                  <span> {this.state.difficulty.appropriateGrades[1] + 'ام'} </span> */}
+                  <span>
+                    {this.state.difficulty.appropriateGrades[0] + 'ام تا'}
+                    {this.state.difficulty.appropriateGrades[1] + 'ام'}
+                  </span>
                   <Slider
                     labeled
                     multiple
@@ -322,34 +265,43 @@ class Question extends Component {
                   placeholder="منبع"
                   fluid
                   selection
-                  allowAdditions
-                  onAddItem={(e, { value }) => {
+                  search
+                  onChange={(event, { value }) => {
                     this.setState({
-                      allSources: [
-                        { text: value, value },
-                        ...this.state.allSources,
-                      ],
+                      selectedSource: value
                     });
                   }}
-                  search
-                  options={this.props.source} //todo:
+                  options={
+                    this.props.sources.map(
+                      source => ({
+                        key: source.name,
+                        text: source.name,
+                        value: source.id,
+                      })
+                    )
+                  }
                   className="rtl-dropdown"
                 />
                 <Dropdown
-                  placeholder="رویداد"
+                  placeholder="رویدادها"
                   fluid
                   multiple
                   selection
                   search
-                  onAddItem={(e, { value }) => {
+                  onChange={(event, { value }) => {
                     this.setState({
-                      allSources: [
-                        { text: value, value },
-                        ...this.state.allSources,
-                      ],
+                      selectedEvents: value,
                     });
                   }}
-                  options={this.props.events} //todo:
+                  options={
+                    this.props.events.map(
+                      event => ({
+                        key: event.name,
+                        text: event.name,
+                        value: event.id,
+                      })
+                    )
+                  }
                   className="rtl-dropdown"
                 />
                 <Segment textAlign="center">
@@ -393,13 +345,13 @@ class Question extends Component {
             >
               <Button
                 icon
-                labelPosition="left"
+                labelPosition="right"
                 positive
                 className="mobile-save-btn"
                 onClick={this.handleSubmit}
               >
                 <Icon name="save" />
-                ذخیره
+                {isProblemNew ? 'ذخیره' : 'اعمال تغیرات'}
               </Button>
             </Grid.Column>
           </Grid.Row>
@@ -409,13 +361,16 @@ class Question extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   const { events, sources, tags, subTags } = state.properties;
+  const { isProblemNew } = ownProps;
+  console.log(ownProps)
   return {
     events,
     sources,
     tags,
     subTags,
+    isProblemNew,
   }
 };
 
@@ -428,4 +383,4 @@ export default connect(
     getSubTags,
     getEvents,
     getSources,
-  })(Question);
+  })(Problem);

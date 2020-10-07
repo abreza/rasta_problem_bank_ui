@@ -22,7 +22,6 @@ export const getTags = () => (
   getState
 ) => {
   const tags = getState().properties.tags;
-  console.log(tags);
   if (tags.length === 0) {
     return dispatch(fetchTags());
   }
@@ -46,7 +45,6 @@ export const getSubTags = () => (
   dispatch,
   getState
 ) => {
-  console.log("WWWWWWWWW")
   const subTags = getState().properties.subTags;
   if (subTags.length === 0) {
     return dispatch(fetchSubTags());

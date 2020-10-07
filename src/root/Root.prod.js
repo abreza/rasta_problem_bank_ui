@@ -5,7 +5,7 @@ import LoginPage from '../containers/Login';
 import RegistrationPage from '../containers/Registration';
 import Homepage from '../containers/Homepage';
 import QuestionView from '../containers/QuestionView';
-import Question from '../containers/Question';
+import Question from '../containers/Problem';
 import AccountsRating from '../containers/AccountsRating';
 import ProblemSet from '../containers/ProblemSet';
 

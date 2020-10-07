@@ -42,7 +42,7 @@ const HomepageLayout = ({ mobile }) => (
         display: 'table',
       }}
       as={Link}
-      to="/make_question"
+      to="/make_problem"
     >
       <Icon name="right arrow" />
       ایجاد سوال جدید
