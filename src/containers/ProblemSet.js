@@ -132,20 +132,15 @@ class ProblemSet extends Component {
                       < Table.Cell textAlign='right' >
                         {
                           this.props.tags.filter(tag => {
-                            for (let i = 0; i < tags.length; i++) {
-                              if (tags[i] == tag.id) {
-                                return true
-                              }
+                            if (tags.includes(tag.id)) {
+                              return true
                             }
                           }).map((tag) => (
                             <Tag
-                              selectable //todo
-                              selected={true}
                               size={'small'}
                               name={tag.name}
                               key={tag.id}
                             />
-
                           ))
                         }
                       </Table.Cell>
