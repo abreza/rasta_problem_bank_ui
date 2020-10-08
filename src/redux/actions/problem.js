@@ -3,28 +3,28 @@ import * as URLs from './URLs';
 
 import { CALL_API } from '../middleware/api/api';
 
-export const fetchQuestion = (question_id) => ({
+export const fetchProblem = (problemId) => ({
   [CALL_API]: {
     types: [
-      actionTypes.QUESTION_REQUEST,
-      actionTypes.QUESTION_SUCCESS,
-      actionTypes.QUESTION_FAILURE,
+      actionTypes.PROBLEM_REQUEST,
+      actionTypes.PROBLEM_SUCCESS,
+      actionTypes.PROBLEM_FAILURE,
     ],
-    url: URLs.GET_QUESTION + question_id,
+    url: URLs.GET_PROBLEM + problemId,
     fetchOptions: {
       method: 'GET',
     },
   },
 });
 
-export const fetchQuestionListByPage = (page) => ({
+export const fetchProblemsListByPage = (page) => ({
   [CALL_API]: {
     types: [
-      actionTypes.QUESTION_LIST_REQUEST,
-      actionTypes.QUESTION_LIST_SUCCESS,
-      actionTypes.QUESTION_LIST_FAILURE,
+      actionTypes.PROBLEM_LIST_REQUEST,
+      actionTypes.PROBLEM_LIST_SUCCESS,
+      actionTypes.PROBLEM_LIST_FAILURE,
     ],
-    url: URLs.GET_QUESTIONS_LIST,
+    url: URLs.GET_PROBLEMS_LIST,
     fetchOptions: {
       method: 'POST',
       body: {
@@ -48,17 +48,17 @@ export const fetchQuestionListByPage = (page) => ({
   },
 });
 
-export const submitQuestion = (question) => ({
+export const submitProblem = (problem) => ({
   [CALL_API]: {
     types: [
-      actionTypes.QUESTION_SUBMIT_REQUEST,
-      actionTypes.QUESTION_SUBMIT_SUCCESS,
-      actionTypes.QUESTION_SUBMIT_FAILURE,
+      actionTypes.PROBLEM_SUBMIT_REQUEST,
+      actionTypes.PROBLEM_SUBMIT_SUCCESS,
+      actionTypes.PROBLEM_SUBMIT_FAILURE,
     ],
-    url: URLs.SUBMIT_QUESTION,
+    url: URLs.SUBMIT_PROBLEM,
     fetchOptions: {
       method: 'POST',
-      body: question,
+      body: problem,
     },
   },
 });

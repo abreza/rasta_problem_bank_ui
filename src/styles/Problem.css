@@ -10,8 +10,8 @@
   width: 100%;
 }
 
-#QuestionTextArea,
-#AnswerTextArea {
+#ProblemTextArea,
+#SolutionTextArea {
   display: none;
 }
 

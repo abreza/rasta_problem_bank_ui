@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import LoginPage from '../containers/Login';
 import RegistrationPage from '../containers/Registration';
 import Homepage from '../containers/HomePage';
-import QuestionView from '../containers/ViewProblem';
-import Question from '../containers/Problem';
+import ViewProblem from '../containers/ViewProblem';
+import Problem from '../containers/Problem';
 import ProblemSet from '../containers/ProblemSet';
 import UsersRating from '../containers/UsersRating';
 import NavBar from '../components/NavBar/NavBar';
@@ -20,7 +20,7 @@ import { logout } from '../redux/actions/account'
 
 const NewProblem = () => {
   return (
-    <Question isProblemNew={true} />
+    <Problem isProblemNew={true} />
   )
 }
 
@@ -38,9 +38,9 @@ class Root extends Component {
           <Switch>
             <Route path="/login" component={LoginPage} />
             <Route path="/registration" component={RegistrationPage} />
-            <PrivateRoute path="/problem/:id" component={QuestionView} isProblemNew />
+            <Route path="/problem/:id" component={ViewProblem} isProblemNew />
             <PrivateRoute path="/make_problem/" component={NewProblem} />
-            <PrivateRoute path="/edit_problem/:id" component={Question} />
+            <PrivateRoute path="/edit_problem/:id" component={Problem} />
             <PrivateRoute path="/problemset" component={ProblemSet} />
             <PrivateRoute path="/users_rating" component={UsersRating} />
             <Route path="/" component={Homepage} />

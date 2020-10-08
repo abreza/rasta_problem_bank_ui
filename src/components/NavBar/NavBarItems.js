@@ -7,7 +7,7 @@ const leftItems = (config) => {
   if (config.isLoggedIn) {
     Items.push(
       <Menu.Item name="login">
-        <Button as={Link} to="/create_question" primary>
+        <Button as={Link} to="/make_problem" primary>
           ایجاد سوال
         </Button>
       </Menu.Item>,

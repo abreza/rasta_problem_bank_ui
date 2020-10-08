@@ -8,19 +8,21 @@ import {
   Label,
   List,
 } from 'semantic-ui-react';
-import Difficulty from '../components/question/Difficulty';
-import Tag from '../components/question/Tag';
+import Difficulty from '../components/problem/Difficulty';
+import Tag from '../components/problem/Tag';
 import { connect } from 'react-redux';
 import TinyPreview from '../components/editor/tiny_editor/react_tiny/Preview';
 import {
-  fetchQuestion,
-} from '../redux/actions/question'
+  fetchProblem,
+  fetchProblemsListByPage, //todo remove
+} from '../redux/actions/problem'
 import {
   getTags,
   getSubtags,
   getEvents,
   getSources,
 } from '../redux/actions/properties'
+import { sync } from 'glob';
 
 
 function getAttribute(object, attribute) {
@@ -60,12 +62,13 @@ function getBulletList(indexes, set) {
   return allLabes;
 }
 
-const questionId = window.location.pathname.split('/')[2];
+const problemId = parseInt(window.location.pathname.split('/')[2]);
 
-class QuestionView extends Component {
+class ViewProblem extends Component {
 
   componentDidMount() {
-    this.props.fetchQuestion(questionId);
+    this.props.fetchProblemsListByPage(1)
+    this.props.fetchProblem(problemId);
     this.props.getTags();
     this.props.getSubTags();
     this.props.getEvents();
@@ -73,18 +76,14 @@ class QuestionView extends Component {
   }
 
   render() {
-    var question;
-    for (var i in this.props.questions) {
-      if (this.props.questions[i].id == questionId) {
-        question = this.props.questions[i];
-      }
-    }
+    console.log(this.props.problems)
+    var problem = this.props.problems[problemId];
     return (
       <Grid centered container stackable doubling style={{ direction: 'rtl' }}>
         <Grid.Row centered relaxed>
           <Grid.Column>
             <Header as="h1" textAlign="center">
-              {getAttribute(question, 'name') ? '«' + getAttribute(question, 'name') + '»' : null}
+              {problem.name ? '«' + problem.name + '»' : null}
             </Header>
           </Grid.Column>
         </Grid.Row>
@@ -107,7 +106,7 @@ class QuestionView extends Component {
                     scrolling: 'no',
                     width: '100%',
                   }}
-                  content={getAttribute(question, 'text') ? getAttribute(question, 'text') : ''}
+                  content={getAttribute(problem, 'text') ? getAttribute(problem, 'text') : ''}
                 />
               </Container>
             </Segment>
@@ -126,7 +125,7 @@ class QuestionView extends Component {
                     scrolling: 'no',
                     width: '100%',
                   }}
-                  content={getAttribute(question, 'answer') ? getAttribute(question, 'answer') : ''}
+                  content={getAttribute(problem, 'answer') ? getAttribute(problem, 'answer') : ''}
                 />
               </Container>
             </Segment>
@@ -146,26 +145,26 @@ class QuestionView extends Component {
                 {' شناسنامه'}
               </Label>
               <Difficulty
-                difficulty={Object(getAttribute(question, 'hardness'))}
+                difficulty={Object(getAttribute(problem, 'hardness'))}
               ></Difficulty>
               <Segment>
                 <Label attached="top">مباحث کلی سوال</Label>
-                {getTagLabels([getAttribute(question, 'tags')], this.props.tags)}
+                {getTagLabels([getAttribute(problem, 'tags')], this.props.tags)}
               </Segment>
               <Segment>
                 <Label attached="top">مباحث ریزتر</Label>
-                {getTagLabels([getAttribute(question, 'sub_tags')], this.props.subTags)}
+                {getTagLabels([getAttribute(problem, 'sub_tags')], this.props.subTags)}
               </Segment>
               <Segment>
                 <Label attached="top">منبع</Label>
                 <div>
-                  {getAttribute(this.props.sources[getAttribute(question, 'source') - 1], 'name')}
+                  {getAttribute(this.props.sources[getAttribute(problem, 'source') - 1], 'name')}
                 </div>
               </Segment>
 
               <Segment>
                 <Label attached="top">رویداد‌های به کار رفته!</Label>
-                {getBulletList([getAttribute(question, 'source')], this.props.events)}
+                {getBulletList([getAttribute(problem, 'source')], this.props.events)}
               </Segment>
             </Segment>
           </Grid.Column>
@@ -176,7 +175,7 @@ class QuestionView extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  questions: state.question.questions,
+  problems: state.problem.problems,
   tags: state.properties.tags,
   subTags: state.properties.subTags,
   events: state.properties.events,
@@ -186,9 +185,10 @@ const mapStateToProps = (state) => ({
 export default connect(
   mapStateToProps,
   {
-    fetchQuestion,
+    fetchProblem,
+    fetchProblemsListByPage, //todo remove
     getTags,
     getSubtags,
     getEvents,
     getSources,
-  })(QuestionView);
+  })(ViewProblem);

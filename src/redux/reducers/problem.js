@@ -1,24 +1,24 @@
 import * as actionTypes from '../actions/actionTypes';
 
-function question(state = {}, action) {
+function problem(state = {}, action) {
   switch (action.type) {
-    case actionTypes.QUESTION_REQUEST:
+    case actionTypes.PROBLEM_REQUEST:
       return {
         ...state,
         isFetching: true,
       }
 
-    case actionTypes.QUESTION_SUCCESS:
+    case actionTypes.PROBLEM_SUCCESS:
       return {
         ...state,
-        questions: {
-          ...state.questions,
+        problems: {
+          ...state.problems,
           [action.response.id]: action.response,
         },
         isFetching: false,
       };
 
-    case actionTypes.QUESTION_FAILURE:
+    case actionTypes.PROBLEM_FAILURE:
       return {
         ...state,
         isFetching: false,
@@ -26,30 +26,30 @@ function question(state = {}, action) {
 
     //###########################
 
-    case actionTypes.QUESTION_LIST_REQUEST:
+    case actionTypes.PROBLEM_LIST_REQUEST:
       return {
         ...state,
         isFetching: true,
       };
 
-    case actionTypes.QUESTION_LIST_SUCCESS:
+    case actionTypes.PROBLEM_LIST_SUCCESS:
       return {
         ...state,
-        allQuestions: action.response.questions,
-        totalNumberOfPages: action.response.num_pages,
+        problems: action.response.questions, //todo correct "questions"
+        numberOfPages: action.response.num_pages,
         isFetching: false,
       };
 
 
-    case actionTypes.QUESTION_LIST_FAILURE:
+    case actionTypes.PROBLEM_LIST_FAILURE:
       return {
         ...state,
         isFetching: false,
       }
-      
+
     default:
       return state;
   }
 }
 
-export default question;
+export default problem;

@@ -18,7 +18,7 @@ export default class Tag extends Component {
       <span style={{ margin: '3px', display: 'inline-block' }}>
         <Label
           tag
-          size="large"
+          size={this.props.size}
           className={
             this.props.selectable
               ? this.props.selected
@@ -30,7 +30,7 @@ export default class Tag extends Component {
         >
           {this.props.name}
         </Label>
-      </span>
+      </span >
     );
   }
 }

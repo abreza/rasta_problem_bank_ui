@@ -13,13 +13,13 @@ import {
 } from 'semantic-ui-react';
 import { Redirect } from 'react-router';
 import { Slider } from 'react-semantic-ui-range';
-import Tag from '../components/question/Tag';
+import Tag from '../components/problem/Tag';
 import Editor from '../components/editor/tiny_editor/react_tiny/TinyEditorComponent';
 import {
-  submitQuestion,
-  fetchQuestion,
-} from '../redux/actions/question';
-import '../styles/Question.css';
+  submitProblem,
+  fetchProblem,
+} from '../redux/actions/problem';
+import '../styles/Problem.css';
 import { connect } from 'react-redux';
 import {
   getTags,
@@ -138,7 +138,6 @@ class Problem extends Component {
     if (redirect_after_submit) {
       return <Redirect push to={'/problemset/page/' + this.state.activePage} />; //todo:
     }
-
     return (
       <Container style={{ paddingTop: '10px', paddingBottom: '10px' }}>
         <Grid centered stackable>
@@ -172,12 +171,12 @@ class Problem extends Component {
                 <Header content={'صورت مسئله'} as="h3" textAlign="center" />
                 <Editor
                   ref={(problem) => (this.problem = problem)}
-                  id="QuestionTextArea"
+                  id="ProblemTextArea"
                 />
                 <Header content={'پاسخ'} as="h3" textAlign="center" />
                 <Editor
                   ref={(solution) => (this.solution = solution)}
-                  id="AnswerTextArea"
+                  id="SolutionTextArea"
                 />
               </Segment>
             </Grid.Column>
@@ -265,6 +264,7 @@ class Problem extends Component {
                   <div>
                     {this.props.tags.map((tag) => (
                       <Tag
+                        size={'large'}
                         name={tag.name}
                         selectable
                         key={tag.id}
@@ -282,6 +282,7 @@ class Problem extends Component {
                       if (this.state.selectedTags[subtag.parent]) {
                         return (
                           <Tag
+                            size={'large'}
                             name={subtag.name}
                             selectable
                             key={subtag.id}
@@ -336,8 +337,8 @@ const mapStateToProps = (state, ownProps) => {
 export default connect(
   mapStateToProps,
   {
-    submitQuestion,
-    fetchQuestion,
+    submitProblem,
+    fetchProblem,
     getTags,
     getSubtags,
     getEvents,
