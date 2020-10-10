@@ -62,12 +62,12 @@ export default ({ getState }) => (next) => async (action) => {
       };
     }
     const account = getState().account;
-    // if (!!account && !!account.token) {
+    if (!!account && !!account.token) {
       fetchOptions.headers = {
         ...fetchOptions.headers,
-        Authorization: 'token 6caef51c173e61d9596d9dacdf14fb43bca89289'// + account.token,
+        Authorization: 'token ' + account.token,
       };
-    // }
+    }
     const response = await callApi(url, fetchOptions);
     return next(
       actionWith({

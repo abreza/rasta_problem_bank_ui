@@ -9,38 +9,19 @@ import {
   Table,
   Pagination,
 } from 'semantic-ui-react';
-
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import { fetchProblemsListByPage } from '../redux/actions/problem'
-import { ROOT } from '../redux/actions/URLs'
 import Tag from '../components/problem/Tag';
-import {
-  getTags,
-  getSubtags,
-  getEvents,
-  getSources,
-} from '../redux/actions/properties'
-
-
-function getAttribute(object, attribute) {
-  var attributeValue;
-  for (var i in object) {
-    if (i == attribute) {
-      attributeValue = object[i];
-    }
-  }
-  return attributeValue;
-}
+import { getTags } from '../redux/actions/properties'
 
 const activePage = parseInt(window.location.pathname.split('/')[3]);
 
 class ProblemSet extends Component {
   state = {
-    userType: 'ADMIN', //TODO: should be "this.props.userType"
     redirect: false,
-    enteredProblem: false,
-    enteredProblemId: '',
+    doesClickedOnAnyProblem: false,
+    clickedProblemId: '',
     activePage: '',
   }
 
@@ -59,8 +40,8 @@ class ProblemSet extends Component {
       return <Redirect push to={"/problemset/page/" + this.state.activePage} />;
     }
 
-    if (this.state.enteredProblem) {
-      return <Redirect push to={"/problem/" + this.state.enteredProblemId} />;
+    if (this.state.doesClickedOnAnyProblem) {
+      return <Redirect push to={"/problem/" + this.state.clickedProblemId} />;
     }
 
     return (
@@ -144,7 +125,7 @@ class ProblemSet extends Component {
                           ))
                         }
                       </Table.Cell>
-                      <Table.Cell>{getAttribute(difficulty, 'level')}</Table.Cell>
+                      <Table.Cell>{difficulty.level}</Table.Cell>
                     </Table.Row>
                   ))}
                 </Table.Body>
@@ -180,8 +161,6 @@ class ProblemSet extends Component {
 }
 
 const mapStatoToProps = (state) => {
-  // const thisUser = state.thisUser;
-  // const userType = thisUser ? thisUser.type : null; //todo
   return ({
     tags: state.properties.tags,
     problems: state.problem.problems,
