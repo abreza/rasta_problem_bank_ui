@@ -52,11 +52,15 @@ class ProblemSet extends Component {
         doubling
         style={{ direction: 'rtl' }}
       >
+
         <Grid.Row centered relaxed>
-          <Header as="h1" textAlign="center">
-            سوالات
-          </Header>
+          <Grid.Column>
+            <Header as="h1" textAlign="center">
+              {'«سوالات»'}
+            </Header>
+          </Grid.Column>
         </Grid.Row>
+
         <Grid.Row columns={2}>
 
           <Grid.Column width={10}>
@@ -105,7 +109,7 @@ class ProblemSet extends Component {
                       <Table.Cell textAlign='right' selectable>
                         <a
                           href={''}
-                          onClick={() => this.setState({ enteredProblem: true, enteredProblemId: id })} //todo:
+                          onClick={() => this.setState({ doesClickedOnAnyProblem: true, clickedProblemId: id })} //todo:
                         >
                           {name}
                         </a>

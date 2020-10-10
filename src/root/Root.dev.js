@@ -18,12 +18,6 @@ import PrivateRoute from './PrivateRoute';
 import { logout } from '../redux/actions/account'
 
 
-const NewProblem = () => {
-  return (
-    <Problem isProblemNew={true} />
-  )
-}
-
 
 class Root extends Component {
 
@@ -39,7 +33,7 @@ class Root extends Component {
             <Route path="/login" component={LoginPage} />
             <Route path="/registration" component={RegistrationPage} />
             <Route path="/problem/:id" component={ViewProblem} />
-            <PrivateRoute path="/make_problem/" component={NewProblem} />
+            <PrivateRoute path="/make_problem/" component={Problem} />
             <PrivateRoute path="/edit_problem/:id" component={Problem} />
             <PrivateRoute path="/problemset" component={ProblemSet} />
             <PrivateRoute path="/users_rating" component={UsersRating} />

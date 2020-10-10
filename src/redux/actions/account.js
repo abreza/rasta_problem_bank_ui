@@ -88,6 +88,7 @@ export const logout = () => ({
     url: URLs.LOGOUT_USER,
     fetchOptions: {
       method: 'POST',
+      dontContentType: true,
     },
   },
 });

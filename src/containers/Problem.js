@@ -15,39 +15,41 @@ import { Redirect } from 'react-router';
 import { Slider } from 'react-semantic-ui-range';
 import Tag from '../components/problem/Tag';
 import Editor from '../components/editor/tiny_editor/react_tiny/TinyEditorComponent';
+import { connect } from 'react-redux';
 import {
   submitProblem,
   fetchProblem,
 } from '../redux/actions/problem';
-import '../styles/Problem.css';
-import { connect } from 'react-redux';
 import {
   getTags,
   getSubtags,
   getEvents,
   getSources,
 } from '../redux/actions/properties'
-
+import '../styles/Problem.css';
 
 class Problem extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      problemId: parseInt(window.location.pathname.split('/')[2]),
+      isProblemNew: !window.location.pathname.split('/')[2],
       name: '',
       selectedTags: [],
       selectedSubtags: [],
       verificationStatus: 'W',
       difficulty: {
-        level: 5,
-        appropriateGrades: [9, 12],
+        level: '',
+        appropriateGrades: [8, 12],
       },
       selectedEvents: [],
       selectedSource: '',
       problem: '',
       solution: '',
-      redirectAfterSubmit: false,
+      doesSubmitProblem: false,
+      doesEditingProblemLoaded: false,
       settings: {
-        start: [9, 11],
+        start: [8, 12],
         min: 1,
         max: 12,
         step: 1,
@@ -66,14 +68,19 @@ class Problem extends Component {
     this.handleTagChange = this.handleTagChange.bind(this);
     this.handleSubtagChange = this.handleSubtagChange.bind(this);
     this.handleDifficultyLevelChange = this.handleDifficultyLevelChange.bind(this);
+    this.loadEditingProblem = this.loadEditingProblem.bind(this);
   }
 
   componentDidMount() {
-    const { getTags, getSubtags, getSources, getEvents } = this.props;
+    const { getTags, getSubtags, getSources, getEvents, fetchProblem } = this.props;
+    const { problemId } = this.state;
     getTags();
     getSubtags();
     getEvents();
     getSources();
+    if (!this.state.isProblemNew) {
+      fetchProblem(problemId);
+    }
   }
 
   handleDifficultyLevelChange = (event) => {
@@ -117,7 +124,7 @@ class Problem extends Component {
 
   handleSubmit = () => { //todo
     // this.props.submitQuestion(this.state.question);
-    // this.setState({ redirect_after_submit: true });
+    // this.setState({ doesSubmitProblem: true });
   };
 
   setProblem() {
@@ -132,20 +139,64 @@ class Problem extends Component {
     });
   }
 
-  render() {
-    const { redirect_after_submit, } = this.state;
-    const { isProblemNew, } = this.props;
-    if (redirect_after_submit) {
-      return <Redirect push to={'/problemset/page/' + this.state.activePage} />; //todo:
+  loadEditingProblem(problem) {
+    console.log(problem)
+    let newSelectedTags = {};
+    let newSelectedSubtags = {};
+    for (let i = 0; i < problem.tags.length; i++) {
+      const tagId = problem.tags[i];
+      newSelectedTags[tagId] = true
     }
+    for (let i = 0; i < problem.sub_tags.length; i++) { //todo
+      const subtagId = problem.sub_tags[i]; //todo
+      newSelectedSubtags[subtagId] = true
+    }
+    this.setState({
+      difficulty: {
+        level: problem.hardness.level,
+        appropriateGrades: [problem.hardness.appropriate_grades_min, problem.hardness.appropriate_grades_max]
+      },
+      name: problem.name,
+      selectedTags: newSelectedTags,
+      selectedSubtags: newSelectedSubtags,
+      selectedEvents: problem.events,
+      selectedSource: problem.source,
+    })
+  }
+
+  render() {
+    const { problemId, isProblemNew } = this.state;
+
+    if (!isProblemNew && !this.props.problems) {
+      return (
+        <>
+        </>
+      )
+    }
+
+    const problem = this.props.problems ? this.props.problems[problemId] : null;
+    if (problem && !this.state.doesEditingProblemLoaded) {
+      this.setState({
+        doesEditingProblemLoaded: true,
+      })
+      this.loadEditingProblem(problem);
+    }
+
+    // const { doesSubmitProblem, } = this.state;
+    // if (doesSubmitProblem) {
+    //   return <Redirect push to={'/problemset/page/' + this.state.activePage} />; //todo:
+    // }
+
+    console.log(this.state)
+
     return (
       <Container style={{ paddingTop: '10px', paddingBottom: '10px' }}>
         <Grid centered stackable>
           <Grid.Row centered relaxed>
-            <Grid.Column width={5}></Grid.Column>
+            <Grid.Column width={5} only="computer" />
             <Grid.Column width={5}>
               <Header as="h1" textAlign="center">
-                {isProblemNew ? 'مسئله‌ی جدید' : 'ویرایش مسئله'}
+                {isProblemNew ? '«مسئله‌ی جدید»' : '«ویرایش مسئله»'}
               </Header>
             </Grid.Column>
             <Grid.Column
@@ -172,11 +223,13 @@ class Problem extends Component {
                 <Editor
                   ref={(problem) => (this.problem = problem)}
                   id="ProblemTextArea"
+                  initContent={problem ? problem.text : null} //todo
                 />
                 <Header content={'پاسخ'} as="h3" textAlign="center" />
                 <Editor
                   ref={(solution) => (this.solution = solution)}
                   id="SolutionTextArea"
+                  initContent={problem ? problem.answers[0] : null} //todo
                 />
               </Segment>
             </Grid.Column>
@@ -186,20 +239,22 @@ class Problem extends Component {
             >
               <Segment style={{ direction: 'rtl' }}>
                 <Header content={'شناسنامه'} as="h2" textAlign="center" />
-                <Divider section></Divider>
+                <Divider section />
                 <Input
                   placeholder="نام مسئله"
                   className="rtl"
+                  fluid
                   onChange={(e) => this.setState({ name: e.value })}
-                  value={this.state.input}
+                  value={this.state.name}
                 />
                 <Input
                   placeholder="سختی"
                   type="number"
-                  max="10"
+                  max="100"
                   min="0"
                   className="rtl hardness"
                   onChange={this.handleDifficultyLevelChange}
+                  value={this.state.difficulty.level}
                 />
                 <br />
                 <br />
@@ -213,7 +268,14 @@ class Problem extends Component {
                     labeled
                     multiple
                     color="red"
-                    settings={this.state.settings}
+                    settings={
+                      problem ?
+                        ({
+                          ...this.state.settings,
+                          start: [problem.hardness.appropriate_grades_min, problem.hardness.appropriate_grades_max],
+                        })
+                        : this.state.settings
+                    }
                   />
                 </label>
                 <Dropdown
@@ -221,6 +283,9 @@ class Problem extends Component {
                   fluid
                   selection
                   search
+                  clearable
+                  defaultValue={problem ? problem.source : null}
+                  noResultsMessage={'چیزی پیدا نشد'}
                   onChange={(event, { value }) => {
                     this.setState({
                       selectedSource: value
@@ -243,6 +308,8 @@ class Problem extends Component {
                   multiple
                   selection
                   search
+                  defaultValue={problem ? problem.events : null}
+                  noResultsMessage={'چیزی پیدا نشد'}
                   onChange={(event, { value }) => {
                     this.setState({
                       selectedEvents: value,
@@ -322,15 +389,15 @@ class Problem extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
+  const { problems } = state.problem;
   const { events, sources, tags, subtags } = state.properties;
-  const { isProblemNew } = ownProps;
   return {
     events,
     sources,
     tags,
     subtags,
-    isProblemNew,
+    problems,
   }
 };
 
