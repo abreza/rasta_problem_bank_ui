@@ -12,7 +12,7 @@ const persistedState = localStorage.getItem('rastaReactState')
   ? JSON.parse(localStorage.getItem('rastaReactState'))
   : {};
 
-const store = configureStore(persistedState);
+const store = configureStore();
 
 store.subscribe(() => {
   localStorage.setItem(

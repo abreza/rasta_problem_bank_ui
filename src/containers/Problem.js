@@ -14,6 +14,7 @@ import {
 import { Redirect } from 'react-router';
 import { Slider } from 'react-semantic-ui-range';
 import Tag from '../components/problem/Tag';
+import converter from '../components/problem/convertor';
 import Editor from '../components/editor/tiny_editor/react_tiny/TinyEditorComponent';
 import { connect } from 'react-redux';
 import {
@@ -39,7 +40,7 @@ class Problem extends Component {
       selectedSubtags: [],
       verificationStatus: 'W',
       difficulty: {
-        level: '',
+        level: 5,
         appropriateGrades: [8, 12],
       },
       selectedEvents: [],
@@ -123,19 +124,23 @@ class Problem extends Component {
   }
 
   handleSubmit = () => { //todo
-    // this.props.submitQuestion(this.state.question);
+    this.setProblem();
+    this.setSolution();
+    setTimeout(() =>
+      this.props.submitProblem(converter(this.state))
+      , 500)
     // this.setState({ doesSubmitProblem: true });
   };
 
-  setProblem() {
+  setProblem() { // todo check empty
     this.setState({
-      problem: this.problem.getContent()
+      problem: this.problemEl.getContent()
     });
   }
 
-  setSolution() {
+  setSolution() { // todo check empty
     this.setState({
-      solution: this.solution.getContent()
+      solution: this.solutionEl.getContent()
     });
   }
 
@@ -174,12 +179,12 @@ class Problem extends Component {
       )
     }
 
-    const problem = this.props.problems ? this.props.problems[problemId] : null;
-    if (problem && !this.state.doesEditingProblemLoaded) {
+    const editingProblem = this.props.problems ? this.props.problems[problemId] : null;
+    if (editingProblem && !this.state.doesEditingProblemLoaded) {
       this.setState({
         doesEditingProblemLoaded: true,
       })
-      this.loadEditingProblem(problem);
+      this.loadEditingProblem(editingProblem);
     }
 
     // const { doesSubmitProblem, } = this.state;
@@ -187,7 +192,7 @@ class Problem extends Component {
     //   return <Redirect push to={'/problemset/page/' + this.state.activePage} />; //todo:
     // }
 
-    console.log(this.state)
+    console.log(converter(this.state))
 
     return (
       <Container style={{ paddingTop: '10px', paddingBottom: '10px' }}>
@@ -221,15 +226,15 @@ class Problem extends Component {
               <Segment>
                 <Header content={'صورت مسئله'} as="h3" textAlign="center" />
                 <Editor
-                  ref={(problem) => (this.problem = problem)}
+                  ref={(problemEl) => (this.problemEl = problemEl)}
                   id="ProblemTextArea"
-                  initContent={problem ? problem.text : null} //todo
+                  initContent={editingProblem ? editingProblem.text : null} //todo
                 />
                 <Header content={'پاسخ'} as="h3" textAlign="center" />
                 <Editor
-                  ref={(solution) => (this.solution = solution)}
+                  ref={(solutionEl) => (this.solutionEl = solutionEl)}
                   id="SolutionTextArea"
-                  initContent={problem ? problem.answers[0] : null} //todo
+                  initContent={editingProblem ? editingProblem.answers[0] : null} //todo
                 />
               </Segment>
             </Grid.Column>
@@ -244,7 +249,9 @@ class Problem extends Component {
                   placeholder="نام مسئله"
                   className="rtl"
                   fluid
-                  onChange={(e) => this.setState({ name: e.value })}
+                  onChange={(e) =>
+                    this.setState({ name: e.target.value })
+                  }
                   value={this.state.name}
                 />
                 <Input
@@ -269,10 +276,10 @@ class Problem extends Component {
                     multiple
                     color="red"
                     settings={
-                      problem ?
+                      editingProblem ?
                         ({
                           ...this.state.settings,
-                          start: [problem.hardness.appropriate_grades_min, problem.hardness.appropriate_grades_max],
+                          start: [editingProblem.hardness.appropriate_grades_min, editingProblem.hardness.appropriate_grades_max],
                         })
                         : this.state.settings
                     }
@@ -284,7 +291,7 @@ class Problem extends Component {
                   selection
                   search
                   clearable
-                  defaultValue={problem ? problem.source : null}
+                  defaultValue={editingProblem ? editingProblem.source : null}
                   noResultsMessage={'چیزی پیدا نشد'}
                   onChange={(event, { value }) => {
                     this.setState({
@@ -308,7 +315,7 @@ class Problem extends Component {
                   multiple
                   selection
                   search
-                  defaultValue={problem ? problem.events : null}
+                  defaultValue={editingProblem ? editingProblem.events : null}
                   noResultsMessage={'چیزی پیدا نشد'}
                   onChange={(event, { value }) => {
                     this.setState({
@@ -353,8 +360,8 @@ class Problem extends Component {
                             name={subtag.name}
                             selectable
                             key={subtag.id}
-                            id={subtag.parent + ' ' + subtag.id}
-                            selected={this.state.selectedSubtags[subtag.parent + ' ' + subtag.id]}
+                            id={subtag.id}
+                            selected={this.state.selectedSubtags[subtag.id]}
                             onChange={this.handleSubtagChange}
                           />
                         )

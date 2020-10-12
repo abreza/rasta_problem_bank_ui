@@ -48,17 +48,22 @@ export const fetchProblemsListByPage = (page) => ({
   },
 });
 
-export const submitProblem = (problem) => ({
-  [CALL_API]: {
-    types: [
-      actionTypes.PROBLEM_SUBMIT_REQUEST,
-      actionTypes.PROBLEM_SUBMIT_SUCCESS,
-      actionTypes.PROBLEM_SUBMIT_FAILURE,
-    ],
-    url: URLs.SUBMIT_PROBLEM,
-    fetchOptions: {
-      method: 'POST',
-      body: problem,
+export const submitProblem = (problem) => {
+  console.log(problem);
+
+  return ({
+    [CALL_API]: {
+      types: [
+        actionTypes.PROBLEM_SUBMIT_REQUEST,
+        actionTypes.PROBLEM_SUBMIT_SUCCESS,
+        actionTypes.PROBLEM_SUBMIT_FAILURE,
+      ],
+      url: URLs.SUBMIT_PROBLEM,
+      fetchOptions: {
+        method: 'POST',
+        body: problem,
+      },
     },
-  },
-});
+  })
+
+};
