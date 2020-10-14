@@ -1,14 +1,22 @@
 import * as actionTypes from '../actions/actionTypes';
 
 function account(
-  state = { isLoggedIn: false, username: null, isFetching: false, token: null },
+  state = {
+    isLoggedIn: false,
+    wasRegisterationFailed: false,
+    wasLoginFailed: false,
+    username: null,
+    isFetching: false,
+    token: null
+  },
   action
 ) {
   switch (action.type) {
     case actionTypes.REGISTER_REQUEST:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        wasRegisterationFailed: false,
       };
 
     case actionTypes.REGISTER_SUCCESS:
@@ -16,12 +24,14 @@ function account(
         ...state,
         isFetching: false,
         token: action.response.token,
+        wasRegisterationFailed: false,
       };
 
     case actionTypes.REGISTER_FAILURE:
       return {
         ...state,
-        isFetching: false
+        isFetching: false,
+        wasRegisterationFailed: true,
       };
 
     //#######################
@@ -30,6 +40,7 @@ function account(
       return {
         ...state,
         isFetching: true,
+        wasLoginFailed: false,
       };
 
     case actionTypes.LOGIN_SUCCESS:
@@ -39,6 +50,7 @@ function account(
         isLoggedIn: true,
         username: action.payload.username,
         token: action.response.token,
+        wasLoginFailed: false,
       }
 
     case actionTypes.LOGIN_FAILURE:
@@ -46,6 +58,7 @@ function account(
         ...state,
         isFetching: false,
         username: null,
+        wasLoginFailed: true,
       }
 
     //#######################

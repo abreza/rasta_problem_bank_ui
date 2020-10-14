@@ -20,11 +20,6 @@ const rightItems = (config) => {
   const Items = [];
   if (!config.isLoggedIn) {
     Items.push(
-      <Menu.Item name="message">
-        <Label style={{ direction: 'rtl' }}>
-          شما هنوز وارد نشدید!
-        </Label>
-      </Menu.Item>,
       <Menu.Item name="login">
         <Button as={Link} to="/login" primary>
           ورود
@@ -38,11 +33,6 @@ const rightItems = (config) => {
     );
   } else {
     Items.push(
-      <Menu.Item name="message">
-        <Label style={{ direction: 'rtl' }}>
-          {config.username} عزیز، خوش اومدی!
-        </Label>
-      </Menu.Item>,
       <Menu.Item name="logout">
         <Button as={Link} to="/" onClick={config.logout} primary>
           خروج

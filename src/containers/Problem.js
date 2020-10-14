@@ -10,6 +10,7 @@ import {
   Button,
   Icon,
   Dropdown,
+  Message,
 } from 'semantic-ui-react';
 import { Redirect } from 'react-router';
 import { Slider } from 'react-semantic-ui-range';
@@ -40,7 +41,7 @@ class Problem extends Component {
       selectedSubtags: [],
       verificationStatus: 'W',
       difficulty: {
-        level: 5,
+        level: '',
         appropriateGrades: [8, 12],
       },
       selectedEvents: [],
@@ -126,9 +127,7 @@ class Problem extends Component {
   handleSubmit = () => { //todo
     this.setProblem();
     this.setSolution();
-    setTimeout(() =>
-      this.props.submitProblem(converter(this.state))
-      , 500)
+    setTimeout(() => this.props.submitProblem(converter(this.state)), 500)
     // this.setState({ doesSubmitProblem: true });
   };
 
@@ -171,6 +170,7 @@ class Problem extends Component {
 
   render() {
     const { problemId, isProblemNew } = this.state;
+    const { isFetching, wasProblemSubmitFailed } = this.props;
 
     if (!isProblemNew && !this.props.problems) {
       return (
@@ -192,14 +192,12 @@ class Problem extends Component {
     //   return <Redirect push to={'/problemset/page/' + this.state.activePage} />; //todo:
     // }
 
-    console.log(converter(this.state))
-
     return (
-      <Container style={{ paddingTop: '10px', paddingBottom: '10px' }}>
-        <Grid centered stackable>
-          <Grid.Row centered relaxed>
+      <Container>
+        <Grid centered stackable container doubling>
+          <Grid.Row verticalAlign='middle' relaxed>
             <Grid.Column width={5} only="computer" />
-            <Grid.Column width={5}>
+            <Grid.Column width={5} >
               <Header as="h1" textAlign="center">
                 {isProblemNew ? '«مسئله‌ی جدید»' : '«ویرایش مسئله»'}
               </Header>
@@ -214,6 +212,7 @@ class Problem extends Component {
                 labelPosition="right"
                 positive
                 onClick={this.handleSubmit}
+                loading={isFetching}
               >
                 <Icon name="save" />
                 {isProblemNew ? 'ذخیره' : 'اعمال تغیرات'}
@@ -221,8 +220,21 @@ class Problem extends Component {
             </Grid.Column>
           </Grid.Row>
 
+          <Grid.Row verticalAlign='middle'>
+            <Grid.Column textAlign='center' width={16}>
+              <Message
+                error
+                style={{ direction: 'rtl' }}
+                hidden={isFetching || !wasProblemSubmitFailed}
+              >
+                <Message.Header>یه مشکلی وجود داره.</Message.Header>
+                <p>یه کم وقت دیگه بار دیگه تلاش کن.</p>
+              </Message>
+            </Grid.Column>
+          </Grid.Row>
+
           <Grid.Row columns={2} style={{ direction: 'rtl' }}>
-            <Grid.Column width={11}>
+            <Grid.Column textAlign='center' width={11} >
               <Segment>
                 <Header content={'صورت مسئله'} as="h3" textAlign="center" />
                 <Editor
@@ -238,9 +250,11 @@ class Problem extends Component {
                 />
               </Segment>
             </Grid.Column>
+
             <Grid.Column
               width={5}
-              style={{ direction: 'rtl', textAlign: 'right' }}
+              textAlign='right'
+              style={{ direction: 'rtl' }}
             >
               <Segment style={{ direction: 'rtl' }}>
                 <Header content={'شناسنامه'} as="h2" textAlign="center" />
@@ -255,6 +269,7 @@ class Problem extends Component {
                   value={this.state.name}
                 />
                 <Input
+                  style={{ width: '50%' }}
                   placeholder="سختی"
                   type="number"
                   max="100"
@@ -372,11 +387,12 @@ class Problem extends Component {
               </Segment>
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row>
+
+          <Grid.Row textAlign='center'>
             <Grid.Column
               width={16}
               only="mobile tablet"
-              style={{ textAlign: 'center' }}
+              textAlign='center'
             >
               <Button
                 icon
@@ -384,6 +400,7 @@ class Problem extends Component {
                 positive
                 className="mobile-save-btn"
                 onClick={this.handleSubmit}
+                loading={isFetching}
               >
                 <Icon name="save" />
                 {isProblemNew ? 'ذخیره' : 'اعمال تغیرات'}
@@ -391,13 +408,13 @@ class Problem extends Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-      </Container>
+      </Container >
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  const { problems } = state.problem;
+  const { problems, isFetching, wasProblemSubmitFailed } = state.problem;
   const { events, sources, tags, subtags } = state.properties;
   return {
     events,
@@ -405,6 +422,8 @@ const mapStateToProps = (state) => {
     tags,
     subtags,
     problems,
+    isFetching,
+    wasProblemSubmitFailed,
   }
 };
 

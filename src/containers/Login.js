@@ -6,6 +6,7 @@ import {
   Header,
   Message,
   Segment,
+  Container,
 } from 'semantic-ui-react';
 import { login } from '../redux/actions/account';
 import { Link } from 'react-router-dom';
@@ -38,68 +39,80 @@ class Login extends Component {
     if (this.props.isLoggedIn) {
       return <Redirect push to={"/"} />;
     }
+
+    const { isFetching, wasLoginFailed } = this.props;
+
     return (
-      <Grid centered container doubling stackable>
-        <Grid.Column
-          style={{ textAlign: 'center', direction: 'rtl' }}
-          width={6}
-        >
-          <Header as="h2" textAlign="center">
-            ورود
-          </Header>
-          <Segment>
-            <Form
-              size="large"
-              onSubmit={this.handleSubmit}
-              error={!!this.state.form_error}
+      <Container>
+        <Grid centered container doubling stackable>
+          <Grid.Row verticalAlign='middle'>
+            <Grid.Column
+              textAlign='center'
+              width={6}
             >
-              <Form.Input
-                name="username"
-                required
-                fluid
-                icon="user"
-                iconPosition="right"
-                placeholder="نام کاربری"
-                className="persian-input"
-                value={this.state.username}
-                onChange={this.handleChange}
-              />
+              <Header as="h2" textAlign="center">
+                ورود
+              </Header>
 
-              <Form.Input
-                name="password"
-                required
-                fluid
-                icon="lock"
-                iconPosition="right"
-                placeholder="رمز عبور"
-                type="password"
-                className="persian-input"
-                value={this.state.password}
-                onChange={this.handleChange}
-              />
+              <Message error style={{ direction: 'rtl' }} hidden={isFetching || !wasLoginFailed}>
+                <Message.Header>نام کاربری یا رمز عبورت اشتباهه</Message.Header>
+                <p>یه بار دیگه تلاش کن.</p>
+              </Message>
 
-              <Message
-                error
-                header={this.state.formErrorTitle}
-                content={this.state.formErrorMessage}
-              />
+              <Segment>
+                <Form
+                  size="large"
+                  onSubmit={this.handleSubmit}
+                  error={!!this.state.form_error}
+                  loading={isFetching}
+                >
+                  <Form.Input
+                    name="username"
+                    required
+                    fluid
+                    icon="user"
+                    iconPosition="right"
+                    placeholder="نام کاربری"
+                    className="persian-input"
+                    value={this.state.username}
+                    onChange={this.handleChange}
+                  />
 
-              <Button color="blue" fluid size="large">
-                بزن بریم
-              </Button>
-            </Form>
-          </Segment>
-          <Message>
-            هنوز ثبت‌نام نکردی؟ <Link to="/registration">ثبت‌نام کن!</Link>
-          </Message>
-        </Grid.Column>
-      </Grid>
+                  <Form.Input
+                    name="password"
+                    required
+                    fluid
+                    icon="lock"
+                    iconPosition="right"
+                    placeholder="رمز عبور"
+                    type="password"
+                    className="persian-input"
+                    value={this.state.password}
+                    onChange={this.handleChange}
+                  />
+
+                  <Button primary fluid size="large" disabled={isFetching}>
+                    بزن بریم
+                  </Button>
+                </Form>
+              </Segment>
+
+              <Message style={{ direction: 'rtl' }}>
+                هنوز ثبت‌نام نکردی؟ <Link to="/registration">ثبت‌نام کن!</Link>
+              </Message>
+
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Container>
     );
   }
 }
 
 const mapStatoToProps = (state) => ({
   isLoggedIn: state.account.isLoggedIn,
+  isFetching: state.account.isFetching,
+  wasLoginFailed: state.account.wasLoginFailed,
 })
 
 export default connect(mapStatoToProps, {

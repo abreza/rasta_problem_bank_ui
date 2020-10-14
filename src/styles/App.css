@@ -15,8 +15,8 @@
 .ui.input > textarea {
   border-radius: 5px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.05);
-  margin: 3px 0;
-  direction: rtl !important;
+  /* margin: 3px 0;
+  direction: rtl !important; */
   border: none;
   transition: 0.3s;
 }

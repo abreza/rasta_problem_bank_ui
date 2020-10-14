@@ -38,7 +38,7 @@ const NavBarMobile = ({
             paddingRight: '4px',
           }}
         >
-          <Icon name="sidebar" />
+          {/* <Icon name="sidebar" /> */}
         </Menu.Item>
         <Menu.Menu position="right">{rightItems}</Menu.Menu>
       </Menu>

@@ -1,11 +1,49 @@
 import * as actionTypes from '../actions/actionTypes';
 
-function problem(state = {}, action) {
+function problem(
+  state = {
+    isFetching: false,
+    wasProblemSubmitFailed: false,
+  },
+  action
+) {
   switch (action.type) {
+    case actionTypes.PROBLEM_SUBMIT_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        wasProblemSubmitFailed: false,
+      }
+
+    case actionTypes.PROBLEM_SUBMIT_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        wasProblemSubmitFailed: true,
+      }
+
+    case actionTypes.PROBLEM_SUBMIT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        wasProblemSubmitFailed: false,
+      }
+
+    //#########################
+
+    case actionTypes.PROBLEM_LIST_REQUEST:
     case actionTypes.PROBLEM_REQUEST:
       return {
         ...state,
         isFetching: true,
+      }
+
+
+    case actionTypes.PROBLEM_LIST_FAILURE:
+    case actionTypes.PROBLEM_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
       }
 
     case actionTypes.PROBLEM_SUCCESS:
@@ -18,20 +56,6 @@ function problem(state = {}, action) {
         isFetching: false,
       };
 
-    case actionTypes.PROBLEM_FAILURE:
-      return {
-        ...state,
-        isFetching: false,
-      }
-
-    //###########################
-
-    case actionTypes.PROBLEM_LIST_REQUEST:
-      return {
-        ...state,
-        isFetching: true,
-      };
-
     case actionTypes.PROBLEM_LIST_SUCCESS:
       return {
         ...state,
@@ -40,12 +64,6 @@ function problem(state = {}, action) {
         isFetching: false,
       };
 
-
-    case actionTypes.PROBLEM_LIST_FAILURE:
-      return {
-        ...state,
-        isFetching: false,
-      }
 
     default:
       return state;
