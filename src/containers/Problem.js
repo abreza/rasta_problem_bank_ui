@@ -21,6 +21,7 @@ import { connect } from 'react-redux';
 import {
   submitProblem,
   fetchProblem,
+  editProblem,
 } from '../redux/actions/problem';
 import {
   getTags,
@@ -42,16 +43,15 @@ class Problem extends Component {
       verificationStatus: 'W',
       difficulty: {
         level: '',
-        appropriateGrades: [8, 12],
+        appropriateGrades: [6, 10],
       },
       selectedEvents: [],
       selectedSource: '',
       problem: '',
-      solution: '',
-      doesSubmitProblem: false,
+      doesSubmitorEditProblem: false,
       doesEditingProblemLoaded: false,
       settings: {
-        start: [8, 12],
+        start: [6, 10],
         min: 1,
         max: 12,
         step: 1,
@@ -65,7 +65,7 @@ class Problem extends Component {
         },
       }
     };
-    this.setSolution = this.setSolution.bind(this);
+    this.handleSubmitorEdit = this.handleSubmitorEdit.bind(this);
     this.setProblem = this.setProblem.bind(this);
     this.handleTagChange = this.handleTagChange.bind(this);
     this.handleSubtagChange = this.handleSubtagChange.bind(this);
@@ -124,22 +124,23 @@ class Problem extends Component {
     });
   }
 
-  handleSubmit = () => { //todo
+  handleSubmitorEdit = (isProblemNew) => { //todo
     this.setProblem();
-    this.setSolution();
-    setTimeout(() => this.props.submitProblem(converter(this.state)), 500)
-    // this.setState({ doesSubmitProblem: true });
+    setTimeout(() => {
+      if (isProblemNew) {
+        this.props.submitProblem(converter(this.state))
+      } else {
+        this.props.editProblem(converter(this.state))
+      }
+    }
+      , 500)
+    this.setState({ doesSubmitorEditProblem: true, });
   };
+
 
   setProblem() { // todo check empty
     this.setState({
       problem: this.problemEl.getContent()
-    });
-  }
-
-  setSolution() { // todo check empty
-    this.setState({
-      solution: this.solutionEl.getContent()
     });
   }
 
@@ -169,8 +170,8 @@ class Problem extends Component {
   }
 
   render() {
-    const { problemId, isProblemNew } = this.state;
-    const { isFetching, wasProblemSubmitFailed } = this.props;
+    const { problemId, isProblemNew, doesSubmitorEditProblem } = this.state;
+    const { isFetching, wasProblemSubmitFailed, wasProblemEditFailed } = this.props;
 
     if (!isProblemNew && !this.props.problems) {
       return (
@@ -187,10 +188,12 @@ class Problem extends Component {
       this.loadEditingProblem(editingProblem);
     }
 
-    // const { doesSubmitProblem, } = this.state;
-    // if (doesSubmitProblem) {
-    //   return <Redirect push to={'/problemset/page/' + this.state.activePage} />; //todo:
-    // }
+
+    setTimeout(() => {
+      if (doesSubmitorEditProblem && !(wasProblemSubmitFailed || wasProblemEditFailed)) {
+        return <Redirect push to={'/problemset/page/1'} />; //todo:
+      }
+    }, 100)
 
     return (
       <Container>
@@ -211,7 +214,7 @@ class Problem extends Component {
                 icon
                 labelPosition="right"
                 positive
-                onClick={this.handleSubmit}
+                onClick={() => this.handleSubmitorEdit(isProblemNew)}
                 loading={isFetching}
               >
                 <Icon name="save" />
@@ -220,7 +223,7 @@ class Problem extends Component {
             </Grid.Column>
           </Grid.Row>
 
-          <Grid.Row verticalAlign='middle'>
+          <Grid.Row verticalAlign='middle' only='computer'>
             <Grid.Column textAlign='center' width={16}>
               <Message
                 error
@@ -228,7 +231,7 @@ class Problem extends Component {
                 hidden={isFetching || !wasProblemSubmitFailed}
               >
                 <Message.Header>یه مشکلی وجود داره.</Message.Header>
-                <p>یه کم وقت دیگه بار دیگه تلاش کن.</p>
+                <p>یه چکی بکن و دوباره تلاش کن.</p>
               </Message>
             </Grid.Column>
           </Grid.Row>
@@ -241,12 +244,6 @@ class Problem extends Component {
                   ref={(problemEl) => (this.problemEl = problemEl)}
                   id="ProblemTextArea"
                   initContent={editingProblem ? editingProblem.text : null} //todo
-                />
-                <Header content={'پاسخ'} as="h3" textAlign="center" />
-                <Editor
-                  ref={(solutionEl) => (this.solutionEl = solutionEl)}
-                  id="SolutionTextArea"
-                  initContent={editingProblem ? editingProblem.answers[0] : null} //todo
                 />
               </Segment>
             </Grid.Column>
@@ -394,12 +391,20 @@ class Problem extends Component {
               only="mobile tablet"
               textAlign='center'
             >
+              <Message
+                error
+                style={{ direction: 'rtl' }}
+                hidden={isFetching || !wasProblemSubmitFailed}
+              >
+                <Message.Header>یه مشکلی وجود داره.</Message.Header>
+                <p>یه چکی بکن و دوباره تلاش کن.</p>
+              </Message>
               <Button
                 icon
                 labelPosition="right"
                 positive
                 className="mobile-save-btn"
-                onClick={this.handleSubmit}
+                onClick={() => this.handleSubmitorEdit(isProblemNew)}
                 loading={isFetching}
               >
                 <Icon name="save" />
@@ -414,7 +419,7 @@ class Problem extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { problems, isFetching, wasProblemSubmitFailed } = state.problem;
+  const { problems, isFetching, wasProblemSubmitFailed, wasProblemEditFailed } = state.problem;
   const { events, sources, tags, subtags } = state.properties;
   return {
     events,
@@ -424,6 +429,7 @@ const mapStateToProps = (state) => {
     problems,
     isFetching,
     wasProblemSubmitFailed,
+    wasProblemEditFailed,
   }
 };
 
@@ -431,6 +437,7 @@ export default connect(
   mapStateToProps,
   {
     submitProblem,
+    editProblem,
     fetchProblem,
     getTags,
     getSubtags,

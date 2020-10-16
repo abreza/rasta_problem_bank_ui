@@ -5,15 +5,26 @@ const callApi = async (url, fetchOptions) => {
     ...fetchOptions,
     body: JSON.stringify(fetchOptions.body),
   }
+
+  console.log(fetchOptions)
+
   const response = await fetch(url, fetchOptions);
   if (response.status === 500) {
     throw new Error('ایراد سروری رخ داده‌است! ما رو مطلع کنید.');
   }
 
+
+  console.log(response)
+
   if (response.status === 404) {
     throw new Error('صفحه مورد نظر یافت نشد!');
   }
+
+  
   const json_response = await response.json();
+
+  console.log(json_response)
+
   if (!response.ok) {
     if (
       response.status === 401 &&

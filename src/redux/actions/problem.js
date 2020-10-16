@@ -49,8 +49,6 @@ export const fetchProblemsListByPage = (page) => ({
 });
 
 export const submitProblem = (problem) => {
-  console.log(problem);
-
   return ({
     [CALL_API]: {
       types: [
@@ -65,5 +63,22 @@ export const submitProblem = (problem) => {
       },
     },
   })
-
 };
+
+export const editProblem = (problem) => {
+  return ({
+    [CALL_API]: {
+      types: [
+        actionTypes.PROBLEM_EDIT_REQUEST,
+        actionTypes.PROBLEM_EDIT_SUCCESS,
+        actionTypes.PROBLEM_EDIT_FAILURE,
+      ],
+      url: URLs.SUBMIT_PROBLEM,
+      fetchOptions: {
+        method: 'PUT',
+        body: problem,
+      },
+    },
+  })
+};
+

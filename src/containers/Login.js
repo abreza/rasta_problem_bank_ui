@@ -22,6 +22,7 @@ class Login extends Component {
       password: '',
       formErrorTitle: '',
       formErrorMessage: '',
+      isPangeNewlyLoaded: true,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -32,6 +33,7 @@ class Login extends Component {
   async handleSubmit(event) {
     const { username, password } = this.state;
     this.props.login(username, password);
+    this.setState({ isPangeNewlyLoaded: false })
     event.preventDefault();
   }
 
@@ -41,6 +43,7 @@ class Login extends Component {
     }
 
     const { isFetching, wasLoginFailed } = this.props;
+    const { isPangeNewlyLoaded } = this.state;
 
     return (
       <Container>
@@ -54,7 +57,7 @@ class Login extends Component {
                 ورود
               </Header>
 
-              <Message error style={{ direction: 'rtl' }} hidden={isFetching || !wasLoginFailed}>
+              <Message error style={{ direction: 'rtl' }} hidden={isFetching || !wasLoginFailed || isPangeNewlyLoaded}>
                 <Message.Header>نام کاربری یا رمز عبورت اشتباهه</Message.Header>
                 <p>یه بار دیگه تلاش کن.</p>
               </Message>

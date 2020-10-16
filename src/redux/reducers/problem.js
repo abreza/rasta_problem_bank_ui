@@ -4,6 +4,7 @@ function problem(
   state = {
     isFetching: false,
     wasProblemSubmitFailed: false,
+    wasProblemEditFailed: false,
   },
   action
 ) {
@@ -27,6 +28,29 @@ function problem(
         ...state,
         isFetching: false,
         wasProblemSubmitFailed: false,
+      }
+
+    //#########################
+
+    case actionTypes.PROBLEM_EDIT_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        wasProblemEditFailed: false,
+      }
+
+    case actionTypes.PROBLEM_EDIT_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        wasProblemEditFailed: true,
+      }
+
+    case actionTypes.PROBLEM_EDIT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        wasProblemEditFailed: false,
       }
 
     //#########################
