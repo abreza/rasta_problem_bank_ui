@@ -134,7 +134,7 @@ class Problem extends Component {
       }
     }
       , 500)
-    this.setState({ doesSubmitorEditProblem: true, });
+    this.setState({ doesSubmitorEditProblem: true, })
   };
 
 
