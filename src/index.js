@@ -19,7 +19,6 @@ store.subscribe(() => {
     'rastaReactState1',
     JSON.stringify({
       account: { ...store.getState().account },
-      properties: { ...store.getState().properties },
     })
   );
 });

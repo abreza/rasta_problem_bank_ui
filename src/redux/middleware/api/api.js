@@ -1,50 +1,6 @@
+import fetchApi from '../../../utils/fetchApi';
 import * as actionTypes from '../../actions/actionTypes';
-
-const callApi = async (url, fetchOptions) => {
-  fetchOptions = {
-    ...fetchOptions,
-    body: JSON.stringify(fetchOptions.body),
-  }
-
-  console.log(fetchOptions)
-
-  const response = await fetch(url, fetchOptions);
-  if (response.status === 500) {
-    throw new Error('ایراد سروری رخ داده‌است! ما رو مطلع کنید.');
-  }
-
-
-  console.log(response)
-
-  if (response.status === 404) {
-    throw new Error('صفحه مورد نظر یافت نشد!');
-  }
-
-  
-  const json_response = await response.json();
-
-  console.log(json_response)
-
-  if (!response.ok) {
-    if (
-      response.status === 401 &&
-      json_response.code &&
-      json_response.code === 'token_not_valid'
-    ) {
-      throw new Error('TOKEN_EXPIRED');
-    }
-    if (json_response.error) {
-      throw new Error(json_response.error);
-    } else if (json_response.detail) {
-      throw new Error(json_response.detail);
-    } else if (json_response.message) {
-      throw new Error(json_response.message);
-    } else {
-      throw new Error(response.text);
-    }
-  }
-  return json_response;
-};
+import { normalize } from 'normalizr';
 
 export const CALL_API = 'Call API';
 
@@ -61,7 +17,7 @@ export default ({ getState }) => (next) => async (action) => {
   };
 
   let { fetchOptions } = callAPI;
-  const { url, types, payload } = callAPI;
+  const { url, types, payload, schema } = callAPI;
   const [requestType, successType, failureType] = types;
   next(actionWith({ payload, type: requestType }));
 
@@ -76,10 +32,13 @@ export default ({ getState }) => (next) => async (action) => {
     if (!!account && !!account.token) {
       fetchOptions.headers = {
         ...fetchOptions.headers,
-        Authorization: 'token ' + account.token,
+        Authorization: account.token,
       };
     }
-    const response = await callApi(url, fetchOptions);
+    let response = await fetchApi(url, fetchOptions);
+    if (schema) {
+      response = normalize(response, schema);
+    }
     return next(
       actionWith({
         payload,
@@ -91,6 +50,7 @@ export default ({ getState }) => (next) => async (action) => {
     if (error.message === 'TOKEN_EXPIRED') {
       return next(
         actionWith({
+          payload,
           type: actionTypes.LOGOUT_REQUEST,
           error: error.message || 'Something bad happened!',
         })
@@ -98,6 +58,7 @@ export default ({ getState }) => (next) => async (action) => {
     }
     return next(
       actionWith({
+        payload,
         type: failureType,
         error: error.message || 'Something bad happened!',
       })
