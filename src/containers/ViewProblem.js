@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import {
   Grid,
   Header,
-  Icon,
   Container,
   Segment,
   Label,
-  List,
 } from 'semantic-ui-react';
 import Difficulty from '../components/problem/Difficulty';
 import Tag from '../components/problem/Tag';
@@ -21,32 +19,6 @@ import {
   getEvents,
   getSources,
 } from '../redux/actions/properties'
-
-// function getTagLabels(indexes, set) {
-//   const allTagNames = set;
-//   var allLabes = indexes.map((index) => {
-//     var name;
-//     // for () todo
-//     return (
-//       <Tag
-//         key={getAttribute(allTagNames[index - 1], 'name')}
-//         name={getAttribute(allTagNames[index - 1], 'name')}
-//       />
-//     );
-//   }
-//   );
-//   return allLabes;
-// }
-
-// function getBulletList(indexes, set) {
-//   const allTagNames = set;
-//   var allLabes = indexes.map((index) =>
-//     <li key={getAttribute(allTagNames[index - 1], 'name')} >
-//       {getAttribute(allTagNames[index - 1], 'name')}
-//     </li>
-//   );
-//   return allLabes;
-// }
 
 const problemId = parseInt(window.location.pathname.split('/')[2]);
 
@@ -92,24 +64,6 @@ class ViewProblem extends Component {
                       width: '100%',
                     }}
                     content={problem.text}
-                  />
-                </Container>
-              </Segment>
-
-              <Segment textAlign="center">
-
-                <Label size="large" attached="top">
-                  پاسخ
-                </Label>
-                <Container fluid textAlign="right" style={{ fontSize: 20 }}>
-                  <br />
-                  <TinyPreview
-                    frameProps={{
-                      frameBorder: '0',
-                      scrolling: 'no',
-                      width: '100%',
-                    }}
-                    content={problem.answer ? problem.answer : 'ببخشید. این سوال هنوز جواب نداره :('}
                   />
                 </Container>
               </Segment>

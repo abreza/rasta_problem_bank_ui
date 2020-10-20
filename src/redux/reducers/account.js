@@ -6,7 +6,11 @@ const initialState = {
   wasRegisterationFailed: false,
   username: '',
   isFetching: false,
-  token: null
+  token: null,
+  promptStatus: false,
+  promptHeader: '',
+  promptText: '',
+  promptColor: '',
 }
 
 function account(state = initialState, action) {
@@ -82,6 +86,15 @@ function account(state = initialState, action) {
       }
 
     //#######################
+
+    case actionTypes.SETـPROMPT:
+      return {
+        ...state,
+        promptStatus: action.payload.status,
+        promptHeader: action.payload.header,
+        promptText: action.payload.text,
+        promptColor: action.payload.color,
+      }
 
     default:
       return state;

@@ -92,3 +92,22 @@ export const logout = () => ({
     },
   },
 });
+
+
+
+export const setPrompt = (status, header, text, color) => (
+  dispatch,
+  getState
+) => {
+  console.log("EEEEEEEEEe")
+  const prompt = {
+    type: actionTypes.SETـPROMPT,
+    payload: {
+      status,
+      header,
+      text,
+      color
+    },
+  }
+  return dispatch(prompt)
+};

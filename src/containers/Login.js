@@ -7,24 +7,32 @@ import {
   Message,
   Segment,
   Container,
-  TransitionablePortal,
 } from 'semantic-ui-react';
-import { login } from '../redux/actions/account';
+import { login, setPrompt } from '../redux/actions/account';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 
 
-const Login = ({ isFetching, isLoggedIn, wasLoginFailed, login }) => {
+const Login = ({ isFetching, isLoggedIn, wasLoginFailed, login, setPrompt }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [promptStatus, setPromptStatus] = useState(false)
 
   const handleSubmit = (event) => {
     login(username, password);
-    setPromptStatus(true)
     event.preventDefault();
   }
+
+  useEffect(
+    () => {
+      setPrompt(
+        wasLoginFailed,
+        'نام کاربری یا رمز عبورت اشتباهه.',
+        'یه‌بار دیگه تلاش کن!',
+        'red'
+      )
+    }
+    , [wasLoginFailed])
 
   if (isLoggedIn) {
     return <Redirect push to={"/"} />
@@ -85,44 +93,6 @@ const Login = ({ isFetching, isLoggedIn, wasLoginFailed, login }) => {
           </Grid.Row>
         </Grid>
       </Container >
-
-      {/* Prompts: */}
-
-      <TransitionablePortal
-        closeOnTriggerClick
-        open={promptStatus && wasLoginFailed}
-        onOpen={() =>
-          setTimeout(() => setPromptStatus(false), 2000)
-        }
-        openOnTriggerClick
-      >
-        <Segment
-          inverted
-          color='red'
-          style={{ direction: 'rtl', position: 'fixed', left: '2%', bottom: '2%', zIndex: 1000 }}
-        >
-          <Header>نام کاربری یا رمز عبورت اشتباهه</Header>
-          <p>یه بار دیگه تلاش کن.</p>
-        </Segment>
-      </TransitionablePortal>
-
-      {/* <TransitionablePortal
-        closeOnTriggerClick
-        open={wasLoginSuccessful && !wasPromptOpened}
-        onOpen={() =>
-          setTimeout(() => setPromptStatus(true), 2000)
-        }
-        openOnTriggerClick
-      >
-        <Segment
-          inverted
-          color='green'
-          style={{ direction: 'rtl', position: 'fixed', left: '2%', bottom: '2%', zIndex: 1000 }}
-        >
-          <Header>خوش اومدی رستایی!</Header>
-          <p>مسئله‌ها منتظر تو هستند...</p>
-        </Segment>
-      </TransitionablePortal> */}
     </>
   );
 }
@@ -134,6 +104,10 @@ const mapStatoToProps = (state) => ({
   isFetching: state.account.isFetching,
 })
 
-export default connect(mapStatoToProps, {
-  login,
-})(Login)
+export default connect(
+  mapStatoToProps,
+  {
+    login,
+    setPrompt,
+  }
+)(Login)
