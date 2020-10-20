@@ -11,6 +11,7 @@ import {
   Icon,
   Dropdown,
   Message,
+  Form,
 } from 'semantic-ui-react';
 import { Redirect } from 'react-router';
 import { Slider } from 'react-semantic-ui-range';
@@ -48,8 +49,6 @@ class Problem extends Component {
       selectedEvents: [],
       selectedSource: '',
       problem: '',
-      doesSubmitorEditProblem: false,
-      doesEditingProblemLoaded: false,
       settings: {
         start: [6, 10],
         min: 1,
@@ -63,7 +62,11 @@ class Problem extends Component {
             },
           });
         },
-      }
+      },
+
+      doesSubmitorEditProblem: false,
+      doesEditingProblemLoaded: false,
+      difficultyWarning: false,
     };
     this.handleSubmitorEdit = this.handleSubmitorEdit.bind(this);
     this.setProblem = this.setProblem.bind(this);
@@ -106,7 +109,7 @@ class Problem extends Component {
       for (let i = 0; i < this.props.subtags.length; i++) {
         let subtag = this.props.subtags[i];
         if (subtag.parent == id) {
-          newSelectedSubtags[subtag.parent + ' ' + subtag.id] = false;
+          newSelectedSubtags[subtag.id] = false;
         }
       }
       this.setState({
@@ -124,7 +127,7 @@ class Problem extends Component {
     });
   }
 
-  handleSubmitorEdit = (isProblemNew) => { //todo
+  handleSubmitorEdit = (isProblemNew) => {
     this.setProblem();
     setTimeout(() => {
       if (isProblemNew) {
@@ -254,27 +257,41 @@ class Problem extends Component {
               style={{ direction: 'rtl' }}
             >
               <Segment style={{ direction: 'rtl' }}>
-                <Header content={'شناسنامه'} as="h2" textAlign="center" />
+                <Header content={'شناسنامه'} as="h3" textAlign="center" />
                 <Divider section />
-                <Input
-                  placeholder="نام مسئله"
-                  className="rtl"
-                  fluid
-                  onChange={(e) =>
-                    this.setState({ name: e.target.value })
-                  }
-                  value={this.state.name}
-                />
-                <Input
-                  style={{ width: '50%' }}
-                  placeholder="سختی"
-                  type="number"
-                  max="100"
-                  min="0"
-                  className="rtl hardness"
-                  onChange={this.handleDifficultyLevelChange}
-                  value={this.state.difficulty.level}
-                />
+                <Form>
+                  <Form.Field>
+
+
+
+
+                    <Input
+                      placeholder="نام مسئله"
+                      className="rtl"
+                      fluid
+                      onChange={(e) =>
+                        this.setState({ name: e.target.value })
+                      }
+                      value={this.state.name}
+                    />
+                    <Label pointing prompt>
+                      Please enter a value
+                    </Label>
+                    <Input
+                      style={{ width: '50%' }}
+                      placeholder="سختی"
+                      type="number"
+                      max="100"
+                      min="0"
+                      className="rtl hardness"
+                      onChange={this.handleDifficultyLevelChange}
+                      value={this.state.difficulty.level}
+                    />
+                    <Label color='red' floating >
+                      سختی هر مسئله عددی بین ۰ تا ۱۰۰ است.
+                    </Label>
+                  </Form.Field>
+                </Form>
                 <br />
                 <br />
                 <label>

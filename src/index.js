@@ -8,22 +8,26 @@ import Root from './root/Root';
 import configureStore from './redux/store/configureStore';
 
 
-const persistedState = localStorage.getItem('rastaReactState1')
-  ? JSON.parse(localStorage.getItem('rastaReactState1'))
+const persistedState = localStorage.getItem('rastaReactState44')
+  ? JSON.parse(localStorage.getItem('rastaReactState44'))
   : {};
 
-const store = configureStore(persistedState);
+const store = configureStore();
 
 store.subscribe(() => {
+  // localStorage.clear();
   localStorage.setItem(
-    'rastaReactState1',
+    'rastaReactState44',
     JSON.stringify({
       account: { ...store.getState().account },
     })
   );
 });
 
+
+
 ReactDOM.render(
+
   <Router>
     <Provider store={store}>
       <Root />

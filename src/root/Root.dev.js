@@ -15,6 +15,8 @@ import NavBarItems from '../components/NavBar/NavBarItems';
 
 import '../styles/App.css';
 import PrivateRoute from './PrivateRoute';
+import GuestRoute from './GuestRoute';
+
 import { logout } from '../redux/actions/account'
 
 
@@ -30,8 +32,8 @@ class Root extends Component {
           logout: this.props.logout,
         })}>
           <Switch>
-            <Route path="/login" component={LoginPage} />
-            <Route path="/registration" component={RegistrationPage} />
+            <GuestRoute path="/login" component={LoginPage} />
+            <GuestRoute path="/registration" component={RegistrationPage} />
             <Route path="/problem/:id" component={ViewProblem} />
             <PrivateRoute path="/make_problem/" component={Problem} />
             <PrivateRoute path="/edit_problem/:id" component={Problem} />

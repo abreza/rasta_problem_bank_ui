@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   Form,
@@ -7,6 +7,7 @@ import {
   Message,
   Segment,
   Container,
+  TransitionablePortal,
 } from 'semantic-ui-react';
 import { login } from '../redux/actions/account';
 import { Link } from 'react-router-dom';
@@ -14,39 +15,24 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      password: '',
-      formErrorTitle: '',
-      formErrorMessage: '',
-      isPangeNewlyLoaded: true,
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+const Login = ({ isFetching, isLoggedIn, wasLoginFailed, login }) => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [promptStatus, setPromptStatus] = useState(false)
 
-  handleChange = (e, { name, value }) => this.setState({ [name]: value });
-
-  async handleSubmit(event) {
-    const { username, password } = this.state;
-    this.props.login(username, password);
-    this.setState({ isPangeNewlyLoaded: false })
+  const handleSubmit = (event) => {
+    login(username, password);
+    setPromptStatus(true)
     event.preventDefault();
   }
 
-  render() {
-    if (this.props.isLoggedIn) {
-      return <Redirect push to={"/"} />;
-    }
+  if (isLoggedIn) {
+    return <Redirect push to={"/"} />
+  }
 
-    const { isFetching, wasLoginFailed } = this.props;
-    const { isPangeNewlyLoaded } = this.state;
-
-    return (
-      <Container>
+  return (
+    <>
+      < Container >
         <Grid centered container doubling stackable>
           <Grid.Row verticalAlign='middle'>
             <Grid.Column
@@ -56,17 +42,10 @@ class Login extends Component {
               <Header as="h2" textAlign="center">
                 ورود
               </Header>
-
-              <Message error style={{ direction: 'rtl' }} hidden={isFetching || !wasLoginFailed || isPangeNewlyLoaded}>
-                <Message.Header>نام کاربری یا رمز عبورت اشتباهه</Message.Header>
-                <p>یه بار دیگه تلاش کن.</p>
-              </Message>
-
               <Segment>
                 <Form
                   size="large"
-                  onSubmit={this.handleSubmit}
-                  error={!!this.state.form_error}
+                  onSubmit={handleSubmit}
                   loading={isFetching}
                 >
                   <Form.Input
@@ -77,8 +56,7 @@ class Login extends Component {
                     iconPosition="right"
                     placeholder="نام کاربری"
                     className="persian-input"
-                    value={this.state.username}
-                    onChange={this.handleChange}
+                    onChange={(event) => setUsername(event.target.value)}
                   />
 
                   <Form.Input
@@ -90,8 +68,7 @@ class Login extends Component {
                     placeholder="رمز عبور"
                     type="password"
                     className="persian-input"
-                    value={this.state.password}
-                    onChange={this.handleChange}
+                    onChange={(event) => setPassword(event.target.value)}
                   />
 
                   <Button primary fluid size="large" disabled={isFetching}>
@@ -107,15 +84,54 @@ class Login extends Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-      </Container>
-    );
-  }
+      </Container >
+
+      {/* Prompts: */}
+
+      <TransitionablePortal
+        closeOnTriggerClick
+        open={promptStatus && wasLoginFailed}
+        onOpen={() =>
+          setTimeout(() => setPromptStatus(false), 2000)
+        }
+        openOnTriggerClick
+      >
+        <Segment
+          inverted
+          color='red'
+          style={{ direction: 'rtl', position: 'fixed', left: '2%', bottom: '2%', zIndex: 1000 }}
+        >
+          <Header>نام کاربری یا رمز عبورت اشتباهه</Header>
+          <p>یه بار دیگه تلاش کن.</p>
+        </Segment>
+      </TransitionablePortal>
+
+      {/* <TransitionablePortal
+        closeOnTriggerClick
+        open={wasLoginSuccessful && !wasPromptOpened}
+        onOpen={() =>
+          setTimeout(() => setPromptStatus(true), 2000)
+        }
+        openOnTriggerClick
+      >
+        <Segment
+          inverted
+          color='green'
+          style={{ direction: 'rtl', position: 'fixed', left: '2%', bottom: '2%', zIndex: 1000 }}
+        >
+          <Header>خوش اومدی رستایی!</Header>
+          <p>مسئله‌ها منتظر تو هستند...</p>
+        </Segment>
+      </TransitionablePortal> */}
+    </>
+  );
 }
+
 
 const mapStatoToProps = (state) => ({
   isLoggedIn: state.account.isLoggedIn,
-  isFetching: state.account.isFetching,
   wasLoginFailed: state.account.wasLoginFailed,
+  isFetching: state.account.isFetching,
 })
 
 export default connect(mapStatoToProps, {

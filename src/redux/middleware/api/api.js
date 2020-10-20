@@ -10,6 +10,7 @@ export default ({ getState }) => (next) => async (action) => {
     return next(action);
   }
 
+
   const actionWith = (data) => {
     const finalAction = Object.assign({}, action, data);
     delete finalAction[CALL_API];
@@ -20,6 +21,11 @@ export default ({ getState }) => (next) => async (action) => {
   const { url, types, payload, schema } = callAPI;
   const [requestType, successType, failureType] = types;
   next(actionWith({ payload, type: requestType }));
+
+  fetchOptions = {
+    ...fetchOptions,
+    body: JSON.stringify(fetchOptions.body),
+  }
 
   try {
     if (!fetchOptions.dontContentType) {
@@ -32,7 +38,7 @@ export default ({ getState }) => (next) => async (action) => {
     if (!!account && !!account.token) {
       fetchOptions.headers = {
         ...fetchOptions.headers,
-        Authorization: account.token,
+        Authorization: 'token ' + account.token,
       };
     }
     let response = await fetchApi(url, fetchOptions);
