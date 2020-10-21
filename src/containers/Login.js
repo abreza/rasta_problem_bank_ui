@@ -17,22 +17,33 @@ import { Redirect } from 'react-router';
 const Login = ({ isFetching, isLoggedIn, wasLoginFailed, login, setPrompt }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [didPageLoadNewly, setPageLoadStatus] = useState(true)
 
   const handleSubmit = (event) => {
+    setPageLoadStatus(false)
     login(username, password);
     event.preventDefault();
   }
 
-  useEffect(
-    () => {
+  useEffect(() => {
+    if (wasLoginFailed && !didPageLoadNewly) {
       setPrompt(
-        wasLoginFailed,
         'نام کاربری یا رمز عبورت اشتباهه.',
         'یه‌بار دیگه تلاش کن!',
-        'red'
+        'red',
       )
     }
-    , [wasLoginFailed])
+    return () => {
+      if (isLoggedIn && !didPageLoadNewly) {
+        setPrompt(
+          'خوش اومدی!',
+          'مسئله‌ها منتظر تو هستند...',
+          'green',
+        )
+      }
+    }
+  }
+    , [wasLoginFailed, isLoggedIn, didPageLoadNewly])
 
   if (isLoggedIn) {
     return <Redirect push to={"/"} />
@@ -96,7 +107,6 @@ const Login = ({ isFetching, isLoggedIn, wasLoginFailed, login, setPrompt }) => 
     </>
   );
 }
-
 
 const mapStatoToProps = (state) => ({
   isLoggedIn: state.account.isLoggedIn,

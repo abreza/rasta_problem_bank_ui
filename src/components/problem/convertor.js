@@ -1,5 +1,5 @@
 
-const converter = ({ difficulty, name, problem, solution, selectedTags, selectedSubtags, selectedEvents, selectedSource }) => {
+const converter = ({ difficultyLevel, appropriateGrades, name, problem, selectedTags, selectedSubtags, selectedEvents, selectedSource }) => {
 
   const tags = [], sub_tags = [], events = [];
   for (var id in selectedTags) {
@@ -18,15 +18,13 @@ const converter = ({ difficulty, name, problem, solution, selectedTags, selected
     }
   }
 
-  console.log(name)
-
   return (
     {
       hardness: {
         id: null,
-        level: difficulty.level,
-        appropriate_grades_min: difficulty.appropriateGrades[0],
-        appropriate_grades_max: difficulty.appropriateGrades[1],
+        level: difficultyLevel,
+        appropriate_grades_min: appropriateGrades[0],
+        appropriate_grades_max: appropriateGrades[1],
       },
       answers: [
       ],
@@ -40,27 +38,6 @@ const converter = ({ difficulty, name, problem, solution, selectedTags, selected
       events,
     }
   )
-
-  // return ({
-  //   answers: [],
-  //   hardness: {
-  //     id: null,
-  //     level: difficulty.level,
-  //     appropriate_grades_min: difficulty.appropriateGrades[0],
-  //     appropriate_grades_max: difficulty.appropriateGrades[1],
-  //   },
-  //   name,
-  //   verification_status: "w",
-  //   verification_comment: "",
-  //   text: solution,
-  //   publish_date: "2020-05-09T22:40:08.975298+04:30",
-  //   change_date: null,
-  //   source: selectedSource,
-  //   question_maker: 3,
-  //   tags,
-  //   sub_tags,
-  //   events,
-  // })
 }
 
 

@@ -15,11 +15,11 @@ export default class TinyEditorComponent extends Component {
       id: this.props.id,
     };
 
-    if (!this.props.initContent) {
-      this.config.setup = (editor) => {
-        this.setState({ editor });
-      };
-    }
+    // if (!this.props.initContent) { //todo
+    this.config.setup = (editor) => {
+      this.setState({ editor });
+    };
+    // }
 
     this.init = this.init.bind(this);
   }
@@ -59,7 +59,7 @@ export default class TinyEditorComponent extends Component {
           />
         )}
 
-        <Editor id={this.props.id} init={this.config} />
+        <Editor id={this.props.id} init={this.config} initialValue={this.props.initContent} />
       </>
     );
   }

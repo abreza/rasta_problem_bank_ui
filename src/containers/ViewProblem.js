@@ -33,7 +33,6 @@ class ViewProblem extends Component {
   }
 
   render() {
-    console.log(this.props.problems)
     if (this.props.problems) {
       var problem = this.props.problems[problemId];
       return (
@@ -120,7 +119,6 @@ class ViewProblem extends Component {
                   {
                     this.props.sources.filter(source => {
                       if (source.id == problem.source) {
-                        console.log(source.name)
                         return true;
                       }
                     }).map((source) => (

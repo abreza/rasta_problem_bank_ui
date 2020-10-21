@@ -42,6 +42,7 @@ export default ({ getState }) => (next) => async (action) => {
       };
     }
     let response = await fetchApi(url, fetchOptions);
+
     if (schema) {
       response = normalize(response, schema);
     }

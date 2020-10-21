@@ -2,6 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   isLoggedIn: false,
+  isRegistered: false,
   wasLoginFailed: false,
   wasRegisterationFailed: false,
   username: '',
@@ -19,6 +20,7 @@ function account(state = initialState, action) {
       return {
         ...state,
         isFetching: true,
+        isRegistered: false,
         wasRegisterationFailed: false,
       };
 
@@ -27,6 +29,7 @@ function account(state = initialState, action) {
         ...state,
         isFetching: false,
         token: action.response.token,
+        isRegistered: true,
         wasRegisterationFailed: false,
       };
 
@@ -34,6 +37,7 @@ function account(state = initialState, action) {
       return {
         ...state,
         isFetching: false,
+        isRegistered: false,
         wasRegisterationFailed: true,
       };
 
@@ -76,7 +80,7 @@ function account(state = initialState, action) {
 
     case actionTypes.LOGOUT_SUCCESS:
       return {
-        initialState
+        ...initialState
       };
 
     case actionTypes.LOGOUT_FAILURE:
@@ -87,13 +91,22 @@ function account(state = initialState, action) {
 
     //#######################
 
-    case actionTypes.SETـPROMPT:
+    case actionTypes.SHOWـPROMPT:
       return {
         ...state,
-        promptStatus: action.payload.status,
+        promptStatus: true,
         promptHeader: action.payload.header,
         promptText: action.payload.text,
         promptColor: action.payload.color,
+      }
+
+    case actionTypes.REMOVEـPROMPT:
+      return {
+        ...state,
+        promptStatus: false,
+        promptHeader: '',
+        promptText: '',
+        promptColor: '',
       }
 
     default:

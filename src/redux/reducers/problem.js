@@ -3,8 +3,8 @@ import * as actionTypes from '../actions/actionTypes';
 function problem(
   state = {
     isFetching: false,
+    wasProblemSubmitSuccessful: false,
     wasProblemSubmitFailed: false,
-    wasProblemEditFailed: false,
   },
   action
 ) {
@@ -13,6 +13,15 @@ function problem(
       return {
         ...state,
         isFetching: true,
+        wasProblemSubmitSuccessful: false,
+        wasProblemSubmitFailed: false,
+      }
+
+    case actionTypes.PROBLEM_SUBMIT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        wasProblemSubmitSuccessful: true,
         wasProblemSubmitFailed: false,
       }
 
@@ -20,37 +29,8 @@ function problem(
       return {
         ...state,
         isFetching: false,
+        wasProblemSubmitSuccessful: false,
         wasProblemSubmitFailed: true,
-      }
-
-    case actionTypes.PROBLEM_SUBMIT_SUCCESS:
-      return {
-        ...state,
-        isFetching: false,
-        wasProblemSubmitFailed: false,
-      }
-
-    //#########################
-
-    case actionTypes.PROBLEM_EDIT_REQUEST:
-      return {
-        ...state,
-        isFetching: true,
-        wasProblemEditFailed: false,
-      }
-
-    case actionTypes.PROBLEM_EDIT_FAILURE:
-      return {
-        ...state,
-        isFetching: false,
-        wasProblemEditFailed: true,
-      }
-
-    case actionTypes.PROBLEM_EDIT_SUCCESS:
-      return {
-        ...state,
-        isFetching: false,
-        wasProblemEditFailed: false,
       }
 
     //#########################

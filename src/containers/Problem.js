@@ -30,6 +30,8 @@ import {
   getEvents,
   getSources,
 } from '../redux/actions/properties'
+import { toPersianNumber } from '../utils/translateNumber'
+import { setPrompt } from '../redux/actions/account'
 import '../styles/Problem.css';
 
 class Problem extends Component {
@@ -42,10 +44,8 @@ class Problem extends Component {
       selectedTags: [],
       selectedSubtags: [],
       verificationStatus: 'W',
-      difficulty: {
-        level: '',
-        appropriateGrades: [6, 10],
-      },
+      difficultyLevel: '',
+      appropriateGrades: [6, 10],
       selectedEvents: [],
       selectedSource: '',
       problem: '',
@@ -55,12 +55,7 @@ class Problem extends Component {
         max: 12,
         step: 1,
         onChange: (appropriateGrades) => {
-          this.setState({
-            difficulty: {
-              ...this.state.difficulty,
-              appropriateGrades: appropriateGrades,
-            },
-          });
+          this.setState({ appropriateGrades: appropriateGrades });
         },
       },
 
@@ -72,7 +67,7 @@ class Problem extends Component {
     this.setProblem = this.setProblem.bind(this);
     this.handleTagChange = this.handleTagChange.bind(this);
     this.handleSubtagChange = this.handleSubtagChange.bind(this);
-    this.handleDifficultyLevelChange = this.handleDifficultyLevelChange.bind(this);
+    this.isProblemDataOk = this.isProblemDataOk.bind(this);
     this.loadEditingProblem = this.loadEditingProblem.bind(this);
   }
 
@@ -86,15 +81,6 @@ class Problem extends Component {
     if (!this.state.isProblemNew) {
       fetchProblem(problemId);
     }
-  }
-
-  handleDifficultyLevelChange = (event) => {
-    this.setState({
-      difficulty: {
-        ...this.state.difficulty,
-        level: event.target.value,
-      }
-    })
   }
 
   handleTagChange(id, selected) {
@@ -128,18 +114,48 @@ class Problem extends Component {
   }
 
   handleSubmitorEdit = (isProblemNew) => {
-    this.setProblem();
-    setTimeout(() => {
-      if (isProblemNew) {
-        this.props.submitProblem(converter(this.state))
-      } else {
-        this.props.editProblem(converter(this.state))
+    const ok = this.isProblemDataOk();
+    if (ok) {
+      this.setProblem();
+      setTimeout(() => {
+        if (isProblemNew) {
+          this.props.submitProblem(converter(this.state))
+        } else {
+          this.props.editProblem(converter(this.state))
+        }
+        this.props.setPrompt(
+          isProblemNew ? 'دمت گرم...' : 'حله...',
+          isProblemNew ? 'مسئله با موفقیت ایجاد شد.' : 'مسئله با موفقیت ویرایش شد.',
+          'green'
+        )
       }
+        , 500)
+      this.setState({ doesSubmitorEditProblem: true, })
     }
-      , 500)
-    this.setState({ doesSubmitorEditProblem: true, })
   };
 
+  isProblemDataOk = () => {
+    const { setPrompt } = this.props;
+    const promptHeader = 'موارد زیر باید باشن و تو هنوز پرشون نکردی:';
+    let promptText = '', promptColor = 'red';
+
+    if (!this.problemEl.getContent()) {
+      promptText += 'صورت مسئله';
+    }
+    if (!this.state.name) {
+      if (promptText) promptText += ' + '
+      promptText += 'نام مسئله';
+    }
+    if (!this.state.difficultyLevel) {
+      if (promptText) promptText += ' + '
+      promptText += 'درجه‌ی سختی'
+    }
+    if (promptText) {
+      setPrompt(promptHeader, promptText, promptColor)
+      return false
+    }
+    return true
+  }
 
   setProblem() { // todo check empty
     this.setState({
@@ -148,7 +164,6 @@ class Problem extends Component {
   }
 
   loadEditingProblem(problem) {
-    console.log(problem)
     let newSelectedTags = {};
     let newSelectedSubtags = {};
     for (let i = 0; i < problem.tags.length; i++) {
@@ -160,10 +175,8 @@ class Problem extends Component {
       newSelectedSubtags[subtagId] = true
     }
     this.setState({
-      difficulty: {
-        level: problem.hardness.level,
-        appropriateGrades: [problem.hardness.appropriate_grades_min, problem.hardness.appropriate_grades_max]
-      },
+      difficultyLevel: problem.hardness.level,
+      appropriateGrades: [problem.hardness.appropriate_grades_min, problem.hardness.appropriate_grades_max],
       name: problem.name,
       selectedTags: newSelectedTags,
       selectedSubtags: newSelectedSubtags,
@@ -172,9 +185,11 @@ class Problem extends Component {
     })
   }
 
+  ////////////////////////////////////////////
+
   render() {
     const { problemId, isProblemNew, doesSubmitorEditProblem } = this.state;
-    const { isFetching, wasProblemSubmitFailed, wasProblemEditFailed } = this.props;
+    const { isFetching, wasProblemSubmitSuccessful, wasProblemSubmitFailed } = this.props;
 
     if (!isProblemNew && !this.props.problems) {
       return (
@@ -191,28 +206,15 @@ class Problem extends Component {
       this.loadEditingProblem(editingProblem);
     }
 
-
-    setTimeout(() => {
-      if (doesSubmitorEditProblem && !(wasProblemSubmitFailed || wasProblemEditFailed)) {
-        return <Redirect push to={'/problemset/page/1'} />; //todo:
-      }
-    }, 100)
+    if (wasProblemSubmitSuccessful) {
+      return <Redirect push to={'/problemset/page/1'} />; //todo:
+    }
 
     return (
-      <Container>
+      <Container style={{ direction: 'rtl' }}>
         <Grid centered stackable container doubling>
           <Grid.Row verticalAlign='middle' relaxed>
-            <Grid.Column width={5} only="computer" />
-            <Grid.Column width={5} >
-              <Header as="h1" textAlign="center">
-                {isProblemNew ? '«مسئله‌ی جدید»' : '«ویرایش مسئله»'}
-              </Header>
-            </Grid.Column>
-            <Grid.Column
-              width={5}
-              only="computer"
-              style={{ textAlign: 'right' }}
-            >
+            <Grid.Column width={5} only="computer" style={{ textAlign: 'right' }}>
               <Button
                 icon
                 labelPosition="right"
@@ -224,19 +226,12 @@ class Problem extends Component {
                 {isProblemNew ? 'ذخیره' : 'اعمال تغیرات'}
               </Button>
             </Grid.Column>
-          </Grid.Row>
-
-          <Grid.Row verticalAlign='middle' only='computer'>
-            <Grid.Column textAlign='center' width={16}>
-              <Message
-                error
-                style={{ direction: 'rtl' }}
-                hidden={isFetching || !wasProblemSubmitFailed}
-              >
-                <Message.Header>یه مشکلی وجود داره.</Message.Header>
-                <p>یه چکی بکن و دوباره تلاش کن.</p>
-              </Message>
+            <Grid.Column width={5} >
+              <Header as="h1" textAlign="center">
+                {isProblemNew ? '«مسئله‌ی جدید»' : '«ویرایش مسئله»'}
+              </Header>
             </Grid.Column>
+            <Grid.Column width={5} only="computer" />
           </Grid.Row>
 
           <Grid.Row columns={2} style={{ direction: 'rtl' }}>
@@ -261,22 +256,13 @@ class Problem extends Component {
                 <Divider section />
                 <Form>
                   <Form.Field>
-
-
-
-
                     <Input
                       placeholder="نام مسئله"
                       className="rtl"
                       fluid
-                      onChange={(e) =>
-                        this.setState({ name: e.target.value })
-                      }
+                      onChange={(event) => this.setState({ name: event.target.value })}
                       value={this.state.name}
                     />
-                    <Label pointing prompt>
-                      Please enter a value
-                    </Label>
                     <Input
                       style={{ width: '50%' }}
                       placeholder="سختی"
@@ -284,21 +270,20 @@ class Problem extends Component {
                       max="100"
                       min="0"
                       className="rtl hardness"
-                      onChange={this.handleDifficultyLevelChange}
-                      value={this.state.difficulty.level}
+                      onChange={
+                        (event) =>
+                          this.setState({ difficultyLevel: Math.min(Math.max(event.target.value, 0), 100) })
+                      }
+                      value={this.state.difficultyLevel}
                     />
-                    <Label color='red' floating >
-                      سختی هر مسئله عددی بین ۰ تا ۱۰۰ است.
-                    </Label>
                   </Form.Field>
                 </Form>
                 <br />
-                <br />
                 <label>
-                  پایه‌ی مناسب:
+                  {'پایه‌ی مناسب: '}
                   <span>
-                    {this.state.difficulty.appropriateGrades[0] + 'ام تا'}
-                    {this.state.difficulty.appropriateGrades[1] + 'ام'}
+                    {toPersianNumber(this.state.appropriateGrades[0]) + 'ام تا '}
+                    {toPersianNumber(this.state.appropriateGrades[1]) + 'ام'}
                   </span>
                   <Slider
                     labeled
@@ -408,14 +393,6 @@ class Problem extends Component {
               only="mobile tablet"
               textAlign='center'
             >
-              <Message
-                error
-                style={{ direction: 'rtl' }}
-                hidden={isFetching || !wasProblemSubmitFailed}
-              >
-                <Message.Header>یه مشکلی وجود داره.</Message.Header>
-                <p>یه چکی بکن و دوباره تلاش کن.</p>
-              </Message>
               <Button
                 icon
                 labelPosition="right"
@@ -436,7 +413,7 @@ class Problem extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { problems, isFetching, wasProblemSubmitFailed, wasProblemEditFailed } = state.problem;
+  const { problems, isFetching, wasProblemSubmitSuccessful, wasProblemSubmitFailed } = state.problem;
   const { events, sources, tags, subtags } = state.properties;
   return {
     events,
@@ -445,8 +422,8 @@ const mapStateToProps = (state) => {
     subtags,
     problems,
     isFetching,
+    wasProblemSubmitSuccessful,
     wasProblemSubmitFailed,
-    wasProblemEditFailed,
   }
 };
 
@@ -460,4 +437,5 @@ export default connect(
     getSubtags,
     getEvents,
     getSources,
+    setPrompt,
   })(Problem);

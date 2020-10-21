@@ -95,19 +95,23 @@ export const logout = () => ({
 
 
 
-export const setPrompt = (status, header, text, color) => (
+export const setPrompt = (header, text, color) => (
   dispatch,
   getState
 ) => {
-  console.log("EEEEEEEEEe")
-  const prompt = {
-    type: actionTypes.SETـPROMPT,
+  let prompt = {
+    type: actionTypes.SHOWـPROMPT,
     payload: {
-      status,
       header,
       text,
       color
     },
   }
-  return dispatch(prompt)
+  dispatch(prompt)
+  prompt = {
+    type: actionTypes.REMOVEـPROMPT,
+  }
+  setTimeout(() => {
+    dispatch(prompt)
+  }, 3000)
 };

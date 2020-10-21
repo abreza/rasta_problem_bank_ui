@@ -69,9 +69,9 @@ export const editProblem = (problem) => {
   return ({
     [CALL_API]: {
       types: [
-        actionTypes.PROBLEM_EDIT_REQUEST,
-        actionTypes.PROBLEM_EDIT_SUCCESS,
-        actionTypes.PROBLEM_EDIT_FAILURE,
+        actionTypes.PROBLEM_SUBMIT_REQUEST,
+        actionTypes.PROBLEM_SUBMIT_SUCCESS,
+        actionTypes.PROBLEM_SUBMIT_FAILURE,
       ],
       url: URLs.SUBMIT_PROBLEM,
       fetchOptions: {

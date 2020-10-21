@@ -16,7 +16,6 @@ import Prompt from '../components/prompt/prompt'
 
 import '../styles/App.css';
 import PrivateRoute from './PrivateRoute';
-import GuestRoute from './GuestRoute';
 
 import { logout } from '../redux/actions/account'
 
@@ -30,8 +29,8 @@ const Root = ({ isLoggedIn, username, logout }) => {
         logout: logout,
       })}>
         <Switch>
-          <GuestRoute path="/login" component={LoginPage} />
-          <GuestRoute path="/registration" component={RegistrationPage} />
+          <Route path="/login" component={LoginPage} key={1} />
+          <Route path="/registration" component={RegistrationPage} key={2} />
           <Route path="/problem/:id" component={ViewProblem} />
           <PrivateRoute path="/make_problem/" component={Problem} />
           <PrivateRoute path="/edit_problem/:id" component={Problem} />
