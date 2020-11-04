@@ -15,7 +15,7 @@ import { Redirect } from 'react-router';
 
 
 
-const Registration = ({ isFetching, isRegistered, wasRegisterationFailed, register, setPrompt }) => {
+const Registration = ({ isFetching, isRegistered, wasRegisterationFailed, isLoggedIn, register, setPrompt }) => {
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
   const [firstname, setFirstname] = useState()
@@ -67,7 +67,7 @@ const Registration = ({ isFetching, isRegistered, wasRegisterationFailed, regist
     , [wasRegisterationFailed, isRegistered, didPageLoadNewly])
 
 
-  if (!didPageLoadNewly && isRegistered) {
+  if (isLoggedIn || (!didPageLoadNewly && isRegistered)) {
     return <Redirect push to={"/login"} />
   }
 
@@ -198,6 +198,7 @@ const Registration = ({ isFetching, isRegistered, wasRegisterationFailed, regist
 const mapStatoToProps = (state) => ({
   isFetching: state.account.isFetching,
   isRegistered: state.account.isRegistered,
+  isLoggedIn: state.account.isLoggedIn,
   wasRegisterationFailed: state.account.wasRegisterationFailed,
 })
 

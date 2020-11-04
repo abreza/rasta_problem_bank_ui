@@ -8,6 +8,7 @@ import {
   Label,
   Table,
   Pagination,
+  Container,
 } from 'semantic-ui-react';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
@@ -45,121 +46,123 @@ class ProblemSet extends Component {
     }
 
     return (
-      <Grid
-        centered
-        container
-        stackable
-        doubling
-        style={{ direction: 'rtl' }}
-      >
+      <Container style={{ direction: 'rtl' }}>
+        <Grid
+          centered
+          container
+          stackable
+          doubling
+          style={{ direction: 'rtl' }}
+        >
 
-        <Grid.Row centered relaxed>
-          <Grid.Column>
-            <Header as="h1" textAlign="center">
-              {'«سوالات»'}
-            </Header>
-          </Grid.Column>
-        </Grid.Row>
+          <Grid.Row centered relaxed>
+            <Grid.Column>
+              <Header as="h1" textAlign="center">
+                {'«سوالات»'}
+              </Header>
+            </Grid.Column>
+          </Grid.Row>
 
-        <Grid.Row columns={2}>
+          <Grid.Row columns={2}>
 
-          <Grid.Column width={10}>
-            <Segment>
-              <Label color='teal' ribbon='right'>
-                صفحه‌ی {activePage} از {this.props.totalNumberOfPages}
-              </Label>
-              <Table
-                selectable
-                color='teal'
-                celled
-                striped
-                fixed
-                textAlign='center'
-              >
-                <Table.Header>
-                  <Table.Row>
-                    <Table.HeaderCell
-                      textAlign='center'
-                      width={2}
-                    >
-                      شناسه
-                    </Table.HeaderCell>
-                    <Table.HeaderCell
-                      width={3}
-                    >
-                      نام
-                    </Table.HeaderCell>
-                    <Table.HeaderCell
-                      width={5}
-                    >
-                      موضوعات اصلی
-                    </Table.HeaderCell>
-                    <Table.HeaderCell
-                      width={3}
-                    >
-                      درجه سختی
-                    </Table.HeaderCell>
-                  </Table.Row>
-                </Table.Header>
-
-                <Table.Body>
-                  {_.map(problems, ({ id, name, tags, hardness: difficulty, reviewStatus }) => (
-                    <Table.Row key={id}>
-                      <Table.Cell >{id}</Table.Cell>
-                      <Table.Cell textAlign='right' selectable>
-                        <a
-                          href={''}
-                          onClick={() => this.setState({ doesClickedOnAnyProblem: true, clickedProblemId: id })} //todo:
-                        >
-                          {name}
-                        </a>
-                      </Table.Cell>
-                      < Table.Cell textAlign='right' >
-                        {
-                          this.props.tags.filter(tag => {
-                            if (tags.includes(tag.id)) {
-                              return true
-                            }
-                          }).map((tag) => (
-                            <Tag
-                              size={'small'}
-                              name={tag.name}
-                              key={tag.id}
-                            />
-                          ))
-                        }
-                      </Table.Cell>
-                      <Table.Cell>{difficulty.level}</Table.Cell>
+            <Grid.Column width={10}>
+              <Segment>
+                <Label color='teal' ribbon='right'>
+                  صفحه‌ی {activePage} از {this.props.totalNumberOfPages}
+                </Label>
+                <Table
+                  selectable
+                  color='teal'
+                  celled
+                  striped
+                  fixed
+                  textAlign='center'
+                >
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell
+                        textAlign='center'
+                        width={2}
+                      >
+                        شناسه
+                      </Table.HeaderCell>
+                      <Table.HeaderCell
+                        width={3}
+                      >
+                        نام
+                      </Table.HeaderCell>
+                      <Table.HeaderCell
+                        width={5}
+                      >
+                        موضوعات اصلی
+                      </Table.HeaderCell>
+                      <Table.HeaderCell
+                        width={3}
+                      >
+                        درجه سختی
+                      </Table.HeaderCell>
                     </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table>
-              <div
-                style={{
-                  textAlign: 'center',
-                }}
-              >
-                <Pagination
-                  activePage={activePage}
-                  onPageChange={this.handlePaginationChange}
-                  totalPages={this.props.totalNumberOfPages}
-                />
-              </div>
-            </Segment>
-          </Grid.Column>
+                  </Table.Header>
 
-          <Grid.Column
-            width={5}
-            style={{ textAlign: 'right', direction: 'rtl' }}
-          >
-            <Segment>
-              <Header content={'جستجو'} as="h2" textAlign="center" />
-              <Divider></Divider>
-              <Header content={'به زودی :)'} as="h3" textAlign="center" />
-            </Segment>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid >
+                  <Table.Body>
+                    {_.map(problems, ({ id, name, tags, hardness: difficulty, reviewStatus }) => (
+                      <Table.Row key={id}>
+                        <Table.Cell >{id}</Table.Cell>
+                        <Table.Cell textAlign='right' selectable>
+                          <a
+                            href={''}
+                            onClick={() => this.setState({ doesClickedOnAnyProblem: true, clickedProblemId: id })} //todo:
+                          >
+                            {name}
+                          </a>
+                        </Table.Cell>
+                        < Table.Cell textAlign='right' >
+                          {
+                            this.props.tags.filter(tag => {
+                              if (tags.includes(tag.id)) {
+                                return true
+                              }
+                            }).map((tag) => (
+                              <Tag
+                                size={'small'}
+                                name={tag.name}
+                                key={tag.id}
+                              />
+                            ))
+                          }
+                        </Table.Cell>
+                        <Table.Cell>{difficulty.level}</Table.Cell>
+                      </Table.Row>
+                    ))}
+                  </Table.Body>
+                </Table>
+                <div
+                  style={{
+                    textAlign: 'center',
+                  }}
+                >
+                  <Pagination
+                    activePage={activePage}
+                    onPageChange={this.handlePaginationChange}
+                    totalPages={this.props.totalNumberOfPages}
+                  />
+                </div>
+              </Segment>
+            </Grid.Column>
+
+            <Grid.Column
+              width={5}
+              style={{ textAlign: 'right', direction: 'rtl' }}
+            >
+              <Segment>
+                <Header content={'جستجو'} as="h2" textAlign="center" />
+                <Divider></Divider>
+                <Header content={'به زودی :)'} as="h3" textAlign="center" />
+              </Segment>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid >
+      </Container>
     );
   }
 }

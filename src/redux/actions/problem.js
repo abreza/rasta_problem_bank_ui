@@ -75,7 +75,7 @@ export const editProblem = (problem) => {
       ],
       url: URLs.SUBMIT_PROBLEM,
       fetchOptions: {
-        method: 'PUT',
+        method: 'PATCH',
         body: problem,
       },
     },

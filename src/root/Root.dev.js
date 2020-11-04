@@ -31,11 +31,11 @@ const Root = ({ isLoggedIn, username, logout }) => {
         <Switch>
           <Route path="/login" component={LoginPage} key={1} />
           <Route path="/registration" component={RegistrationPage} key={2} />
-          <Route path="/problem/:id" component={ViewProblem} />
-          <PrivateRoute path="/make_problem/" component={Problem} />
-          <PrivateRoute path="/edit_problem/:id" component={Problem} />
-          <PrivateRoute path="/problemset" component={ProblemSet} />
-          <PrivateRoute path="/users_rating" component={UsersRating} />
+          <Route path="/problem/:id" component={ViewProblem} key={3} />
+          <PrivateRoute path="/make_problem/" component={Problem} key={4} />
+          <PrivateRoute path="/edit_problem/:id" component={Problem} key={5} />
+          <PrivateRoute path="/problemset" component={ProblemSet} key={6} />
+          <PrivateRoute path="/users_rating" component={UsersRating} key={7} />
           <Route path="/" component={Homepage} />
         </Switch>
         <DevTools />

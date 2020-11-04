@@ -10,7 +10,6 @@ import {
   Button,
   Icon,
   Dropdown,
-  Message,
   Form,
 } from 'semantic-ui-react';
 import { Redirect } from 'react-router';
@@ -157,7 +156,7 @@ class Problem extends Component {
     return true
   }
 
-  setProblem() { // todo check empty
+  setProblem() {
     this.setState({
       problem: this.problemEl.getContent()
     });
@@ -188,8 +187,8 @@ class Problem extends Component {
   ////////////////////////////////////////////
 
   render() {
-    const { problemId, isProblemNew, doesSubmitorEditProblem } = this.state;
-    const { isFetching, wasProblemSubmitSuccessful, wasProblemSubmitFailed } = this.props;
+    const { problemId, isProblemNew } = this.state;
+    const { isFetching, wasProblemSubmitSuccessful } = this.props;
 
     if (!isProblemNew && !this.props.problems) {
       return (
@@ -207,7 +206,7 @@ class Problem extends Component {
     }
 
     if (wasProblemSubmitSuccessful) {
-      return <Redirect push to={'/problemset/page/1'} />; //todo:
+      return <Redirect push to={'/problemset/page/1'} />;
     }
 
     return (

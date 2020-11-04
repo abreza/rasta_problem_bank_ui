@@ -94,7 +94,6 @@ export const logout = () => ({
 });
 
 
-
 export const setPrompt = (header, text, color) => (
   dispatch,
   getState
