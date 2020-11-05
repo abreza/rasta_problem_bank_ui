@@ -81,10 +81,10 @@ function account(state = initialState, action) {
     case actionTypes.LOGOUT_SUCCESS:
       return {
         ...initialState,
-        promptStatus: true,
-        promptHeader: "خدا به همراهت :(",
-        promptText: "بازم بیا، منتظرتیم...",
-        promptColor: "teal",
+        // promptStatus: true,
+        // promptHeader: "خدا به همراهت :(",
+        // promptText: "بازم بیا، منتظرتیم...",
+        // promptColor: "teal", todo
       };
 
     case actionTypes.LOGOUT_FAILURE:

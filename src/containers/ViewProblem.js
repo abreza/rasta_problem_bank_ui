@@ -5,6 +5,8 @@ import {
   Container,
   Segment,
   Label,
+  Button,
+  Icon,
 } from 'semantic-ui-react';
 import Difficulty from '../components/problem/Difficulty';
 import Tag from '../components/problem/Tag';
@@ -20,6 +22,7 @@ import {
   getEvents,
   getSources,
 } from '../redux/actions/properties'
+import { Link } from 'react-router-dom';
 
 const problemId = parseInt(window.location.pathname.split('/')[2]);
 
@@ -39,11 +42,25 @@ class ViewProblem extends Component {
       return (
         <Grid centered container stackable doubling style={{ direction: 'rtl' }}>
           <Grid.Row verticalAlign='middle' columns={1}>
-            <Grid.Column>
+            <Grid.Column width={5} only="computer" style={{ textAlign: 'right' }}>
+              <Button
+                as={Link}
+                to={"/editproblem/" + problemId}
+                icon
+                labelPosition="right"
+                positive
+              // loading={isFetching} todo
+              >
+                <Icon name="save" />
+                {'ویرایش'}
+              </Button>
+            </Grid.Column>
+            <Grid.Column width={5} >
               <Header as="h1" textAlign="center">
                 {'«' + problem.name + '»'}
               </Header>
             </Grid.Column>
+            <Grid.Column width={5} only="computer" />
           </Grid.Row>
 
           <Grid.Row columns={1}>
@@ -152,7 +169,27 @@ class ViewProblem extends Component {
               </Segment>
             </Grid.Column>
           </Grid.Row>
-        </Grid>
+          <Grid.Row textAlign='center'>
+            <Grid.Column
+              width={16}
+              only="mobile tablet"
+              textAlign='center'
+            >
+              <Button
+                as={Link}
+                to={'/editproblem/' + problemId}
+                icon
+                labelPosition="right"
+                positive
+                className="mobile-save-btn"
+              // loading={isFetching} todo
+              >
+                <Icon name="save" />
+                {'ویرایش'}
+              </Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid >
       );
     } else {
       return (

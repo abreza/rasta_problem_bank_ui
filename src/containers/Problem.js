@@ -122,11 +122,12 @@ class Problem extends Component {
         } else {
           this.props.editProblem(converter(this.state))
         }
-        this.props.setPrompt(
-          isProblemNew ? 'دمت گرم...' : 'حله...',
-          isProblemNew ? 'مسئله با موفقیت ایجاد شد.' : 'مسئله با موفقیت ویرایش شد.',
-          'green'
-        )
+
+        // this.props.setPrompt(
+        //   isProblemNew ? 'دمت گرم...' : 'حله...',
+        //   isProblemNew ? 'مسئله با موفقیت ایجاد شد.' : 'مسئله با موفقیت ویرایش شد.',
+        //   'green'
+        // ) todo
       }
         , 500)
       this.setState({ doesSubmitorEditProblem: true, })
