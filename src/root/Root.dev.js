@@ -29,13 +29,13 @@ const Root = ({ isLoggedIn, username, logout }) => {
         logout: logout,
       })}>
         <Switch>
-          <Route path="/login" component={LoginPage} key={1} />
-          <Route path="/registration" component={RegistrationPage} key={2} />
-          <Route path="/problem/:id" component={ViewProblem} key={3} />
-          <PrivateRoute path="/make_problem/" component={Problem} key={4} />
-          <PrivateRoute path="/edit_problem/:id" component={Problem} key={5} />
-          <PrivateRoute path="/problemset" component={ProblemSet} key={6} />
-          <PrivateRoute path="/users_rating" component={UsersRating} key={7} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/registration" component={RegistrationPage} />
+          <PrivateRoute path="/problem/:id" component={ViewProblem} key={Math.random()} />
+          <PrivateRoute path="/makeProblem/" component={Problem} />
+          <PrivateRoute path="/editProblem/:id" component={Problem} key={Math.random()} />
+          <Route path="/problemset/page/:id" render={() => <ProblemSet key={Math.random()} />} />
+          <PrivateRoute path="/users_rating" component={UsersRating} />
           <Route path="/" component={Homepage} />
         </Switch>
         <DevTools />

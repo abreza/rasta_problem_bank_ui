@@ -13,6 +13,7 @@ import TinyPreview from '../components/editor/tiny_editor/react_tiny/Preview';
 import {
   fetchProblem,
 } from '../redux/actions/problem'
+import { toPersianNumber } from '../utils/translateNumber'
 import {
   getTags,
   getSubtags,
@@ -37,7 +38,7 @@ class ViewProblem extends Component {
       var problem = this.props.problems[problemId];
       return (
         <Grid centered container stackable doubling style={{ direction: 'rtl' }}>
-          <Grid.Row centered relaxed>
+          <Grid.Row verticalAlign='middle' columns={1}>
             <Grid.Column>
               <Header as="h1" textAlign="center">
                 {'«' + problem.name + '»'}
@@ -45,7 +46,7 @@ class ViewProblem extends Component {
             </Grid.Column>
           </Grid.Row>
 
-          <Grid.Row columns={2}>
+          <Grid.Row columns={1}>
             <Grid.Column
               width={11}
               style={{ textAlign: 'right', direction: 'rtl' }}
@@ -132,7 +133,7 @@ class ViewProblem extends Component {
                   }
                 </Segment>
                 <Segment>
-                  <Label attached="top">رویداد‌های به کار رفته!</Label>
+                  <Label attached="top">رویداد‌های به کار رفته</Label>
                   {
                     this.props.events.filter(event => {
                       if (problem.events.includes(event.id)) {

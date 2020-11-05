@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Icon, Image, Menu, Sidebar, Responsive } from 'semantic-ui-react';
 
 const NavBarMobile = ({
@@ -27,7 +28,7 @@ const NavBarMobile = ({
     >
       <Menu fixed="top" className="borderless">
         <Menu.Item style={{ padding: '5px 10px' }}>
-          <a href={'/'}>
+          <a as={Link} href={'/'}>
             <Image size="mini" src={process.env.PUBLIC_URL + '/logo.png'} />
           </a>
         </Menu.Item>
@@ -50,7 +51,7 @@ const NavBarMobile = ({
 const NavBarDesktop = ({ leftItems, rightItems }) => (
   <Menu fixed="top" className="borderless">
     <Menu.Item style={{ padding: '5px 10px' }}>
-      <a href={'/'}>
+      <a as={Link} href={'/'}>
         <Image size="mini" src={process.env.PUBLIC_URL + '/logo.png'} />
       </a>    
     </Menu.Item>

@@ -212,7 +212,7 @@ class Problem extends Component {
     return (
       <Container style={{ direction: 'rtl' }}>
         <Grid centered stackable container doubling>
-          <Grid.Row verticalAlign='middle' relaxed>
+          <Grid.Row verticalAlign='middle' columns={1}>
             <Grid.Column width={5} only="computer" style={{ textAlign: 'right' }}>
               <Button
                 icon

@@ -32,9 +32,9 @@ class Root extends Component {
             <Route path="/login" component={LoginPage} />
             <Route path="/registration" component={RegistrationPage} />
             <Route path="/problem/:id" component={ViewProblem} />
-            <PrivateRoute path="/make_problem/" component={Problem} />
-            <PrivateRoute path="/edit_problem/:id" component={Problem} />
-            <PrivateRoute path="/problemset" component={ProblemSet} />
+            <PrivateRoute path="/makeProblem/" component={Problem} />
+            <PrivateRoute path="/editProblem/:id" component={Problem} />
+            <PrivateRoute path="/problemSet" component={ProblemSet} />
             <PrivateRoute path="/users_rating" component={UsersRating} />
             <Route path="/" component={Homepage} />
           </Switch>

@@ -463,7 +463,7 @@ option {
 }
 
 .ui.menu .item {
-  padding: 5px;
+  /* padding: 5px; */
 }
 
 .close-message-btn {

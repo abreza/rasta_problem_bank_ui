@@ -15,7 +15,7 @@ const HomepageLayout = ({ mobile }) => (
         color: 'black',
         direction: 'rtl',
         textAlign: 'center',
-        marginTop: mobile ? '1.5em' : '3em',
+        marginTop: mobile ? '0.5em' : '2em',
       }}
     />
     <Divider hidden />
@@ -42,7 +42,7 @@ const HomepageLayout = ({ mobile }) => (
         display: 'table',
       }}
       as={Link}
-      to="/make_problem"
+      to="/makeProblem"
     >
       <Icon name="right arrow" />
       ایجاد سوال جدید

@@ -36,13 +36,13 @@ export const fetchProblemsListByPage = (page) => ({
         appropriate_grades_min: 1,
         appropriate_grades_max: 12,
         level_min: 0,
-        level_max: 10000,
+        level_max: 100,
         sources: [
         ],
         question_makers: [
         ],
         events: [],
-        page: 1
+        page: page
       }
     },
   },

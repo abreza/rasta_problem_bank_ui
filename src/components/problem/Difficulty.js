@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Segment, Progress, Icon } from 'semantic-ui-react';
+import { toPersianNumber } from '../../utils/translateNumber'
+
 
 const grades = [
   'اول',
@@ -25,7 +27,7 @@ export default (props) => {
         total={100}
         color="red"
       >
-        سختی: {props.difficulty.level}
+        سختی: {toPersianNumber(props.difficulty.level)}
       </Progress>
       <Segment >
         پایین‌ترین پایه‌ی مناسب:

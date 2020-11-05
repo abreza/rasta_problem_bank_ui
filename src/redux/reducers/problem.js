@@ -42,6 +42,14 @@ function problem(
         isFetching: true,
       }
 
+    case actionTypes.PROBLEM_LIST_SUCCESS:
+      console.log(action.response)
+      return {
+        ...state,
+        problems: action.response.questions, //todo correct "questions"
+        numberOfPages: action.response.num_pages,
+        isFetching: false,
+      };
 
     case actionTypes.PROBLEM_LIST_FAILURE:
     case actionTypes.PROBLEM_FAILURE:
@@ -59,15 +67,6 @@ function problem(
         },
         isFetching: false,
       };
-
-    case actionTypes.PROBLEM_LIST_SUCCESS:
-      return {
-        ...state,
-        problems: action.response.questions, //todo correct "questions"
-        numberOfPages: action.response.num_pages,
-        isFetching: false,
-      };
-
 
     default:
       return state;
