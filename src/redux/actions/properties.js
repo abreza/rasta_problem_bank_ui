@@ -21,15 +21,13 @@ export const getTags = () => (
   dispatch,
   getState
 ) => {
-  console.log("EEEEEEEEEEEEe");
   const tags = getState().properties.tags;
-  console.log(tags);
   if (tags.length === 0) {
     return dispatch(fetchTags());
   }
 };
 
-const fetchSubTags = () => ({
+const fetchSubtags = () => ({
   [CALL_API]: {
     types: [
       actionTypes.SUBTAGS_REQUEST,
@@ -43,13 +41,13 @@ const fetchSubTags = () => ({
   },
 });
 
-export const getSubTags = () => (
+export const getSubtags = () => (
   dispatch,
   getState
 ) => {
-  const subTags = getState().properties.subTags;
-  if (subTags.length === 0) {
-    return dispatch(fetchSubTags());
+  const subtags = getState().properties.subtags;
+  if (subtags.length === 0) {
+    return dispatch(fetchSubtags());
   }
 };
 

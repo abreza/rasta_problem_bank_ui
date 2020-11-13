@@ -1,5 +1,5 @@
 .ui.input {
-  padding: 0 0 5px 5px;
+  padding: 5px 5px 5px 5px;
 }
 
 .ui.input.hardness > input {
@@ -10,8 +10,8 @@
   width: 100%;
 }
 
-#QuestionTextArea,
-#AnswerTextArea {
+#ProblemTextArea,
+#SolutionTextArea {
   display: none;
 }
 

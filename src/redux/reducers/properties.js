@@ -1,7 +1,7 @@
 import * as actionTypes from '../actions/actionTypes';
 
 function properties(
-  state = { tags: [], subTags: [], events: [], sources: [], isFetching: false },
+  state = { tags: [], subtags: [], events: [], sources: [], isFetching: false },
   action
 ) {
   switch (action.type) {
@@ -27,7 +27,7 @@ function properties(
       return {
         ...state,
         isFetching: false,
-        subTags: action.response,
+        subtags: action.response,
       };
 
     case actionTypes.SUBTAGS_FAILURE:

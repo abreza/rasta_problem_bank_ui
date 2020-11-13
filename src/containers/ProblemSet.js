@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Grid,
   Header,
@@ -8,81 +8,52 @@ import {
   Label,
   Table,
   Pagination,
+  Container,
+  Icon,
 } from 'semantic-ui-react';
-
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import { fetchQuestionListByPage } from '../redux/actions/question'
-import { ROOT } from '../redux/actions/URLs'
-import {
-  getTags,
-  getSubTags,
-  getEvents,
-  getSources,
-} from '../redux/actions/properties'
+import { fetchProblemsListByPage } from '../redux/actions/problem'
+import Tag from '../components/problem/Tag';
+import { getTags } from '../redux/actions/properties'
+import { Link } from 'react-router-dom';
+import { toPersianNumber } from '../utils/translateNumber'
 
 
-function getAttribute(object, attribute) {
-  var attributeValue;
-  for (var i in object) {
-    if (i == attribute) {
-      attributeValue = object[i];
-    }
-  }
-  return attributeValue;
-}
 
-class ProblemSet extends Component {
-  state = {
-    userType: 'ADMIN', //TODO: should be "this.props.userType"
-    redirect: false,
-    enterQuestion: false,
-    enteredQuestionId: '',
+const ProblemSet = ({ fetchProblemsListByPage, getTags, problems, tags: allTags, totalNumberOfPages, isFetching }) => {
+  const [redirect, setRedirect] = useState(false)
+  const [activePage, setActivePage] = useState(parseInt(window.location.pathname.split('/')[3]))
+
+  useEffect(() => {
+    fetchProblemsListByPage(parseInt(window.location.pathname.split('/')[3]));
+    getTags();
+  }, [fetchProblemsListByPage, getTags])
+
+  function handlePaginationChange(e, { activePage }) {
+    setActivePage(activePage)
+    setRedirect(true)
   }
 
-  getActivePage() {
-    return window.location.pathname.split('/')[3];
+  if (redirect) {
+    return <Redirect to={"/problemset/page/" + activePage} />;
   }
 
-  componentDidMount() {
-    this.props.fetchQuestionListByPage(this.getActivePage);
-    this.props.getTags();
-  }
-
-  handlePaginationChange = (e, { activePage }) => {
-    this.setState({ activePage: activePage, redirect: true })
-  }
-
-  render() {
-    const questions = this.props.thisPageQuestions;
-
-    if (this.state.redirect) {
-      return <Redirect push to={"/problemset/page/" + this.state.activePage} />;
-    }
-
-    if (this.state.enterQuestion) {
-      return <Redirect push to={"/question/" + this.state.enteredQuestionId} />;
-    }
-
-    return (
-      <Grid
-        centered
-        container
-        stackable
-        doubling
-        style={{ direction: 'rtl' }}
-      >
-        <Grid.Row centered relaxed>
-          <Header as="h1" textAlign="center">
-            سوالات
-          </Header>
+  return (
+    <Container style={{ direction: 'rtl' }}>
+      <Grid centered stackable container doubling>
+        <Grid.Row verticalAlign='middle' columns={1}>
+          <Grid.Column style={{ textAlign: 'right' }}>
+            <Header as="h1" textAlign="center">
+              {'«سوالات»'}
+            </Header>
+          </Grid.Column>
         </Grid.Row>
         <Grid.Row columns={2}>
-
-          <Grid.Column width={11}>
-            <Segment>
+          <Grid.Column width={10} >
+            <Segment loading={isFetching}>
               <Label color='teal' ribbon='right'>
-                صفحه‌ی {this.getActivePage()} از {this.props.totalNumberOfPages}
+                صفحه‌ی {toPersianNumber(activePage)} از {toPersianNumber(totalNumberOfPages)}
               </Label>
               <Table
                 selectable
@@ -96,7 +67,7 @@ class ProblemSet extends Component {
                   <Table.Row>
                     <Table.HeaderCell
                       textAlign='center'
-                      width={2}
+                      width={3}
                     >
                       شناسه
                     </Table.HeaderCell>
@@ -119,46 +90,48 @@ class ProblemSet extends Component {
                 </Table.Header>
 
                 <Table.Body>
-                  {_.map(questions, ({ id, name, tags, hardness: difficulty, reviewStatus }) => (
+                  {_.map(problems, ({ id, name, tags, hardness: difficulty, reviewStatus }) => (
                     <Table.Row key={id}>
-                      <Table.Cell >{id}</Table.Cell>
+                      <Table.Cell >{toPersianNumber(id)}</Table.Cell>
                       <Table.Cell textAlign='right' selectable>
                         <a
-                          href={''}
-                          onClick={() => this.setState({ enterQuestion: true, enteredQuestionId: id })} //todo:
+                          as={Link}
+                          href={'/problem/' + id}
                         >
                           {name}
                         </a>
                       </Table.Cell>
                       < Table.Cell textAlign='right' >
-                        <Label>{getAttribute(this.props.tags.filter(tag => { return tag.id === tags[0] })[0], 'name')}</Label>
                         {
-                          tags[1] && (
-                            <Label>{getAttribute(this.props.tags.filter(tag => { return tag.id === tags[1] })[0], 'name')}</Label>
-                          )
-                        }
-                        {
-                          tags[2] && (
-                            <Label>{getAttribute(this.props.tags.filter(tag => { return tag.id === tags[2] })[0], 'name')}</Label>
-                          )
+                          allTags.filter(tag => {
+                            if (tags.includes(tag.id)) {
+                              return true
+                            }
+                          }).map((tag) => (
+                            <Tag
+                              selectable
+                              size={'small'}
+                              name={tag.name}
+                              key={tag.id}
+                            />
+                          ))
                         }
                       </Table.Cell>
-                      <Table.Cell>{getAttribute(difficulty, 'level')}</Table.Cell>
+                      <Table.Cell>{toPersianNumber(difficulty.level)}</Table.Cell>
                     </Table.Row>
                   ))}
                 </Table.Body>
               </Table>
-              <div
-                style={{
-                  textAlign: 'center',
-                }}
-              >
-                <Pagination
-                  activePage={this.getActivePage()}
-                  onPageChange={this.handlePaginationChange}
-                  totalPages={this.props.totalNumberOfPages}
-                />
-              </div>
+              <Pagination
+                ellipsisItem={null}
+                activePage={activePage}
+                firstItem={{ content: <Icon name='angle double right' />, icon: true }}
+                lastItem={{ content: <Icon name='angle double left' />, icon: true }}
+                prevItem={{ content: <Icon name='angle right' />, icon: true }}
+                nextItem={{ content: <Icon name='angle left' />, icon: true }}
+                onPageChange={handlePaginationChange}
+                totalPages={totalNumberOfPages}
+              />
             </Segment>
           </Grid.Column>
 
@@ -168,27 +141,34 @@ class ProblemSet extends Component {
           >
             <Segment>
               <Header content={'جستجو'} as="h2" textAlign="center" />
-              <Divider></Divider>
+              <Divider />
               <Header content={'به زودی :)'} as="h3" textAlign="center" />
             </Segment>
           </Grid.Column>
         </Grid.Row>
       </Grid >
-    );
-  }
+    </Container>
+  );
 }
 
-const mapStatoToProps = (state) => {
-  // const thisUser = state.thisUser;
-  // const userType = thisUser ? thisUser.type : null;
+const mapStateToProps = (state) => {
   return ({
-    tags: state.properties.tags,
-    thisPageQuestions: state.question.allQuestions,
-    totalNumberOfPages: state.question.totalNumberOfPages,
+    tags: state.properties.tags
+      ? state.properties.tags
+      : [],
+    problems: state.problem.problems
+      ? state.problem.problems
+      : [],
+    totalNumberOfPages: state.problem.numberOfPages
+      ? state.problem.numberOfPages
+      : '',
+    isFetching: state.problem.isFetching
+      ? state.problem.isFetching
+      : '',
   })
 }
 
-export default connect(mapStatoToProps, {
-  fetchQuestionListByPage,
+export default connect(mapStateToProps, {
+  fetchProblemsListByPage,
   getTags,
 })(ProblemSet)
