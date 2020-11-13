@@ -6,9 +6,9 @@ import { CALL_API } from '../middleware/api/api';
 export const fetchProblem = (problemId) => ({
   [CALL_API]: {
     types: [
-      actionTypes.PROBLEM_REQUEST,
-      actionTypes.PROBLEM_SUCCESS,
-      actionTypes.PROBLEM_FAILURE,
+      actionTypes.GET_PROBLEM_REQUEST,
+      actionTypes.GET_PROBLEM_SUCCESS,
+      actionTypes.GET_PROBLEM_FAILURE,
     ],
     url: URLs.GET_PROBLEM + problemId,
     fetchOptions: {
@@ -52,9 +52,9 @@ export const submitProblem = (problem) => {
   return ({
     [CALL_API]: {
       types: [
-        actionTypes.PROBLEM_SUBMIT_REQUEST,
-        actionTypes.PROBLEM_SUBMIT_SUCCESS,
-        actionTypes.PROBLEM_SUBMIT_FAILURE,
+        actionTypes.SUBMIT_PROBLEM_REQUEST,
+        actionTypes.SUBMIT_PROBLEM_SUCCESS,
+        actionTypes.SUBMIT_PROBLEM_FAILURE,
       ],
       url: URLs.SUBMIT_PROBLEM,
       fetchOptions: {
@@ -65,17 +65,17 @@ export const submitProblem = (problem) => {
   })
 };
 
-export const editProblem = (problem) => {
+export const editProblem = (problem, id) => {
   return ({
     [CALL_API]: {
       types: [
-        actionTypes.PROBLEM_SUBMIT_REQUEST,
-        actionTypes.PROBLEM_SUBMIT_SUCCESS,
-        actionTypes.PROBLEM_SUBMIT_FAILURE,
+        actionTypes.SUBMIT_PROBLEM_REQUEST,
+        actionTypes.SUBMIT_PROBLEM_SUCCESS,
+        actionTypes.SUBMIT_PROBLEM_FAILURE,
       ],
-      url: URLs.SUBMIT_PROBLEM,
+      url: URLs.SUBMIT_PROBLEM + id,
       fetchOptions: {
-        method: 'PATCH',
+        method: 'PUT',
         body: problem,
       },
     },

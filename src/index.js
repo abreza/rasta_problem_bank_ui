@@ -8,8 +8,8 @@ import Root from './root/Root';
 import configureStore from './redux/store/configureStore';
 
 
-const persistedState = localStorage.getItem('rastaReactState44444')
-  ? JSON.parse(localStorage.getItem('rastaReactState44444'))
+const persistedState = localStorage.getItem('rastaReactState')
+  ? JSON.parse(localStorage.getItem('rastaReactState'))
   : {};
 
 const store = configureStore(persistedState);
@@ -17,7 +17,7 @@ const store = configureStore(persistedState);
 store.subscribe(() => {
   // localStorage.clear();
   localStorage.setItem(
-    'rastaReactState44444',
+    'rastaReactState',
     JSON.stringify({
       account: { ...store.getState().account },
     })

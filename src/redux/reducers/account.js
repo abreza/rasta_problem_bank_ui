@@ -4,7 +4,7 @@ const initialState = {
   isLoggedIn: false,
   isRegistered: false,
   wasLoginFailed: false,
-  wasRegisterationFailed: false,
+  wasRegistrationFailed: false,
   username: '',
   isFetching: false,
   token: null,
@@ -21,7 +21,7 @@ function account(state = initialState, action) {
         ...state,
         isFetching: true,
         isRegistered: false,
-        wasRegisterationFailed: false,
+        wasRegistrationFailed: false,
       };
 
     case actionTypes.REGISTER_SUCCESS:
@@ -30,15 +30,13 @@ function account(state = initialState, action) {
         isFetching: false,
         token: action.response.token,
         isRegistered: true,
-        wasRegisterationFailed: false,
       };
 
     case actionTypes.REGISTER_FAILURE:
       return {
         ...state,
         isFetching: false,
-        isRegistered: false,
-        wasRegisterationFailed: true,
+        wasRegistrationFailed: true,
       };
 
     //#######################

@@ -9,6 +9,7 @@ import {
   Table,
   Pagination,
   Container,
+  Icon,
 } from 'semantic-ui-react';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
@@ -108,6 +109,7 @@ const ProblemSet = ({ fetchProblemsListByPage, getTags, problems, tags: allTags,
                             }
                           }).map((tag) => (
                             <Tag
+                              selectable
                               size={'small'}
                               name={tag.name}
                               key={tag.id}
@@ -121,9 +123,12 @@ const ProblemSet = ({ fetchProblemsListByPage, getTags, problems, tags: allTags,
                 </Table.Body>
               </Table>
               <Pagination
-                style={{ padding: '0 auto' }}
                 ellipsisItem={null}
                 activePage={activePage}
+                firstItem={{ content: <Icon name='angle double right' />, icon: true }}
+                lastItem={{ content: <Icon name='angle double left' />, icon: true }}
+                prevItem={{ content: <Icon name='angle right' />, icon: true }}
+                nextItem={{ content: <Icon name='angle left' />, icon: true }}
                 onPageChange={handlePaginationChange}
                 totalPages={totalNumberOfPages}
               />
@@ -146,7 +151,7 @@ const ProblemSet = ({ fetchProblemsListByPage, getTags, problems, tags: allTags,
   );
 }
 
-const mapStatoToProps = (state) => {
+const mapStateToProps = (state) => {
   return ({
     tags: state.properties.tags
       ? state.properties.tags
@@ -163,7 +168,7 @@ const mapStatoToProps = (state) => {
   })
 }
 
-export default connect(mapStatoToProps, {
+export default connect(mapStateToProps, {
   fetchProblemsListByPage,
   getTags,
 })(ProblemSet)

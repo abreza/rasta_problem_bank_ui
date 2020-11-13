@@ -3,40 +3,39 @@ import * as actionTypes from '../actions/actionTypes';
 function problem(
   state = {
     isFetching: false,
-    wasProblemSubmitSuccessful: false,
-    wasProblemSubmitFailed: false,
+    wasProblemSubmissionSuccessful: false,
+    wasProblemSubmissionFailed: false,
   },
   action
 ) {
   switch (action.type) {
-    case actionTypes.PROBLEM_SUBMIT_REQUEST:
+    case actionTypes.SUBMIT_PROBLEM_REQUEST:
       return {
         ...state,
         isFetching: true,
-        wasProblemSubmitSuccessful: false,
-        wasProblemSubmitFailed: false,
+        wasProblemSubmissionSuccessful: false,
+        wasProblemSubmissionFailed: false,
       }
 
-    case actionTypes.PROBLEM_SUBMIT_SUCCESS:
+    case actionTypes.SUBMIT_PROBLEM_SUCCESS:
       return {
         ...state,
         isFetching: false,
-        wasProblemSubmitSuccessful: true,
-        wasProblemSubmitFailed: false,
+        wasProblemSubmissionSuccessful: true,
       }
 
-    case actionTypes.PROBLEM_SUBMIT_FAILURE:
+    case actionTypes.SUBMIT_PROBLEM_FAILURE:
       return {
         ...state,
         isFetching: false,
-        wasProblemSubmitSuccessful: false,
-        wasProblemSubmitFailed: true,
+        wasProblemSubmissionFailed: true,
+
       }
 
     //#########################
 
     case actionTypes.PROBLEM_LIST_REQUEST:
-    case actionTypes.PROBLEM_REQUEST:
+    case actionTypes.GET_PROBLEM_REQUEST:
       return {
         ...state,
         isFetching: true,
@@ -46,19 +45,19 @@ function problem(
       console.log(action.response)
       return {
         ...state,
-        problems: action.response.questions, //todo correct "questions"
+        problems: action.response.questions,
         numberOfPages: action.response.num_pages,
         isFetching: false,
       };
 
     case actionTypes.PROBLEM_LIST_FAILURE:
-    case actionTypes.PROBLEM_FAILURE:
+    case actionTypes.GET_PROBLEM_FAILURE:
       return {
         ...state,
         isFetching: false,
       }
 
-    case actionTypes.PROBLEM_SUCCESS:
+    case actionTypes.GET_PROBLEM_SUCCESS:
       return {
         ...state,
         problems: {

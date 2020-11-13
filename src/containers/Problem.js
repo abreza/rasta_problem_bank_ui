@@ -32,6 +32,7 @@ import {
 import { toPersianNumber } from '../utils/translateNumber'
 import { setPrompt } from '../redux/actions/account'
 import '../styles/Problem.css';
+import problem from '../redux/reducers/problem';
 
 class Problem extends Component {
   constructor(props) {
@@ -57,12 +58,10 @@ class Problem extends Component {
           this.setState({ appropriateGrades: appropriateGrades });
         },
       },
-
-      doesSubmitorEditProblem: false,
+      doesSubmitOREditProblem: false,
       doesEditingProblemLoaded: false,
-      difficultyWarning: false,
     };
-    this.handleSubmitorEdit = this.handleSubmitorEdit.bind(this);
+    this.handleSubmitOREdit = this.handleSubmitOREdit.bind(this);
     this.setProblem = this.setProblem.bind(this);
     this.handleTagChange = this.handleTagChange.bind(this);
     this.handleSubtagChange = this.handleSubtagChange.bind(this);
@@ -112,25 +111,30 @@ class Problem extends Component {
     });
   }
 
-  handleSubmitorEdit = (isProblemNew) => {
+  async handleSubmitOREdit(isProblemNew) {
+    console.log(converter(this.state))
     const ok = this.isProblemDataOk();
     if (ok) {
-      this.setProblem();
-      setTimeout(() => {
-        if (isProblemNew) {
-          this.props.submitProblem(converter(this.state))
-        } else {
-          this.props.editProblem(converter(this.state))
-        }
-
-        // this.props.setPrompt(
-        //   isProblemNew ? 'دمت گرم...' : 'حله...',
-        //   isProblemNew ? 'مسئله با موفقیت ایجاد شد.' : 'مسئله با موفقیت ویرایش شد.',
-        //   'green'
-        // ) todo
+      await this.setProblem();
+      if (isProblemNew) {
+        await this.props.submitProblem(converter(this.state))
+      } else {
+        await this.props.editProblem(converter(this.state), this.state.problemId)
       }
-        , 500)
-      this.setState({ doesSubmitorEditProblem: true, })
+      if (this.props.wasProblemSubmissionFailed) {
+        this.props.setPrompt(
+          'مشکلی از طرف سرور وجود داره!',
+          'چند لحظه دیگه دوباره تلاش کن.',
+          'red'
+        )
+      } else if (this.props.wasProblemSubmissionSuccessful) {
+        this.props.setPrompt(
+          isProblemNew ? 'دمت گرم...' : 'حله...',
+          isProblemNew ? 'مسئله با موفقیت ایجاد شد.' : 'مسئله با موفقیت ویرایش شد.',
+          'green'
+        )
+        this.setState({ doesSubmitOREditProblem: true, })
+      }
     }
   };
 
@@ -188,16 +192,8 @@ class Problem extends Component {
   ////////////////////////////////////////////
 
   render() {
-    const { problemId, isProblemNew } = this.state;
-    const { isFetching, wasProblemSubmitSuccessful } = this.props;
-
-    if (!isProblemNew && !this.props.problems) {
-      return (
-        <>
-        </>
-      )
-    }
-
+    const { problemId, isProblemNew, doesSubmitOREditProblem } = this.state;
+    const { isFetching } = this.props;
     const editingProblem = this.props.problems ? this.props.problems[problemId] : null;
     if (editingProblem && !this.state.doesEditingProblemLoaded) {
       this.setState({
@@ -206,7 +202,7 @@ class Problem extends Component {
       this.loadEditingProblem(editingProblem);
     }
 
-    if (wasProblemSubmitSuccessful) {
+    if (doesSubmitOREditProblem) {
       return <Redirect push to={'/problemset/page/1'} />;
     }
 
@@ -219,7 +215,7 @@ class Problem extends Component {
                 icon
                 labelPosition="right"
                 positive
-                onClick={() => this.handleSubmitorEdit(isProblemNew)}
+                onClick={() => this.handleSubmitOREdit(isProblemNew)}
                 loading={isFetching}
               >
                 <Icon name="save" />
@@ -398,7 +394,7 @@ class Problem extends Component {
                 labelPosition="right"
                 positive
                 className="mobile-save-btn"
-                onClick={() => this.handleSubmitorEdit(isProblemNew)}
+                onClick={() => this.handleSubmitOREdit(isProblemNew)}
                 loading={isFetching}
               >
                 <Icon name="save" />
@@ -413,17 +409,27 @@ class Problem extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { problems, isFetching, wasProblemSubmitSuccessful, wasProblemSubmitFailed } = state.problem;
+  const { problems, isFetching, wasProblemSubmissionSuccessful, wasProblemSubmissionFailed } = state.problem;
   const { events, sources, tags, subtags } = state.properties;
   return {
-    events,
-    sources,
-    tags,
-    subtags,
-    problems,
+    events: events
+      ? events
+      : [],
+    sources: sources
+      ? sources
+      : [],
+    tags: tags
+      ? tags
+      : [],
+    subtags: subtags
+      ? subtags
+      : [],
+    problems: problems
+      ? problems
+      : [],
     isFetching,
-    wasProblemSubmitSuccessful,
-    wasProblemSubmitFailed,
+    wasProblemSubmissionSuccessful,
+    wasProblemSubmissionFailed,
   }
 };
 

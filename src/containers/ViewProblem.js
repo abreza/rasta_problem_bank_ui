@@ -100,7 +100,7 @@ class ViewProblem extends Component {
                 <Difficulty
                   difficulty={problem.hardness}
                 ></Difficulty>
-                <Segment>
+                <Segment >
                   <Label attached="top">مباحث کلی سوال</Label>
                   {
                     this.props.tags.filter(tag => {
@@ -109,6 +109,7 @@ class ViewProblem extends Component {
                       }
                     }).map((tag) => (
                       <Tag
+                        selectable
                         size={'small'}
                         name={tag.name}
                         key={tag.id}
@@ -125,6 +126,7 @@ class ViewProblem extends Component {
                       }
                     }).map((subtag) => (
                       <Tag
+                        selectable
                         size={'small'}
                         name={subtag.name}
                         key={subtag.id}

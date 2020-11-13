@@ -15,7 +15,7 @@ import { Redirect } from 'react-router';
 
 
 
-const Registration = ({ isFetching, isRegistered, wasRegisterationFailed, isLoggedIn, register, setPrompt }) => {
+const Registration = ({ isFetching, isRegistered, wasRegistrationFailed, isLoggedIn, register, setPrompt }) => {
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
   const [firstname, setFirstname] = useState()
@@ -47,7 +47,7 @@ const Registration = ({ isFetching, isRegistered, wasRegisterationFailed, isLogg
   }
 
   useEffect(() => {
-    if (wasRegisterationFailed && !didPageLoadNewly) {
+    if (wasRegistrationFailed && !didPageLoadNewly) {
       setPrompt(
         'یه‌جای کار می‌لنگه...',
         'یه‌بار دیگه تلاش کن!',
@@ -64,7 +64,7 @@ const Registration = ({ isFetching, isRegistered, wasRegisterationFailed, isLogg
       }
     }
   }
-    , [wasRegisterationFailed, isRegistered, didPageLoadNewly])
+    , [wasRegistrationFailed, isRegistered, didPageLoadNewly])
 
 
   if (isLoggedIn || (!didPageLoadNewly && isRegistered)) {
@@ -195,14 +195,14 @@ const Registration = ({ isFetching, isRegistered, wasRegisterationFailed, isLogg
 }
 
 
-const mapStatoToProps = (state) => ({
+const mapStateToProps = (state) => ({
   isFetching: state.account.isFetching,
   isRegistered: state.account.isRegistered,
   isLoggedIn: state.account.isLoggedIn,
-  wasRegisterationFailed: state.account.wasRegisterationFailed,
+  wasRegistrationFailed: state.account.wasRegistrationFailed,
 })
 
-export default connect(mapStatoToProps, {
+export default connect(mapStateToProps, {
   register,
   setPrompt,
 })(Registration)
