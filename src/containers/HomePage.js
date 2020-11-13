@@ -15,13 +15,12 @@ const HomepageLayout = ({ mobile }) => (
         color: 'black',
         direction: 'rtl',
         textAlign: 'center',
-        marginTop: mobile ? '1.5em' : '3em',
+        marginTop: mobile ? '0.5em' : '2em',
       }}
     />
     <Divider hidden />
     <Button
       primary
-      size="huge"
       style={{
         direction: 'rtl',
         textAlign: 'center',
@@ -34,6 +33,21 @@ const HomepageLayout = ({ mobile }) => (
       بزن بریم!
       <Icon name="left arrow" />
     </Button>
+    <Button
+      color='teal'
+      style={{
+        direction: 'rtl',
+        textAlign: 'center',
+        margin: 'auto',
+        display: 'table',
+      }}
+      as={Link}
+      to="/makeProblem"
+    >
+      <Icon name="right arrow" />
+      ایجاد سوال جدید
+    </Button>
+
   </Container>
 );
 

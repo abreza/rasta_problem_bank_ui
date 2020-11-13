@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Icon, Image, Menu, Sidebar, Responsive } from 'semantic-ui-react';
 
 const NavBarMobile = ({
@@ -8,8 +9,8 @@ const NavBarMobile = ({
   onToggle,
   rightItems,
   visible,
-}) => (
-  <Sidebar.Pushable>
+}) =>
+  (<Sidebar.Pushable>
     <Sidebar
       as={Menu}
       animation="overlay"
@@ -27,8 +28,24 @@ const NavBarMobile = ({
     >
       <Menu fixed="top" className="borderless">
         <Menu.Item style={{ padding: '5px 10px' }}>
-          <a href={'/'}>
-            <Image size="mini" src={process.env.PUBLIC_URL + '/logo.png'} />
+          <a as={Link} href={'/'}>
+            <Image
+              style={{
+                width: '40px',
+                height: '40px',
+                paddingRight: '10px',
+              }}
+              src={process.env.PUBLIC_URL + '/Rasta-logo.png'}
+            />
+          </a>
+          <a as={Link} href={'/'}>
+            <Image
+              style={{
+                width: '45px',
+                height: '40px',
+              }}
+              src={process.env.PUBLIC_URL + '/Karsoogh-logo.png'}
+            />
           </a>
         </Menu.Item>
         <Menu.Item
@@ -38,21 +55,37 @@ const NavBarMobile = ({
             paddingRight: '4px',
           }}
         >
-          <Icon name="sidebar" />
+          {/* <Icon name="sidebar" /> */}
         </Menu.Item>
         <Menu.Menu position="right">{rightItems}</Menu.Menu>
       </Menu>
       {children}
     </Sidebar.Pusher>
   </Sidebar.Pushable>
-);
+  );
 
 const NavBarDesktop = ({ leftItems, rightItems }) => (
   <Menu fixed="top" className="borderless">
     <Menu.Item style={{ padding: '5px 10px' }}>
-      <a href={'/'}>
-        <Image size="mini" src={process.env.PUBLIC_URL + '/logo.png'} />
-      </a>    
+      <a as={Link} href={'/'}>
+        <Image
+          style={{
+            width: '50px',
+            height: '50px',
+            paddingRight: '10px',
+          }}
+          src={process.env.PUBLIC_URL + '/Rasta-logo.png'}
+        />
+      </a>
+      <a as={Link} href={'/'}>
+        <Image
+          style={{
+            width: '55px',
+            height: '50px',
+          }}
+          src={process.env.PUBLIC_URL + '/Karsoogh-logo.png'}
+        />
+      </a>
     </Menu.Item>
     {leftItems}
     <Menu.Menu position="right">{rightItems}</Menu.Menu>

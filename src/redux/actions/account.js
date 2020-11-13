@@ -37,10 +37,10 @@ export const login = (username, password) => ({
       actionTypes.LOGIN_SUCCESS,
       actionTypes.LOGIN_FAILURE,
     ],
-    payload1: {
-      username: username,
-    },
     url: URLs.LOGIN_USER,
+    payload: {
+      username,
+    },
     fetchOptions: {
       method: 'POST',
       body: { username, password },
@@ -88,6 +88,29 @@ export const logout = () => ({
     url: URLs.LOGOUT_USER,
     fetchOptions: {
       method: 'POST',
+      dontContentType: true,
     },
   },
 });
+
+
+export const setPrompt = (header, text, color) => (
+  dispatch,
+  getState
+) => {
+  let prompt = {
+    type: actionTypes.SHOWـPROMPT,
+    payload: {
+      header,
+      text,
+      color
+    },
+  }
+  dispatch(prompt)
+  prompt = {
+    type: actionTypes.REMOVEـPROMPT,
+  }
+  setTimeout(() => {
+    dispatch(prompt)
+  }, 3000)
+};

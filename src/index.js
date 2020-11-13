@@ -7,9 +7,27 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Root from './root/Root';
 import configureStore from './redux/store/configureStore';
 
-const store = configureStore();
+
+const persistedState = localStorage.getItem('rastaReactState')
+  ? JSON.parse(localStorage.getItem('rastaReactState'))
+  : {};
+
+const store = configureStore(persistedState);
+
+store.subscribe(() => {
+  // localStorage.clear();
+  localStorage.setItem(
+    'rastaReactState',
+    JSON.stringify({
+      account: { ...store.getState().account },
+    })
+  );
+});
+
+
 
 ReactDOM.render(
+
   <Router>
     <Provider store={store}>
       <Root />
