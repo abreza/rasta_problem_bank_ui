@@ -31,20 +31,11 @@ const NavBarMobile = ({
           <a as={Link} href={'/'}>
             <Image
               style={{
-                width: '40px',
+                width: '50px',
                 height: '40px',
                 paddingRight: '10px',
               }}
-              src={process.env.PUBLIC_URL + '/Rasta-logo.png'}
-            />
-          </a>
-          <a as={Link} href={'/'}>
-            <Image
-              style={{
-                width: '45px',
-                height: '40px',
-              }}
-              src={process.env.PUBLIC_URL + '/Karsoogh-logo.png'}
+              src={process.env.PUBLIC_URL + '/problem.png'}
             />
           </a>
         </Menu.Item>
@@ -70,20 +61,11 @@ const NavBarDesktop = ({ leftItems, rightItems }) => (
       <a as={Link} href={'/'}>
         <Image
           style={{
-            width: '50px',
+            width: '60px',
             height: '50px',
             paddingRight: '10px',
           }}
-          src={process.env.PUBLIC_URL + '/Rasta-logo.png'}
-        />
-      </a>
-      <a as={Link} href={'/'}>
-        <Image
-          style={{
-            width: '55px',
-            height: '50px',
-          }}
-          src={process.env.PUBLIC_URL + '/Karsoogh-logo.png'}
+          src={process.env.PUBLIC_URL + '/problem.png'}
         />
       </a>
     </Menu.Item>
