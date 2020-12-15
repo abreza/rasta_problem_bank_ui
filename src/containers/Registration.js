@@ -44,7 +44,7 @@ const Registration = ({ isFetching, isLoggedIn, register }) => {
   }
 
   if (isLoggedIn) {
-    return <Redirect push to={"/login"} />
+    return <Redirect to='/' />
   }
 
   return (
@@ -174,7 +174,7 @@ const Registration = ({ isFetching, isLoggedIn, register }) => {
 const mapStateToProps = (state) => ({
   isFetching: state.account.isFetching,
   isRegistered: state.account.isRegistered,
-  isLoggedIn: state.account.isLoggedIn,
+  isLoggedIn: state.account.token,
   wasRegistrationFailed: state.account.wasRegistrationFailed,
 })
 

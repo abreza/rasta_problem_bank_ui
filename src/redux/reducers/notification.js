@@ -23,6 +23,15 @@ function account(state = {}, action) {
       toast.success('خداحافظت! منتظرت هستیم...');
       return { ...state }
 
+    case actionTypes.NOTIFY:
+      if (action.payload === 'success')
+        toast.success(action.payload.message);
+      if (action.payload === 'error')
+        toast.error(action.payload.message);
+      if (action.payload === 'warning')
+        toast.warning(action.payload.message);
+      return { ...state }
+
     default:
       return state;
   }

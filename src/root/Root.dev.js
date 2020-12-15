@@ -33,7 +33,7 @@ const Root = ({ isLoggedIn, username, logout }) => {
           <PrivateRoute path="/problem/:id" component={ViewProblem} key={Math.random()} />
           <PrivateRoute path="/makeProblem/" component={Problem} />
           <PrivateRoute path="/editProblem/:id" component={Problem} key={Math.random()} />
-          <Route path="/problemset/page/:id" render={() => <ProblemSet key={Math.random()} />} />
+          <PrivateRoute path="/problemset/page/:id" render={() => <ProblemSet key={Math.random()} />} />
           <PrivateRoute path="/users_rating" component={UsersRating} />
           <Route path="/" component={Homepage} />
         </Switch>

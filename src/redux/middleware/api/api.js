@@ -46,6 +46,7 @@ export default ({ getState }) => (next) => async (action) => {
       })
     );
   } catch (error) {
+    console.log(error.message)
     if (error.message === 'Token expired!') {
       return next(
         actionWith({

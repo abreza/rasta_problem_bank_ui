@@ -1,7 +1,6 @@
 import * as actionTypes from '../actionTypes';
 
 const initialState = {
-  isLoggedIn: false,
   isRegistered: false,
   wasLoginFailed: false,
   wasRegistrationFailed: false,
@@ -41,14 +40,12 @@ function account(state = initialState, action) {
       return {
         ...state,
         isFetching: true,
-        isLoggedIn: false,
       };
 
     case actionTypes.LOGIN_SUCCESS:
       return {
         ...state,
         isFetching: false,
-        isLoggedIn: true,
         // username: action.payload.username, //todo
         token: action.response.token,
       }
@@ -58,7 +55,6 @@ function account(state = initialState, action) {
         ...state,
         isFetching: false,
         username: null,
-        isLoggedIn: false,
       }
 
     //#######################
@@ -67,8 +63,6 @@ function account(state = initialState, action) {
       return {
         ...state,
         token: '',
-        isLoggedIn: false,
-
       };
 
     default:

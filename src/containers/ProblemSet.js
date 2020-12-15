@@ -21,7 +21,15 @@ import { toPersianNumber } from '../utils/translateNumber'
 
 
 
-const ProblemSet = ({ fetchProblemsListByPage, getTags, problems, tags: allTags, totalNumberOfPages, isFetching }) => {
+const ProblemSet = ({
+  fetchProblemsListByPage,
+  getTags,
+  problems,
+  tags: allTags,
+  totalNumberOfPages,
+  isFetching
+}) => {
+
   const [redirect, setRedirect] = useState(false)
   const [activePage, setActivePage] = useState(parseInt(window.location.pathname.split('/')[3]))
 
@@ -36,7 +44,7 @@ const ProblemSet = ({ fetchProblemsListByPage, getTags, problems, tags: allTags,
   }
 
   if (redirect) {
-    return <Redirect to={"/problemset/page/" + activePage} />;
+    return <Redirect to={`/problemset/page/${activePage}`} />;
   }
 
   return (
@@ -168,7 +176,10 @@ const mapStateToProps = (state) => {
   })
 }
 
-export default connect(mapStateToProps, {
-  fetchProblemsListByPage,
-  getTags,
-})(ProblemSet)
+export default connect(
+  mapStateToProps,
+  {
+    fetchProblemsListByPage,
+    getTags,
+  }
+)(ProblemSet)

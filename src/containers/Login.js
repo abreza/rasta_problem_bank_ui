@@ -24,7 +24,7 @@ const Login = ({ isFetching, isLoggedIn, login }) => {
   }
 
   if (isLoggedIn) {
-    return <Redirect push to={"/"} />
+    return <Redirect to='/' />
   }
 
   return (
@@ -87,7 +87,7 @@ const Login = ({ isFetching, isLoggedIn, login }) => {
 }
 
 const mapStateToProps = (state) => ({
-  isLoggedIn: state.account.isLoggedIn,
+  isLoggedIn: state.account.token,
   wasLoginFailed: state.account.wasLoginFailed,
   isFetching: state.account.isFetching,
 })

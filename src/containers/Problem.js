@@ -393,7 +393,7 @@ class Problem extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { problems, isFetching, wasProblemSubmissionSuccessful, wasProblemSubmissionFailed } = state.problem;
+  const { problems, isFetching } = state.problem;
   const { events, sources, tags, subtags } = state.properties;
   return {
     events: events
@@ -427,4 +427,5 @@ export default connect(
     getSubtags,
     getEvents,
     getSources,
-  })(Problem);
+  }
+)(Problem);
