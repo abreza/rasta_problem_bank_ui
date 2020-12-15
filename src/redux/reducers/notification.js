@@ -20,7 +20,7 @@ function account(state = {}, action) {
       return { ...state };
 
     case actionTypes.LOGOUT_REQUEST:
-      toast.success('خداحافظت! منتظرت هستیم...');
+      toast.success('خداحافظ! منتظرت هستیم...');
       return { ...state }
 
     case actionTypes.SUBMIT_PROBLEM_SUCCESS:

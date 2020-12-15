@@ -34,7 +34,7 @@ function account(state = initialState, action) {
         isFetching: false,
       };
 
-    //#######################
+      //#######################
 
     case actionTypes.LOGIN_REQUEST:
       return {

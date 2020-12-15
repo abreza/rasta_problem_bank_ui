@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import DevTools from '../containers/DevTools';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -32,7 +33,7 @@ const Root = ({ isLoggedIn, username, logout }) => {
           <PrivateRoute path="/problem/:id" component={ViewProblem} key={Math.random()} />
           <PrivateRoute path="/makeProblem/" component={Problem} />
           <PrivateRoute path="/editProblem/:id" component={Problem} key={Math.random()} />
-          <Route path="/problemset/page/:id" render={() => <ProblemSet key={Math.random()} />} />
+          <PrivateRoute path="/problemset/page/:id" render={() => <ProblemSet key={Math.random()} />} />
           <PrivateRoute path="/users_rating" component={UsersRating} />
           <Route path="/" component={Homepage} />
         </Switch>
@@ -46,8 +47,4 @@ const mapStateToProps = (state) => ({
   username: state.account.username,
 })
 
-export default connect(
-  mapStateToProps,
-  {
-    logout
-  })(Root);
+export default connect(mapStateToProps, { logout })(Root);

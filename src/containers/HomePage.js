@@ -30,7 +30,7 @@ const HomepageLayout = ({ mobile }) => (
       as={Link}
       to="/problemset/page/1"
     >
-      بزن بریم!
+      مجموعه‌ی مسئله‌ها
       <Icon name="left arrow" />
     </Button>
     <Button
@@ -45,7 +45,7 @@ const HomepageLayout = ({ mobile }) => (
       to="/makeProblem"
     >
       <Icon name="right arrow" />
-      ایجاد سوال جدید
+      ایجاد مسئله‌ی جدید
     </Button>
 
   </Container>
