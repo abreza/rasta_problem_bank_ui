@@ -9,20 +9,19 @@ import {
   Container,
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { register, setPrompt } from '../redux/actions/account';
+import { register } from '../redux/actions/account';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 
 
 
-const Registration = ({ isFetching, isRegistered, wasRegistrationFailed, isLoggedIn, register, setPrompt }) => {
+const Registration = ({ isFetching, isLoggedIn, register }) => {
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
-  const [firstname, setFirstname] = useState()
-  const [lastname, setLastname] = useState()
+  const [firstName, setFirstName] = useState()
+  const [lastName, setLastName] = useState()
   const [phoneNumber, setPhoneNumber] = useState()
   const [email, setEmail] = useState()
-  const [didPageLoadNewly, setPageLoadStatus] = useState(true)
 
   function confirmPassword(e) {
     let elem = e.target;
@@ -36,9 +35,7 @@ const Registration = ({ isFetching, isRegistered, wasRegistrationFailed, isLogge
   async function handleSubmit(event) {
     const ok = isFormDataOk()
     if (ok) {
-      register(username, password, firstname, lastname, phoneNumber, email);
-      setPageLoadStatus(false)
-      event.preventDefault();
+      register(username, password, firstName, lastName, phoneNumber, email);
     }
   }
 
@@ -46,28 +43,7 @@ const Registration = ({ isFetching, isRegistered, wasRegistrationFailed, isLogge
     return true //todo: validate data
   }
 
-  useEffect(() => {
-    if (wasRegistrationFailed && !didPageLoadNewly) {
-      setPrompt(
-        'یه‌جای کار می‌لنگه...',
-        'یه‌بار دیگه تلاش کن!',
-        'red',
-      )
-    }
-    return () => {
-      if (isRegistered && !didPageLoadNewly) {
-        setPrompt(
-          'ورودت به بانک مسئله رو تبریک می‌گم!',
-          'حالا باید وارد بشی...',
-          'green',
-        )
-      }
-    }
-  }
-    , [wasRegistrationFailed, isRegistered, didPageLoadNewly])
-
-
-  if (isLoggedIn || (!didPageLoadNewly && isRegistered)) {
+  if (isLoggedIn) {
     return <Redirect push to={"/login"} />
   }
 
@@ -136,8 +112,8 @@ const Registration = ({ isFetching, isRegistered, wasRegistrationFailed, isLogge
                   placeholder="نام"
                   type="name"
                   className="persian-input"
-                  value={firstname}
-                  onChange={(event) => setFirstname(event.target.value)}
+                  value={firstName}
+                  onChange={(event) => setFirstName(event.target.value)}
                 />
 
                 <Form.Input
@@ -149,8 +125,8 @@ const Registration = ({ isFetching, isRegistered, wasRegistrationFailed, isLogge
                   placeholder="نام خانوادگی"
                   type="name"
                   className="persian-input"
-                  value={lastname}
-                  onChange={(event) => setLastname(event.target.value)}
+                  value={lastName}
+                  onChange={(event) => setLastName(event.target.value)}
                 />
 
                 <Form.Input
@@ -204,5 +180,4 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   register,
-  setPrompt,
 })(Registration)

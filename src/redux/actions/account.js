@@ -1,5 +1,5 @@
-import * as actionTypes from './actionTypes';
-import * as URLs from './URLs';
+import * as actionTypes from '../actionTypes';
+import * as URLs from './urls';
 
 import { CALL_API } from '../middleware/api/api';
 
@@ -92,25 +92,3 @@ export const logout = () => ({
     },
   },
 });
-
-
-export const setPrompt = (header, text, color) => (
-  dispatch,
-  getState
-) => {
-  let prompt = {
-    type: actionTypes.SHOWـPROMPT,
-    payload: {
-      header,
-      text,
-      color
-    },
-  }
-  dispatch(prompt)
-  prompt = {
-    type: actionTypes.REMOVEـPROMPT,
-  }
-  setTimeout(() => {
-    dispatch(prompt)
-  }, 3000)
-};

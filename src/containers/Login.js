@@ -8,42 +8,20 @@ import {
   Segment,
   Container,
 } from 'semantic-ui-react';
-import { login, setPrompt } from '../redux/actions/account';
+import { login } from '../redux/actions/account';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 
 
-const Login = ({ isFetching, isLoggedIn, wasLoginFailed, login, setPrompt }) => {
+const Login = ({ isFetching, isLoggedIn, login }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [didPageLoadNewly, setPageLoadStatus] = useState(true)
 
   const handleSubmit = (event) => {
-    setPageLoadStatus(false)
-    login(username, password);
     event.preventDefault();
+    login(username, password);
   }
-
-  useEffect(() => {
-    if (wasLoginFailed && !didPageLoadNewly) {
-      setPrompt(
-        'نام کاربری یا رمز عبورت اشتباهه.',
-        'یه‌بار دیگه تلاش کن!',
-        'red',
-      )
-    }
-    return () => {
-      if (isLoggedIn && !didPageLoadNewly) {
-        setPrompt(
-          'خوش اومدی!',
-          'مسئله‌ها منتظر تو هستند...',
-          'green',
-        )
-      }
-    }
-  }
-    , [wasLoginFailed, isLoggedIn, didPageLoadNewly])
 
   if (isLoggedIn) {
     return <Redirect push to={"/"} />
@@ -108,16 +86,15 @@ const Login = ({ isFetching, isLoggedIn, wasLoginFailed, login, setPrompt }) => 
   );
 }
 
-const mapStatoToProps = (state) => ({
+const mapStateToProps = (state) => ({
   isLoggedIn: state.account.isLoggedIn,
   wasLoginFailed: state.account.wasLoginFailed,
   isFetching: state.account.isFetching,
 })
 
 export default connect(
-  mapStatoToProps,
+  mapStateToProps,
   {
     login,
-    setPrompt,
   }
 )(Login)

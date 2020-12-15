@@ -12,7 +12,6 @@ import ProblemSet from '../containers/ProblemSet';
 import UsersRating from '../containers/UsersRating';
 import NavBar from '../components/NavBar/NavBar';
 import NavBarItems from '../components/NavBar/NavBarItems';
-import Prompt from '../components/prompt/prompt'
 
 import '../styles/App.css';
 import PrivateRoute from './PrivateRoute';
@@ -40,7 +39,6 @@ const Root = ({ isLoggedIn, username, logout }) => {
         </Switch>
         <DevTools />
       </NavBar>
-      <Prompt />
     </div>
   );
 }

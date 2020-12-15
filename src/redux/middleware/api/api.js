@@ -1,6 +1,5 @@
-import fetchApi from '../../../utils/fetchApi';
-import * as actionTypes from '../../actions/actionTypes';
-import { normalize } from 'normalizr';
+import fetchApi from './fetchApi';
+import * as actionTypes from '../../actionTypes';
 
 export const CALL_API = 'Call API';
 
@@ -10,24 +9,20 @@ export default ({ getState }) => (next) => async (action) => {
     return next(action);
   }
 
-
   const actionWith = (data) => {
     const finalAction = Object.assign({}, action, data);
     delete finalAction[CALL_API];
     return finalAction;
   };
 
-  let { fetchOptions } = callAPI;
-  const { url, types, payload, schema } = callAPI;
+  const { fetchOptions } = callAPI;
+  const { url, types, payload } = callAPI;
   const [requestType, successType, failureType] = types;
   next(actionWith({ payload, type: requestType }));
 
-  fetchOptions = {
-    ...fetchOptions,
-    body: JSON.stringify(fetchOptions.body),
-  }
-
   try {
+    fetchOptions.body = JSON.stringify(fetchOptions.body);
+
     if (!fetchOptions.dontContentType) {
       fetchOptions.headers = {
         'Content-Type': 'application/json',
@@ -38,14 +33,11 @@ export default ({ getState }) => (next) => async (action) => {
     if (!!account && !!account.token) {
       fetchOptions.headers = {
         ...fetchOptions.headers,
-        Authorization: 'token ' + account.token,
+        Authorization: 'Token ' + account.token,
       };
     }
-    let response = await fetchApi(url, fetchOptions);
 
-    if (schema) {
-      response = normalize(response, schema);
-    }
+    const response = await fetchApi(url, fetchOptions);
     return next(
       actionWith({
         payload,
@@ -54,12 +46,12 @@ export default ({ getState }) => (next) => async (action) => {
       })
     );
   } catch (error) {
-    if (error.message === 'TOKEN_EXPIRED') {
+    if (error.message === 'Token expired!') {
       return next(
         actionWith({
           payload,
           type: actionTypes.LOGOUT_REQUEST,
-          error: error.message || 'Something bad happened!',
+          error: error.message || 'Something went wrong!',
         })
       );
     }
@@ -67,7 +59,7 @@ export default ({ getState }) => (next) => async (action) => {
       actionWith({
         payload,
         type: failureType,
-        error: error.message || 'Something bad happened!',
+        error: error.message || 'Something went wrong!',
       })
     );
   }

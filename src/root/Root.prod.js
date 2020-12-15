@@ -11,7 +11,6 @@ import ProblemSet from '../containers/ProblemSet';
 import UsersRating from '../containers/UsersRating';
 import NavBar from '../components/NavBar/NavBar';
 import NavBarItems from '../components/NavBar/NavBarItems';
-import Prompt from '../components/prompt/prompt'
 
 import '../styles/App.css';
 import PrivateRoute from './PrivateRoute';
@@ -38,7 +37,6 @@ const Root = ({ isLoggedIn, username, logout }) => {
           <Route path="/" component={Homepage} />
         </Switch>
       </NavBar>
-      <Prompt />
     </div>
   );
 }
@@ -48,4 +46,8 @@ const mapStateToProps = (state) => ({
   username: state.account.username,
 })
 
-export default connect(mapStateToProps, { logout })(Root);
+export default connect(
+  mapStateToProps,
+  {
+    logout
+  })(Root);

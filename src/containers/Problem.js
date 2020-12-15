@@ -30,7 +30,6 @@ import {
   getSources,
 } from '../redux/actions/properties'
 import { toPersianNumber } from '../utils/translateNumber'
-import { setPrompt } from '../redux/actions/account'
 import '../styles/Problem.css';
 import problem from '../redux/reducers/problem';
 
@@ -61,7 +60,7 @@ class Problem extends Component {
       doesSubmitOREditProblem: false,
       doesEditingProblemLoaded: false,
     };
-    this.handleSubmitOREdit = this.handleSubmitOREdit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.setProblem = this.setProblem.bind(this);
     this.handleTagChange = this.handleTagChange.bind(this);
     this.handleSubtagChange = this.handleSubtagChange.bind(this);
@@ -111,7 +110,7 @@ class Problem extends Component {
     });
   }
 
-  async handleSubmitOREdit(isProblemNew) {
+  async handleSubmit(isProblemNew) {
     console.log(converter(this.state))
     const ok = this.isProblemDataOk();
     if (ok) {
@@ -121,25 +120,10 @@ class Problem extends Component {
       } else {
         await this.props.editProblem(converter(this.state), this.state.problemId)
       }
-      if (this.props.wasProblemSubmissionFailed) {
-        this.props.setPrompt(
-          'مشکلی از طرف سرور وجود داره!',
-          'چند لحظه دیگه دوباره تلاش کن.',
-          'red'
-        )
-      } else if (this.props.wasProblemSubmissionSuccessful) {
-        this.props.setPrompt(
-          isProblemNew ? 'دمت گرم...' : 'حله...',
-          isProblemNew ? 'مسئله با موفقیت ایجاد شد.' : 'مسئله با موفقیت ویرایش شد.',
-          'green'
-        )
-        this.setState({ doesSubmitOREditProblem: true, })
-      }
     }
   };
 
   isProblemDataOk = () => {
-    const { setPrompt } = this.props;
     const promptHeader = 'موارد زیر باید باشن و تو هنوز پرشون نکردی:';
     let promptText = '', promptColor = 'red';
 
@@ -155,7 +139,7 @@ class Problem extends Component {
       promptText += 'درجه‌ی سختی'
     }
     if (promptText) {
-      setPrompt(promptHeader, promptText, promptColor)
+      // setPrompt(promptHeader, promptText, promptColor) //todo
       return false
     }
     return true
@@ -215,7 +199,7 @@ class Problem extends Component {
                 icon
                 labelPosition="right"
                 positive
-                onClick={() => this.handleSubmitOREdit(isProblemNew)}
+                onClick={() => this.handleSubmit(isProblemNew)}
                 loading={isFetching}
               >
                 <Icon name="save" />
@@ -394,7 +378,7 @@ class Problem extends Component {
                 labelPosition="right"
                 positive
                 className="mobile-save-btn"
-                onClick={() => this.handleSubmitOREdit(isProblemNew)}
+                onClick={() => this.handleSubmit(isProblemNew)}
                 loading={isFetching}
               >
                 <Icon name="save" />
@@ -443,5 +427,4 @@ export default connect(
     getSubtags,
     getEvents,
     getSources,
-    setPrompt,
   })(Problem);

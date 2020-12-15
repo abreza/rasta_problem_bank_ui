@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/actionTypes';
+import * as actionTypes from '../actionTypes';
 
 const initialState = {
   isLoggedIn: false,
@@ -20,8 +20,6 @@ function account(state = initialState, action) {
       return {
         ...state,
         isFetching: true,
-        isRegistered: false,
-        wasRegistrationFailed: false,
       };
 
     case actionTypes.REGISTER_SUCCESS:
@@ -29,14 +27,12 @@ function account(state = initialState, action) {
         ...state,
         isFetching: false,
         token: action.response.token,
-        isRegistered: true,
       };
 
     case actionTypes.REGISTER_FAILURE:
       return {
         ...state,
         isFetching: false,
-        wasRegistrationFailed: true,
       };
 
     //#######################
@@ -46,7 +42,6 @@ function account(state = initialState, action) {
         ...state,
         isFetching: true,
         isLoggedIn: false,
-        wasLoginFailed: false,
       };
 
     case actionTypes.LOGIN_SUCCESS:
@@ -54,8 +49,7 @@ function account(state = initialState, action) {
         ...state,
         isFetching: false,
         isLoggedIn: true,
-        wasLoginFailed: false,
-        username: action.payload.username,
+        // username: action.payload.username, //todo
         token: action.response.token,
       }
 
@@ -65,7 +59,6 @@ function account(state = initialState, action) {
         isFetching: false,
         username: null,
         isLoggedIn: false,
-        wasLoginFailed: true,
       }
 
     //#######################
@@ -73,43 +66,10 @@ function account(state = initialState, action) {
     case actionTypes.LOGOUT_REQUEST:
       return {
         ...state,
-        isFetching: true
+        token: '',
+        isLoggedIn: false,
+
       };
-
-    case actionTypes.LOGOUT_SUCCESS:
-      return {
-        ...initialState,
-        // promptStatus: true,
-        // promptHeader: "خدا به همراهت :(",
-        // promptText: "بازم بیا، منتظرتیم...",
-        // promptColor: "teal", todo
-      };
-
-    case actionTypes.LOGOUT_FAILURE:
-      return {
-        ...state,
-        isFetching: false
-      }
-
-    //#######################
-
-    case actionTypes.SHOWـPROMPT:
-      return {
-        ...state,
-        promptStatus: true,
-        promptHeader: action.payload.header,
-        promptText: action.payload.text,
-        promptColor: action.payload.color,
-      }
-
-    case actionTypes.REMOVEـPROMPT:
-      return {
-        ...state,
-        promptStatus: false,
-        promptHeader: '',
-        promptText: '',
-        promptColor: '',
-      }
 
     default:
       return state;
