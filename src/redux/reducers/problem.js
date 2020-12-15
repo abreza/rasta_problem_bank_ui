@@ -3,8 +3,6 @@ import * as actionTypes from '../actionTypes';
 function problem(
   state = {
     isFetching: false,
-    wasProblemSubmissionSuccessful: false,
-    wasProblemSubmissionFailed: false,
   },
   action
 ) {
@@ -13,23 +11,18 @@ function problem(
       return {
         ...state,
         isFetching: true,
-        wasProblemSubmissionSuccessful: false,
-        wasProblemSubmissionFailed: false,
       }
 
     case actionTypes.SUBMIT_PROBLEM_SUCCESS:
       return {
         ...state,
         isFetching: false,
-        wasProblemSubmissionSuccessful: true,
       }
 
     case actionTypes.SUBMIT_PROBLEM_FAILURE:
       return {
         ...state,
         isFetching: false,
-        wasProblemSubmissionFailed: true,
-
       }
 
     //#########################
@@ -46,7 +39,6 @@ function problem(
       return {
         ...state,
         problems: action.response.questions,
-        numberOfPages: action.response.num_pages,
         isFetching: false,
       };
 

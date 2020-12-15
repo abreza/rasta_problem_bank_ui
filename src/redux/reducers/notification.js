@@ -23,12 +23,23 @@ function account(state = {}, action) {
       toast.success('خداحافظت! منتظرت هستیم...');
       return { ...state }
 
+    case actionTypes.SUBMIT_PROBLEM_SUCCESS:
+      if (action.payload.type === 'edit')
+        toast.success('ایول! مسئله با موفقیت ویرایش شد.');
+      else
+        toast.success('ایول! مسئله با موفقیت ایجاد شد.');
+      return { ...state }
+
+    case actionTypes.SUBMIT_PROBLEM_FAILURE:
+      toast.error('ای بابا! یه مشکلی هست...');
+      return { ...state }
+
     case actionTypes.NOTIFY:
-      if (action.payload === 'success')
+      if (action.payload.type === 'success')
         toast.success(action.payload.message);
-      if (action.payload === 'error')
+      if (action.payload.type === 'error')
         toast.error(action.payload.message);
-      if (action.payload === 'warning')
+      if (action.payload.type === 'warning')
         toast.warning(action.payload.message);
       return { ...state }
 

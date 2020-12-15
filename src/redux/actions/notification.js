@@ -3,16 +3,10 @@ import * as URLs from './urls';
 
 import { CALL_API } from '../middleware/api/api';
 
-const notify = (message, type) => ({
-  [CALL_API]: {
-    types: [
-      actionTypes.NOTIFY,
-    ],
-    fetchOptions: {
-      payload: {
-        message,
-        type,
-      }
-    },
-  },
+export const notify = (message, type) => ({
+  type: actionTypes.NOTIFY,
+  payload: {
+    message,
+    type,
+  }
 });

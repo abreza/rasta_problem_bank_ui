@@ -48,7 +48,7 @@ export const fetchProblemsListByPage = (page) => ({
   },
 });
 
-export const submitProblem = (problem) => {
+export const createProblem = (problem) => {
   return ({
     [CALL_API]: {
       types: [
@@ -56,6 +56,9 @@ export const submitProblem = (problem) => {
         actionTypes.SUBMIT_PROBLEM_SUCCESS,
         actionTypes.SUBMIT_PROBLEM_FAILURE,
       ],
+      payload: {
+        type: 'create',
+      },
       url: URLs.SUBMIT_PROBLEM,
       fetchOptions: {
         method: 'POST',
@@ -73,6 +76,9 @@ export const editProblem = (problem, id) => {
         actionTypes.SUBMIT_PROBLEM_SUCCESS,
         actionTypes.SUBMIT_PROBLEM_FAILURE,
       ],
+      payload: {
+        type: 'edit',
+      },
       url: URLs.SUBMIT_PROBLEM + id,
       fetchOptions: {
         method: 'PUT',

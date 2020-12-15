@@ -19,7 +19,7 @@ import converter from '../components/problem/convertor';
 import Editor from '../components/editor/tiny_editor/react_tiny/TinyEditorComponent';
 import { connect } from 'react-redux';
 import {
-  submitProblem,
+  createProblem,
   fetchProblem,
   editProblem,
 } from '../redux/actions/problem';
@@ -28,8 +28,9 @@ import {
   getSubtags,
   getEvents,
   getSources,
-} from '../redux/actions/properties'
-import { toPersianNumber } from '../utils/translateNumber'
+} from '../redux/actions/properties';
+import { notify } from '../redux/actions/notification';
+import { toPersianNumber } from '../utils/translateNumber';
 import '../styles/Problem.css';
 import problem from '../redux/reducers/problem';
 
@@ -57,7 +58,6 @@ class Problem extends Component {
           this.setState({ appropriateGrades: appropriateGrades });
         },
       },
-      doesSubmitOREditProblem: false,
       doesEditingProblemLoaded: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -116,7 +116,7 @@ class Problem extends Component {
     if (ok) {
       await this.setProblem();
       if (isProblemNew) {
-        await this.props.submitProblem(converter(this.state))
+        await this.props.createProblem(converter(this.state))
       } else {
         await this.props.editProblem(converter(this.state), this.state.problemId)
       }
@@ -139,7 +139,7 @@ class Problem extends Component {
       promptText += 'درجه‌ی سختی'
     }
     if (promptText) {
-      // setPrompt(promptHeader, promptText, promptColor) //todo
+      this.props.notify('این موارد رو حتماٌ باید پر کنی: ' + promptText, 'error');
       return false
     }
     return true
@@ -176,7 +176,7 @@ class Problem extends Component {
   ////////////////////////////////////////////
 
   render() {
-    const { problemId, isProblemNew, doesSubmitOREditProblem } = this.state;
+    const { problemId, isProblemNew } = this.state;
     const { isFetching } = this.props;
     const editingProblem = this.props.problems ? this.props.problems[problemId] : null;
     if (editingProblem && !this.state.doesEditingProblemLoaded) {
@@ -184,10 +184,6 @@ class Problem extends Component {
         doesEditingProblemLoaded: true,
       })
       this.loadEditingProblem(editingProblem);
-    }
-
-    if (doesSubmitOREditProblem) {
-      return <Redirect push to={'/problemset/page/1'} />;
     }
 
     return (
@@ -412,20 +408,19 @@ const mapStateToProps = (state) => {
       ? problems
       : [],
     isFetching,
-    wasProblemSubmissionSuccessful,
-    wasProblemSubmissionFailed,
   }
 };
 
 export default connect(
   mapStateToProps,
   {
-    submitProblem,
+    notify,
     editProblem,
     fetchProblem,
     getTags,
     getSubtags,
     getEvents,
     getSources,
+    createProblem,
   }
 )(Problem);
