@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import DevTools from '../containers/DevTools';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
