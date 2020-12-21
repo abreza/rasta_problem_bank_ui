@@ -1,4 +1,4 @@
-export const ROOT = "https://bank.rastaiha.ir/api/";
+export const ROOT = "http://bank.karsooghmehregan.ir/api/";
 
 export const GET_USER_DATA = ROOT.concat('account/');
 
