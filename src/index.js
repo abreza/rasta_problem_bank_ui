@@ -5,15 +5,15 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import configureStore from './redux/store/configureStore';
 
-const persistedState = localStorage.getItem('Bank1')
-  ? JSON.parse(localStorage.getItem('Bank1'))
+const persistedState = localStorage.getItem('ProblemBank')
+  ? JSON.parse(localStorage.getItem('ProblemBank'))
   : {};
 
 const store = configureStore(persistedState);
 
 store.subscribe(() => {
   localStorage.setItem(
-    'Bank1',
+    'ProblemBank',
     JSON.stringify({
       account: { ...store.getState().account },
     })

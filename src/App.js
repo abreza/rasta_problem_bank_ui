@@ -11,7 +11,7 @@ const Toast = () => (
   <ToastContainer
     rtl
     position="top-left"
-    autoClose={4000}
+    autoClose={5000}
     transition={Slide}
     hideProgressBar={false}
     pauseOnHover={false}

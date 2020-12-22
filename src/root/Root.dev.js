@@ -33,7 +33,7 @@ const Root = ({ isLoggedIn, username, logout }) => {
           <PrivateRoute path="/problem/:id" component={ViewProblem} />
           <PrivateRoute path="/makeProblem/" component={Problem} />
           <PrivateRoute path="/editProblem/:id" component={Problem} />
-          <PrivateRoute path="/problemset/page/:id" component={ProblemSet} />
+          <PrivateRoute path="/problemset/page/:id" render={() => <ProblemSet key={Math.random()} />} />
           <Route path="/" component={Homepage} />
         </Switch>
         <DevTools />
