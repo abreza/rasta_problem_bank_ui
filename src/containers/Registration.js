@@ -70,90 +70,104 @@ const Registration = ({ isFetching, isLoggedIn, register }) => {
                   type="username"
                   required
                   fluid
-                  icon="user"
-                  iconPosition="right"
+                  // icon="user"
+                  // iconPosition="right"
                   placeholder="نام کاربری"
                   className="persian-input"
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
-                />
+                >
+                  <input style={{ direction: 'ltr' }} />
+                </Form.Input>
 
                 <Form.Input
                   name="password"
                   required
                   fluid
-                  icon="lock"
-                  iconPosition="right"
+                  // icon="lock"
+                  // iconPosition="right"
                   placeholder="رمز عبور"
                   type="password"
                   className="persian-input"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
-                />
+                >
+                  <input style={{ direction: 'ltr' }} />
+                </Form.Input>
 
                 <Form.Input
                   name="password_confirmation"
                   required
                   fluid
-                  icon="lock"
-                  iconPosition="right"
+                  // icon="lock"
+                  // iconPosition="right"
                   placeholder="تکرار رمز عبور"
                   type="password"
                   className="persian-input"
                   onChange={confirmPassword}
-                />
+                >
+                  <input style={{ direction: 'ltr' }} />
+                </Form.Input>
 
                 <Form.Input
                   name="firstName"
                   required
                   fluid
-                  icon="user" //todo
-                  iconPosition="right"
+                  // icon="user" //todo
+                  // iconPosition="right"
                   placeholder="نام"
                   type="name"
                   className="persian-input"
                   value={firstName}
                   onChange={(event) => setFirstName(event.target.value)}
-                />
+                >
+                  <input style={{ direction: 'rtl', textAlign: 'right' }} />
+                </Form.Input>
 
                 <Form.Input
                   name="lastName"
                   required
                   fluid
-                  icon="user" //todo
-                  iconPosition="right"
+                  // icon="user" //todo
+                  // iconPosition="right"
                   placeholder="نام خانوادگی"
                   type="name"
                   className="persian-input"
                   value={lastName}
                   onChange={(event) => setLastName(event.target.value)}
-                />
+                >
+                  <input style={{ direction: 'rtl', textAlign: 'right' }} />
+                </Form.Input>
 
                 <Form.Input
                   name="phoneNumber"
                   required
                   fluid
-                  icon="phone"
-                  iconPosition="right"
+                  // icon="phone"
+                  // iconPosition="right"
                   placeholder="شماره موبایل"
                   type="phone" //todo:
                   className="persian-input"
                   value={phoneNumber}
                   onChange={(event) => setPhoneNumber(event.target.value)}
-                />
+                >
+                  <input style={{ direction: 'ltr' }} />
+                </Form.Input>
 
                 <Form.Input
                   name="email"
                   required
                   fluid
-                  icon="mail"
-                  iconPosition="right"
+                  // icon="mail"
+                  // iconPosition="right"
                   placeholder="ایمیل"
                   type="mail" //todo  
                   className="persian-input"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
-                />
+                >
+                  <input style={{ direction: 'ltr' }} />
+                </Form.Input>
 
                 <Button primary fluid size="large" onClick disabled={isFetching}>
                   ثبت‌نام

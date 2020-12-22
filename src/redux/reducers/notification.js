@@ -8,7 +8,7 @@ function account(state = {}, action) {
       return { ...state };
 
     case actionTypes.REGISTER_FAILURE:
-      toast.error('احتمالا یکی با این نام کاربری یا رمز عبور از قبل وجود داره!')
+      toast.error('احتمالا یک حساب با همین نام کاربری از قبل وجود داره!')
       return { ...state }
 
     case actionTypes.LOGIN_SUCCESS:

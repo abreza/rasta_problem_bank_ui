@@ -35,10 +35,10 @@ function problem(
       }
 
     case actionTypes.PROBLEM_LIST_SUCCESS:
-      console.log(action.response)
       return {
         ...state,
         problems: action.response.questions,
+        numberOfPages: action.response.num_pages,
         isFetching: false,
       };
 

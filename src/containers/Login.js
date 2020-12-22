@@ -49,24 +49,28 @@ const Login = ({ isFetching, isLoggedIn, login }) => {
                     name="username"
                     required
                     fluid
-                    icon="user"
-                    iconPosition="right"
+                    // icon="user"
+                    // iconPosition="right"
                     placeholder="نام کاربری"
                     className="persian-input"
                     onChange={(event) => setUsername(event.target.value)}
-                  />
+                  >
+                    <input style={{ direction: 'ltr' }} />
+                  </Form.Input>
 
                   <Form.Input
                     name="password"
                     required
                     fluid
-                    icon="lock"
-                    iconPosition="right"
+                    // icon="lock"
+                    // iconPosition="right"
                     placeholder="رمز عبور"
                     type="password"
                     className="persian-input"
                     onChange={(event) => setPassword(event.target.value)}
-                  />
+                  >
+                    <input style={{ direction: 'ltr' }} />
+                  </Form.Input>
 
                   <Button primary fluid size="large" disabled={isFetching}>
                     بزن بریم

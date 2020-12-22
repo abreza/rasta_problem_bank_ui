@@ -1,16 +1,8 @@
 import * as actionTypes from '../actionTypes';
 
 const initialState = {
-  isRegistered: false,
-  wasLoginFailed: false,
-  wasRegistrationFailed: false,
-  username: '',
   isFetching: false,
-  token: null,
-  promptStatus: false,
-  promptHeader: '',
-  promptText: '',
-  promptColor: '',
+  token: '',
 }
 
 function account(state = initialState, action) {
@@ -46,7 +38,6 @@ function account(state = initialState, action) {
       return {
         ...state,
         isFetching: false,
-        // username: action.payload.username, //todo
         token: action.response.token,
       }
 
@@ -54,7 +45,6 @@ function account(state = initialState, action) {
       return {
         ...state,
         isFetching: false,
-        username: null,
       }
 
     //#######################

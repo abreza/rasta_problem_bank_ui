@@ -29,11 +29,10 @@ const Root = ({ isLoggedIn, username, logout }) => {
         <Switch>
           <Route path="/login" component={LoginPage} />
           <Route path="/registration" component={RegistrationPage} />
-          <PrivateRoute path="/problem/:id" component={ViewProblem} key={Math.random()} />
+          <PrivateRoute path="/problem/:id" component={ViewProblem} />
           <PrivateRoute path="/makeProblem/" component={Problem} />
-          <PrivateRoute path="/editProblem/:id" component={Problem} key={Math.random()} />
-          <PrivateRoute path="/problemset/page/:id" render={() => <ProblemSet key={Math.random()} />} />
-          <PrivateRoute path="/users_rating" component={UsersRating} />
+          <PrivateRoute path="/editProblem/:id" component={Problem} />
+          <PrivateRoute path="/problemset/page/:id" component={ProblemSet} />
           <Route path="/" component={Homepage} />
         </Switch>
       </NavBar>
@@ -42,8 +41,7 @@ const Root = ({ isLoggedIn, username, logout }) => {
 }
 
 const mapStateToProps = (state) => ({
-  isLoggedIn: state.account.isLoggedIn,
-  username: state.account.username,
+  isLoggedIn: state.account.token,
 })
 
 export default connect(mapStateToProps, { logout })(Root);
