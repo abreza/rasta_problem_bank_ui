@@ -53,8 +53,6 @@ function problem(
       }
 
     case actionTypes.GET_PROBLEM_SUCCESS:
-      console.log([...state.problems, action.response])
-      console.log("EDDEFGDHJGFDERTYUJHGFDERTH")
       return {
         ...state,
         problems: [...state.problems, action.response],
