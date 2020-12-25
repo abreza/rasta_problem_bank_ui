@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Grid,
   Header,
@@ -26,20 +26,37 @@ import { Link } from 'react-router-dom';
 
 const problemId = parseInt(window.location.pathname.split('/')[2]);
 
-class ViewProblem extends Component {
+const ViewProblem = ({
+  fetchProblem,
+  getTags,
+  getEvents,
+  getSources,
+  problems,
+  tags,
+  subtags,
+  events,
+  sources,
+}) => {
+  const [problem, setProblem] = useState('');
 
-  componentDidMount() {
-    this.props.fetchProblem(problemId);
-    this.props.getTags();
-    this.props.getSubtags();
-    this.props.getEvents();
-    this.props.getSources();
-  }
+  useEffect(() => {
+    fetchProblem(problemId);
+    getTags();
+    getSubtags();
+    getEvents();
+    getSources();
+  }, [fetchProblem, getTags, getSubtags, getEvents, getSources]);
 
-  render() {
-    if (this.props.problems) {
-      var problem = this.props.problems[problemId];
-      return (
+  useEffect(() => {
+    if (problems && problems.find(problem => problem.id == problemId)) {
+      problems.find(problem => problem.id == problemId)
+      setProblem(problems.find(problem => problem.id == problemId));
+    }
+  }, [problems]);
+
+  return (
+    <>
+      {problem &&
         <Grid centered container stackable doubling style={{ direction: 'rtl' }}>
           <Grid.Row verticalAlign='middle' columns={1}>
             <Grid.Column width={5} only="computer" style={{ textAlign: 'right' }}>
@@ -103,7 +120,7 @@ class ViewProblem extends Component {
                 <Segment >
                   <Label attached="top">مباحث کلی سوال</Label>
                   {
-                    this.props.tags.filter(tag => {
+                    tags.filter(tag => {
                       if (problem.tags.includes(tag.id)) {
                         return true;
                       }
@@ -120,7 +137,7 @@ class ViewProblem extends Component {
                 <Segment>
                   <Label attached="top">مباحث ریزتر</Label>
                   {
-                    this.props.subtags.filter(subtag => {
+                    subtags.filter(subtag => {
                       if (problem.sub_tags.includes(subtag.id) && problem.tags.includes(subtag.parent)) {
                         return true
                       }
@@ -137,7 +154,7 @@ class ViewProblem extends Component {
                 <Segment>
                   <Label attached="top">منبع</Label>
                   {
-                    this.props.sources.filter(source => {
+                    sources.filter(source => {
                       if (source.id == problem.source) {
                         return true;
                       }
@@ -154,7 +171,7 @@ class ViewProblem extends Component {
                 <Segment>
                   <Label attached="top">رویداد‌های به کار رفته</Label>
                   {
-                    this.props.events.filter(event => {
+                    events.filter(event => {
                       if (problem.events.includes(event.id)) {
                         return true
                       }
@@ -192,15 +209,12 @@ class ViewProblem extends Component {
             </Grid.Column>
           </Grid.Row>
         </Grid >
-      );
-    } else {
-      return (
-        <>
-        </>
-      )
-    }
-  }
+      }
+    </>
+  );
+
 }
+
 
 const mapStateToProps = (state) => {
   return ({
@@ -211,6 +225,7 @@ const mapStateToProps = (state) => {
     sources: state.properties.sources,
   });
 }
+
 export default connect(
   mapStateToProps,
   {

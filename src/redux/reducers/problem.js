@@ -1,9 +1,12 @@
 import * as actionTypes from '../actionTypes';
 
+const initState = {
+  isFetching: false,
+  problems: [],
+}
+
 function problem(
-  state = {
-    isFetching: false,
-  },
+  state = initState,
   action
 ) {
   switch (action.type) {
@@ -50,12 +53,11 @@ function problem(
       }
 
     case actionTypes.GET_PROBLEM_SUCCESS:
+      console.log([...state.problems, action.response])
+      console.log("EDDEFGDHJGFDERTYUJHGFDERTH")
       return {
         ...state,
-        problems: {
-          ...state.problems,
-          [action.response.id]: action.response,
-        },
+        problems: [...state.problems, action.response],
         isFetching: false,
       };
 
