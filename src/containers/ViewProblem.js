@@ -13,7 +13,7 @@ import Difficulty from '../components/problem/Difficulty';
 import Tag from '../components/problem/Tag';
 import { connect } from 'react-redux';
 import Comment from '../components/problem/Comment';
-import WriteComment from '../components/problem/WriteComment';
+import CreateComment from '../components/problem/CreateComment';
 
 import TinyPreview from '../components/editor/tiny_editor/react_tiny/Preview';
 import {
@@ -26,9 +26,6 @@ import {
   getEvents,
   getSources,
 } from '../redux/actions/properties'
-import {
-  submitComment,
-} from '../redux/actions/problem'
 
 const problemId = parseInt(window.location.pathname.split('/')[2]);
 
@@ -117,7 +114,7 @@ const ViewProblem = ({
                     return <Comment text={comment.text} />
                   })
                 }
-                <WriteComment id={problemId} />
+                <CreateComment id={problemId} />
               </Segment>
             </Grid.Column>
 
@@ -260,6 +257,5 @@ export default connect(
     getSubtags,
     getEvents,
     getSources,
-    submitComment,
   }
 )(ViewProblem);

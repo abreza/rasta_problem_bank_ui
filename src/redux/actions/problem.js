@@ -107,7 +107,7 @@ export const editProblem = (problem, id) => {
 //   })
 // }
 
-export const submitComment = (commentText, questionId) => {
+export const createComment = (text, question) => {
   return ({
     [CALL_API]: {
       types: [
@@ -115,12 +115,32 @@ export const submitComment = (commentText, questionId) => {
         actionTypes.SUBMIT_COMMENTS_SUCCESS,
         actionTypes.SUBMIT_COMMENTS_FAILURE,
       ],
-      url: URLs.SUBMIT_COMMENT,
+      url: URLs.CREATE_COMMENT,
+      fetchOptions: {
+        method: 'POST',
+        body: {
+          text,
+          question,
+        }
+      },
+    },
+  })
+}
+
+export const editComment = (text, question) => {
+  return ({
+    [CALL_API]: {
+      types: [
+        actionTypes.SUBMIT_COMMENTS_REQUEST,
+        actionTypes.SUBMIT_COMMENTS_SUCCESS,
+        actionTypes.SUBMIT_COMMENTS_FAILURE,
+      ],
+      url: URLs.CREATE_COMMENT,
       fetchOptions: {
         method: 'PUT',
         body: {
-          commentText,
-          questionId,
+          text,
+          question,
         }
       },
     },

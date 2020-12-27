@@ -9,8 +9,8 @@ export const LOGOUT_USER = ROOT.concat('signout/');
 export const GET_PROBLEM = ROOT.concat('question/');
 export const SUBMIT_PROBLEM = ROOT.concat('question/');
 
-export const GET_COMMENTS = ROOT.concat('comment/');
-export const SUBMIT_COMMENT = ROOT.concat('comment/');
+export const CREATE_COMMENT = ROOT.concat('comment/');
+export const EDIT_COMMENT = ROOT.concat('comment/');
 
 export const GET_TAGS = ROOT.concat('tag/');
 export const GET_SUBTAGS = ROOT.concat('subtag/');

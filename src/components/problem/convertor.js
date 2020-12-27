@@ -1,7 +1,19 @@
 
-const converter = ({ difficultyLevel, appropriateGrades, name, problem, selectedTags, selectedSubtags, selectedEvents, selectedSource }) => {
+const converter = ({
+  difficultyLevel,
+  appropriateGrades,
+  name,
+  problem,
+  selectedTags,
+  selectedSubtags,
+  selectedEvents,
+  selectedSource
+}) => {
 
-  const tags = [], sub_tags = [], events = [];
+  const tags = [];
+  const sub_tags = [];
+  const events = [];
+
   for (var id in selectedTags) {
     if (selectedTags[id]) {
       tags.push(id);
@@ -36,6 +48,7 @@ const converter = ({ difficultyLevel, appropriateGrades, name, problem, selected
       tags,
       sub_tags,
       events,
+      comments: [],
     }
   )
 }
