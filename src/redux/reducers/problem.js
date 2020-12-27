@@ -3,6 +3,7 @@ import * as actionTypes from '../actionTypes';
 const initState = {
   isFetching: false,
   problems: [],
+  comments: [],
 }
 
 function problem(
@@ -52,12 +53,34 @@ function problem(
         isFetching: false,
       }
 
+    //#########################
+
     case actionTypes.GET_PROBLEM_SUCCESS:
       return {
         ...state,
         problems: [...state.problems, action.response],
         isFetching: false,
       };
+
+    //#########################
+
+    case actionTypes.SUBMIT_COMMENTS_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+      }
+
+    case actionTypes.SUBMIT_COMMENTS_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+      }
+
+    case actionTypes.SUBMIT_COMMENTS_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+      }
 
     default:
       return state;

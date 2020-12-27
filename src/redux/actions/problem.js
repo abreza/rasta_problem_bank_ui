@@ -88,3 +88,41 @@ export const editProblem = (problem, id) => {
   })
 };
 
+// export const getComments = (entityId) => {
+//   return ({
+//     [CALL_API]: {
+//       types: [
+//         actionTypes.GET_COMMENTS_REQUEST,
+//         actionTypes.GET_COMMENTS_SUCCESS,
+//         actionTypes.GET_COMMENTS_FAILURE,
+//       ],
+//       payload: {
+//         entityId
+//       },
+//       url: URLs.GET_COMMENTS,
+//       fetchOptions: {
+//         method: 'GET',
+//       },
+//     },
+//   })
+// }
+
+export const submitComment = (commentText, questionId) => {
+  return ({
+    [CALL_API]: {
+      types: [
+        actionTypes.SUBMIT_COMMENTS_REQUEST,
+        actionTypes.SUBMIT_COMMENTS_SUCCESS,
+        actionTypes.SUBMIT_COMMENTS_FAILURE,
+      ],
+      url: URLs.SUBMIT_COMMENT,
+      fetchOptions: {
+        method: 'PUT',
+        body: {
+          commentText,
+          questionId,
+        }
+      },
+    },
+  })
+}

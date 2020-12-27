@@ -8,9 +8,13 @@ import {
   Button,
   Icon,
 } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import Difficulty from '../components/problem/Difficulty';
 import Tag from '../components/problem/Tag';
 import { connect } from 'react-redux';
+import Comment from '../components/problem/Comment';
+import WriteComment from '../components/problem/WriteComment';
+
 import TinyPreview from '../components/editor/tiny_editor/react_tiny/Preview';
 import {
   fetchProblem,
@@ -22,7 +26,9 @@ import {
   getEvents,
   getSources,
 } from '../redux/actions/properties'
-import { Link } from 'react-router-dom';
+import {
+  submitComment,
+} from '../redux/actions/problem'
 
 const problemId = parseInt(window.location.pathname.split('/')[2]);
 
@@ -32,6 +38,7 @@ const ViewProblem = ({
   getEvents,
   getSources,
   problems,
+  getSubtags,
   tags,
   subtags,
   events,
@@ -101,6 +108,17 @@ const ViewProblem = ({
                   />
                 </Container>
               </Segment>
+              <Segment textAlign="center">
+                <Label size="large" attached="top">
+                  نظرات
+                </Label>
+                {problem.comments &&
+                  problem.comments.map(comment => {
+                    return <Comment text={comment.text} />
+                  })
+                }
+                <WriteComment id={problemId} />
+              </Segment>
             </Grid.Column>
 
             <Grid.Column
@@ -117,74 +135,82 @@ const ViewProblem = ({
                 <Difficulty
                   difficulty={problem.hardness}
                 ></Difficulty>
-                <Segment >
-                  <Label attached="top">مباحث کلی سوال</Label>
-                  {
-                    tags.filter(tag => {
-                      if (problem.tags.includes(tag.id)) {
-                        return true;
-                      }
-                    }).map((tag) => (
-                      <Tag
-                        selectable
-                        size={'small'}
-                        name={tag.name}
-                        key={tag.id}
-                      />
-                    ))
-                  }
-                </Segment>
-                <Segment>
-                  <Label attached="top">مباحث ریزتر</Label>
-                  {
-                    subtags.filter(subtag => {
-                      if (problem.sub_tags.includes(subtag.id) && problem.tags.includes(subtag.parent)) {
-                        return true
-                      }
-                    }).map((subtag) => (
-                      <Tag
-                        selectable
-                        size={'small'}
-                        name={subtag.name}
-                        key={subtag.id}
-                      />
-                    ))
-                  }
-                </Segment>
-                <Segment>
-                  <Label attached="top">منبع</Label>
-                  {
-                    sources.filter(source => {
-                      if (source.id == problem.source) {
-                        return true;
-                      }
-                    }).map((source) => (
-                      <Label
-                        size={'small'}
-                        key={source.id}
-                      >
-                        {source.name}
-                      </Label>
-                    ))
-                  }
-                </Segment>
-                <Segment>
-                  <Label attached="top">رویداد‌های به کار رفته</Label>
-                  {
-                    events.filter(event => {
-                      if (problem.events.includes(event.id)) {
-                        return true
-                      }
-                    }).map((event) => (
-                      <Label
-                        size={'small'}
-                        key={event.id}
-                      >
-                        {event.name}
-                      </Label>
-                    ))
-                  }
-                </Segment>
+                {problem.tags &&
+                  <Segment >
+                    <Label attached="top">مباحث کلی سوال</Label>
+                    {
+                      tags.filter(tag => {
+                        if (problem.tags.includes(tag.id)) {
+                          return true;
+                        }
+                      }).map((tag) => (
+                        <Tag
+                          selectable
+                          size={'small'}
+                          name={tag.name}
+                          key={tag.id}
+                        />
+                      ))
+                    }
+                  </Segment>
+                }
+                {problem.sub_tags &&
+                  <Segment>
+                    <Label attached="top">مباحث ریزتر</Label>
+                    {
+                      subtags.filter(subtag => {
+                        if (problem.sub_tags.includes(subtag.id) && problem.tags.includes(subtag.parent)) {
+                          return true
+                        }
+                      }).map((subtag) => (
+                        <Tag
+                          selectable
+                          size={'small'}
+                          name={subtag.name}
+                          key={subtag.id}
+                        />
+                      ))
+                    }
+                  </Segment>
+                }
+                {problem.source &&
+                  <Segment>
+                    <Label attached="top">منبع</Label>
+                    {
+                      sources.filter(source => {
+                        if (source.id == problem.source) {
+                          return true;
+                        }
+                      }).map((source) => (
+                        <Label
+                          size={'small'}
+                          key={source.id}
+                        >
+                          {source.name}
+                        </Label>
+                      ))
+                    }
+                  </Segment>
+                }
+                {problem.events &&
+                  <Segment>
+                    <Label attached="top">رویداد‌های به کار رفته</Label>
+                    {
+                      events.filter(event => {
+                        if (problem.events.includes(event.id)) {
+                          return true
+                        }
+                      }).map((event) => (
+                        <Label
+                          size={'small'}
+                          key={event.id}
+                        >
+                          {event.name}
+                        </Label>
+                      ))
+                    }
+                  </Segment>
+                }
               </Segment>
             </Grid.Column>
           </Grid.Row>
@@ -234,5 +260,6 @@ export default connect(
     getSubtags,
     getEvents,
     getSources,
+    submitComment,
   }
 )(ViewProblem);

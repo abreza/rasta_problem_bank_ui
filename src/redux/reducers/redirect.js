@@ -15,7 +15,6 @@ function redirect(state = initState, action) {
     case actionTypes.SUBMIT_PROBLEM_SUCCESS:
       return { redirectTo: '/problemset/page/1' };
 
-
     case actionTypes.REDIRECT:
       return { redirectTo: action.payload };
 
