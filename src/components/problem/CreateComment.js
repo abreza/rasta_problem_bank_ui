@@ -22,10 +22,10 @@ const CreateComment = ({
 }) => {
   const [text, setText] = useState('');
   return (
-    <Form style={{ textAlign: 'left' }} onSubmit={() => createComment(text, id)}>
+    <Form style={{ textAlign: 'left' }} onSubmit={() => { createComment(text, id); window.location.reload(); }}>
       <TextArea
         onChange={(e) => setText(e.target.value)}
-        placeholder='تو هم با نوشتن نظرت، مارو خوشحال کن!' />
+        placeholder='تو هم نظرت رو راجع به این مسئله بگو!' />
       <Button
         disabled={!text}
         positive

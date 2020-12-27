@@ -3,6 +3,7 @@ import * as actionTypes from '../actionTypes';
 const initialState = {
   isFetching: false,
   token: '',
+  users: [],
 }
 
 function account(state = initialState, action) {
@@ -26,7 +27,7 @@ function account(state = initialState, action) {
         isFetching: false,
       };
 
-      //#######################
+    //#######################
 
     case actionTypes.LOGIN_REQUEST:
       return {
@@ -54,6 +55,25 @@ function account(state = initialState, action) {
         ...state,
         token: '',
       };
+
+    //#######################
+
+    case actionTypes.USER_REQUEST:
+      return {
+        ...state,
+      }
+
+    case actionTypes.USER_SUCCESS:
+      console.log(action)
+      return {
+        ...state,
+        users: [...state.users, action.response]
+      }
+
+    case actionTypes.USER_FAILURE:
+      return {
+        ...state,
+      }
 
     default:
       return state;

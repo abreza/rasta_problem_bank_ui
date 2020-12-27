@@ -3,14 +3,14 @@ import * as URLs from './urls';
 
 import { CALL_API } from '../middleware/api/api';
 
-const fetchUser = () => ({
+export const getUser = (id) => ({
   [CALL_API]: {
     types: [
       actionTypes.USER_REQUEST,
       actionTypes.USER_SUCCESS,
       actionTypes.USER_FAILURE,
     ],
-    url: URLs.GET_ACCOUNT_BY_USERNAME,
+    url: URLs.GET_USER(id),
     fetchOptions: {
       method: 'GET',
     },
@@ -18,16 +18,16 @@ const fetchUser = () => ({
 });
 
 
-export const loadUser = () => (
-  dispatch,
-  getState
-) => {
-  const user = getState().users[getState().account.username];
-  if (user) {
-    return null;
-  }
-  return dispatch(fetchUser());
-};
+// export const loadUser = () => (
+//   dispatch,
+//   getState
+// ) => {
+//   const user = getState().users[getState().account.username];
+//   if (user) {
+//     return null;
+//   }
+//   return dispatch(fetchUser());
+// };
 
 
 export const login = (username, password) => ({

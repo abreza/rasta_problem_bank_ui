@@ -111,7 +111,7 @@ const ViewProblem = ({
                 </Label>
                 {problem.comments &&
                   problem.comments.map(comment => {
-                    return <Comment text={comment.text} />
+                    return <Comment text={comment.text} commenterId={comment.writer} />
                   })
                 }
                 <CreateComment id={problemId} />
