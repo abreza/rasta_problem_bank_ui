@@ -17,6 +17,7 @@ import { Slider } from 'react-semantic-ui-range';
 import Tag from '../components/problem/Tag';
 import converter from '../components/problem/convertor';
 import Editor from '../components/editor/tiny_editor/react_tiny/TinyEditorComponent';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   createProblem,
@@ -178,7 +179,10 @@ class Problem extends Component {
   render() {
     const { problemId, isProblemNew } = this.state;
     const { isFetching } = this.props;
-    const editingProblem = this.props.problems ? this.props.problems[problemId] : null;
+    let editingProblem;
+    if (this.props.problems && this.props.problems.find(problem => problem.id == problemId)) {
+      editingProblem = this.props.problems.find(problem => problem.id == problemId);
+    }
     if (editingProblem && !this.state.doesEditingProblemLoaded) {
       this.setState({
         doesEditingProblemLoaded: true,
@@ -186,11 +190,13 @@ class Problem extends Component {
       this.loadEditingProblem(editingProblem);
     }
 
+    console.log(editingProblem)
+
     return (
       <Container style={{ direction: 'rtl' }}>
         <Grid centered stackable container doubling>
-          <Grid.Row verticalAlign='middle' columns={1}>
-            <Grid.Column width={5} only="computer" style={{ textAlign: 'right' }}>
+          <Grid.Row verticalAlign='middle' columns={1} style={{ paddingTop: '30px', paddingBottom: '30px' }}>
+            <Grid.Column width={5} only="computer" style={{ textAlign: 'center' }}>
               <Button
                 icon
                 labelPosition="right"
@@ -202,12 +208,29 @@ class Problem extends Component {
                 {isProblemNew ? 'ذخیره' : 'اعمال تغیرات'}
               </Button>
             </Grid.Column>
-            <Grid.Column width={5} >
-              <Header as="h1" textAlign="center">
-                {isProblemNew ? '«مسئله‌ی جدید»' : '«ویرایش مسئله»'}
-              </Header>
+            <Grid.Column width={6} >
+              {editingProblem &&
+                <Header as="h1" textAlign="center">
+                  {`«ویرایش ${editingProblem.name}»`}
+                </Header>
+              }
+              {isProblemNew &&
+                <Header as="h1" textAlign="center">
+                  {'«افزودن مسئله»'}
+                </Header>
+              }
             </Grid.Column>
-            <Grid.Column width={5} only="computer" />
+            <Grid.Column width={5} only="computer" style={{ textAlign: 'center' }}>
+              <Button
+                onClick={this.props.history.goBack}
+                icon
+                labelPosition='left'
+                color='blue'
+              >
+                <Icon name='reply' />
+                {'بازگشت'}
+              </Button>
+            </Grid.Column>
           </Grid.Row>
 
           <Grid.Row columns={2} style={{ direction: 'rtl' }}>
@@ -217,7 +240,7 @@ class Problem extends Component {
                 <Editor
                   ref={(problemEl) => (this.problemEl = problemEl)}
                   id="ProblemTextArea"
-                  initContent={editingProblem ? editingProblem.text : null} //todo
+                  initContent={editingProblem ? editingProblem.text : ''} //todo
                 />
               </Segment>
             </Grid.Column>
@@ -411,7 +434,7 @@ const mapStateToProps = (state) => {
   }
 };
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   {
     notify,
@@ -423,4 +446,4 @@ export default connect(
     getSources,
     createProblem,
   }
-)(Problem);
+)(Problem));

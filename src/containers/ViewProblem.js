@@ -14,7 +14,7 @@ import Tag from '../components/problem/Tag';
 import { connect } from 'react-redux';
 import Comment from '../components/problem/Comment';
 import CreateComment from '../components/problem/CreateComment';
-
+import { useHistory } from "react-router-dom";
 import TinyPreview from '../components/editor/tiny_editor/react_tiny/Preview';
 import {
   fetchProblem,
@@ -26,6 +26,9 @@ import {
   getEvents,
   getSources,
 } from '../redux/actions/properties'
+import {
+  getUser,
+} from '../redux/actions/account'
 
 const problemId = parseInt(window.location.pathname.split('/')[2]);
 
@@ -40,8 +43,12 @@ const ViewProblem = ({
   subtags,
   events,
   sources,
+  getUser,
+  users,
 }) => {
   const [problem, setProblem] = useState('');
+  const [questionMaker, setQuestionMaker] = useState('')
+  let history = useHistory();
 
   useEffect(() => {
     fetchProblem(problemId);
@@ -52,18 +59,27 @@ const ViewProblem = ({
   }, [fetchProblem, getTags, getSubtags, getEvents, getSources]);
 
   useEffect(() => {
+    if (users && users.find(user => user.id == problem.question_maker)) {
+      setQuestionMaker(users.find(user => user.id == problem.question_maker))
+    }
+  }, [users, problem])
+
+  useEffect(() => {
     if (problems && problems.find(problem => problem.id == problemId)) {
-      problems.find(problem => problem.id == problemId)
-      setProblem(problems.find(problem => problem.id == problemId));
+      const problem = problems.find(problem => problem.id == problemId);
+      setProblem(problem);
+      getUser(problem.question_maker)
     }
   }, [problems]);
 
+  console.log(problem.events)
+
   return (
     <>
-      {problem &&
+      {problem && questionMaker &&
         <Grid centered container stackable doubling style={{ direction: 'rtl' }}>
-          <Grid.Row verticalAlign='middle' columns={1}>
-            <Grid.Column width={5} only="computer" style={{ textAlign: 'right' }}>
+          <Grid.Row verticalAlign='middle' columns={1} style={{ paddingTop: '30px', paddingBottom: '30px' }}>
+            <Grid.Column width={5} only="computer" style={{ textAlign: 'center' }}>
               <Button
                 as={Link}
                 to={"/editproblem/" + problemId}
@@ -76,12 +92,22 @@ const ViewProblem = ({
                 {'ویرایش'}
               </Button>
             </Grid.Column>
-            <Grid.Column width={5} >
+            <Grid.Column width={6} >
               <Header as="h1" textAlign="center">
                 {'«' + problem.name + '»'}
               </Header>
             </Grid.Column>
-            <Grid.Column width={5} only="computer" />
+            <Grid.Column width={5} only="computer" style={{ textAlign: 'center' }}>
+              <Button
+                onClick={() => history.goBack()}
+                icon
+                labelPosition='left'
+                color='blue'
+              >
+                <Icon name='reply' />
+                {'بازگشت'}
+              </Button>
+            </Grid.Column>
           </Grid.Row>
 
           <Grid.Row columns={1}>
@@ -89,7 +115,7 @@ const ViewProblem = ({
               width={11}
               style={{ textAlign: 'right', direction: 'rtl' }}
             >
-              <Segment textAlign="center">
+              <Segment textAlign="center" style={{ paddingBottom: '30px' }}>
                 <Label size="large" attached="top">
                   صورت‌مسئله
                 </Label>
@@ -104,9 +130,12 @@ const ViewProblem = ({
                     content={problem.text}
                   />
                 </Container>
+                <Label size="large" attached="bottom left">
+                  {`اضافه‌کننده: ${questionMaker.first_name} ${questionMaker.last_name}`}
+                </Label>
               </Segment>
               <Segment textAlign="center">
-                <Label size="large" attached="top">
+                <Label size="large" attached="top" >
                   نظرات
                 </Label>
                 {problem.comments &&
@@ -126,13 +155,13 @@ const ViewProblem = ({
               <Segment textAlign="center">
                 <br />
                 <br />
-                <Label size='large' attached="top">
+                <Label size='large' attached="top" >
                   شناسنامه
                 </Label>
                 <Difficulty
                   difficulty={problem.hardness}
                 ></Difficulty>
-                {problem.tags &&
+                {problem.tags && problem.tags.length > 0 &&
                   <Segment >
                     <Label attached="top">مباحث کلی سوال</Label>
                     {
@@ -151,7 +180,7 @@ const ViewProblem = ({
                     }
                   </Segment>
                 }
-                {problem.sub_tags &&
+                {problem.sub_tags && problem.sub_tags.length > 0 &&
                   <Segment>
                     <Label attached="top">مباحث ریزتر</Label>
                     {
@@ -170,7 +199,7 @@ const ViewProblem = ({
                     }
                   </Segment>
                 }
-                {problem.source &&
+                {problem.source && problem.source.length > 0 &&
                   <Segment>
                     <Label attached="top">منبع</Label>
                     {
@@ -189,7 +218,7 @@ const ViewProblem = ({
                     }
                   </Segment>
                 }
-                {problem.events &&
+                {problem.events && problem.events.length > 0 &&
                   <Segment>
                     <Label attached="top">رویداد‌های به کار رفته</Label>
                     {
@@ -246,6 +275,7 @@ const mapStateToProps = (state) => {
     subtags: state.properties.subtags,
     events: state.properties.events,
     sources: state.properties.sources,
+    users: state.account.users,
   });
 }
 
@@ -257,5 +287,6 @@ export default connect(
     getSubtags,
     getEvents,
     getSources,
+    getUser,
   }
 )(ViewProblem);

@@ -21,13 +21,22 @@ const CreateComment = ({
   id,
 }) => {
   const [text, setText] = useState('');
+  const [isLoading, setLoadingStatus] = useState(false);
+
   return (
-    <Form style={{ textAlign: 'left' }} onSubmit={async () => { await createComment(text, id); window.location.reload(); }}>
+    <Form
+      style={{ textAlign: 'left' }}
+      onSubmit={async () => {
+        await createComment(text, id);
+        window.location.reload();
+        setLoadingStatus(true);
+      }}>
       <TextArea
         onChange={(e) => setText(e.target.value)}
         placeholder='تو هم نظرت رو راجع به این مسئله بگو!' />
       <Button
         disabled={!text}
+        loading={isLoading}
         positive
         style={{ marginTop: '10px' }}>
         ارسال

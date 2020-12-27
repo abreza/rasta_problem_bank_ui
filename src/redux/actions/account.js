@@ -23,9 +23,9 @@ export const getUser = (id) => (
   getState
 ) => {
   if (getState().account.users && getState().account.users.find(user => user.id == id)) {
-    return;
+    return getState().account.users.find(user => user.id == id);
   }
-  return dispatch(_getUser());
+  return dispatch(_getUser(id));
 };
 
 
