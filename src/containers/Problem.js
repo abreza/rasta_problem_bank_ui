@@ -33,7 +33,6 @@ import {
 import { notify } from '../redux/actions/notification';
 import { toPersianNumber } from '../utils/translateNumber';
 import '../styles/Problem.css';
-import problem from '../redux/reducers/problem';
 
 class Problem extends Component {
   constructor(props) {
@@ -81,15 +80,15 @@ class Problem extends Component {
     }
   }
 
-  handleTagChange(id, selected) {
+  handleTagChange(id, isSelected) {
     this.setState({
       selectedTags: {
         ...this.state.selectedTags,
-        [id]: selected,
+        [id]: isSelected,
       }
     })
     const newSelectedSubtags = this.state.selectedSubtags;
-    if (!selected) {
+    if (!isSelected) {
       for (let i = 0; i < this.props.subtags.length; i++) {
         let subtag = this.props.subtags[i];
         if (subtag.parent == id) {
@@ -102,11 +101,11 @@ class Problem extends Component {
     }
   }
 
-  handleSubtagChange(id, selected) {
+  handleSubtagChange(id, isSelected) {
     this.setState({
       selectedSubtags: {
         ...this.state.selectedSubtags,
-        [id]: selected,
+        [id]: isSelected,
       },
     });
   }
@@ -177,11 +176,14 @@ class Problem extends Component {
   ////////////////////////////////////////////
 
   render() {
+
+    console.log(this.state.selectedSubtags)
+
     const { problemId, isProblemNew } = this.state;
     const { isFetching } = this.props;
     let editingProblem;
-    if (this.props.problems && this.props.problems.find(problem => problem.id == problemId)) {
-      editingProblem = this.props.problems.find(problem => problem.id == problemId);
+    if (this.props.problem) {
+      editingProblem = this.props.problem;
     }
     if (editingProblem && !this.state.doesEditingProblemLoaded) {
       this.setState({
@@ -189,8 +191,6 @@ class Problem extends Component {
       })
       this.loadEditingProblem(editingProblem);
     }
-
-    console.log(editingProblem)
 
     return (
       <Container style={{ direction: 'rtl' }}>
@@ -351,13 +351,12 @@ class Problem extends Component {
                   <div>
                     {this.props.tags.map((tag) => (
                       <Tag
-                        size={'large'}
                         name={tag.name}
-                        selectable
                         key={tag.id}
-                        id={tag.id}
                         selected={this.state.selectedTags[tag.id]}
-                        onChange={this.handleTagChange}
+                        clickable={true}
+                        onClick={() => this.handleTagChange(tag.id, !this.state.selectedTags[tag.id])}
+
                       />
                     ))}
                   </div>
@@ -369,13 +368,11 @@ class Problem extends Component {
                       if (this.state.selectedTags[subtag.parent]) {
                         return (
                           <Tag
-                            size={'large'}
                             name={subtag.name}
-                            selectable
                             key={subtag.id}
-                            id={subtag.id}
                             selected={this.state.selectedSubtags[subtag.id]}
-                            onChange={this.handleSubtagChange}
+                            clickable={true}
+                            onClick={() => this.handleSubtagChange(subtag.id, !this.state.selectedSubtags[subtag.id])}
                           />
                         )
                       }
@@ -412,7 +409,7 @@ class Problem extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { problems, isFetching } = state.problem;
+  const { problem, isFetching } = state.problem;
   const { events, sources, tags, subtags } = state.properties;
   return {
     events: events
@@ -427,9 +424,7 @@ const mapStateToProps = (state) => {
     subtags: subtags
       ? subtags
       : [],
-    problems: problems
-      ? problems
-      : [],
+    problem,
     isFetching,
   }
 };

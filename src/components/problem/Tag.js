@@ -12,16 +12,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Tag = ({ name, isSelected = 'false', onClick, ...rest }) => {
+const Tag = ({ name, selected = false, clickable, ...rest }) => {
   const classes = useStyles();
+
+  console.log(selected)
+  console.log(selected ? 'primary' : '')
+
   return (
     <Chip
       className={classes.chip}
       label={<Typography variant='h6'>{name}</Typography>}
-      variant={isSelected ? 'default' : 'outlined'}
-      color={isSelected ? 'primary' : ''}
-      clickable={onClick}
-      onClick={onClick}
+      variant={selected ? 'default' : 'outlined'}
+      color={selected ? 'primary' : ''}
+      clickable={clickable}
       {...rest}
     />
   );
