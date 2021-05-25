@@ -1,6 +1,7 @@
 import React from 'react';
 import { Chip, Typography, makeStyles } from '@material-ui/core';
 
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
@@ -16,7 +17,7 @@ const Tag = ({ name, isSelected = 'false', onClick, ...rest }) => {
   return (
     <Chip
       className={classes.chip}
-      label={<Typography variant='h5'>{name}</Typography>}
+      label={<Typography variant='h6'>{name}</Typography>}
       variant={isSelected ? 'default' : 'outlined'}
       color={isSelected ? 'primary' : ''}
       clickable={onClick}
