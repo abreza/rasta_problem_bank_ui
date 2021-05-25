@@ -28,9 +28,6 @@ const Comment = ({
   }, [getUser])
 
   useEffect(() => {
-    console.log(users)
-
-    console.log(typeof (users))
     if (users && users.find(users => users.id == commenterId)) {
       setCommenter(users.find(users => users.id == commenterId))
     }
