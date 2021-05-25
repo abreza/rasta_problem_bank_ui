@@ -42,13 +42,6 @@ const Login = ({ isFetching, isLoggedIn, login }) => {
             <Header as="h2" textAlign="center">
               ورود
             </Header>
-            <Gr justify='flex-start' container>
-              <Gr item>
-                <Btn variant='contained' color='primary'>
-                  {'سلام!'}
-                </Btn>
-              </Gr>
-            </Gr>
             <Segment>
               <Form
                 size="large"
