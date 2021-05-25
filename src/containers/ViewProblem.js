@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Grid,
-  Header,
   Container,
-  Segment,
-  Label,
+  Grid,
+  Typography,
+  Paper,
+  makeStyles,
+  Divider,
   Button,
-  Icon,
-} from 'semantic-ui-react';
+} from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Difficulty from '../components/problem/Difficulty';
 import Tag from '../components/problem/Tag';
@@ -32,6 +32,21 @@ import {
 
 const problemId = parseInt(window.location.pathname.split('/')[2]);
 
+const useStyles = makeStyles((theme) => ({
+  container: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
+  paper: {
+    padding: theme.spacing(2),
+    width: '100%',
+  },
+  divider: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  }
+}));
+
 const ViewProblem = ({
   fetchProblem,
   getTags,
@@ -46,6 +61,7 @@ const ViewProblem = ({
   getUser,
   users,
 }) => {
+  const classes = useStyles();
   const [problem, setProblem] = useState('');
   const [questionMaker, setQuestionMaker] = useState('')
   let history = useHistory();
@@ -72,196 +88,109 @@ const ViewProblem = ({
     }
   }, [problems]);
 
-  console.log(problem.events)
-
   return (
     <>
-      {problem && questionMaker &&
-        <Grid centered container stackable doubling style={{ direction: 'rtl' }}>
-          <Grid.Row verticalAlign='middle' columns={1} style={{ paddingTop: '30px', paddingBottom: '30px' }}>
-            <Grid.Column width={5} only="computer" style={{ textAlign: 'center' }}>
-              <Button
-                as={Link}
-                to={"/editproblem/" + problemId}
-                icon
-                labelPosition="right"
-                positive
-              // loading={isFetching} todo
-              >
-                <Icon name="save" />
-                {'ویرایش'}
-              </Button>
-            </Grid.Column>
-            <Grid.Column width={6} >
-              <Header as="h1" textAlign="center">
-                {'«' + problem.name + '»'}
-              </Header>
-            </Grid.Column>
-            <Grid.Column width={5} only="computer" style={{ textAlign: 'center' }}>
-              <Button
-                onClick={() => history.goBack()}
-                icon
-                labelPosition='left'
-                color='blue'
-              >
-                <Icon name='reply' />
-                {'بازگشت'}
-              </Button>
-            </Grid.Column>
-          </Grid.Row>
+      <Container className={classes.container}>
+        {problem && questionMaker &&
+          <Grid container spacing={2} justify='center'>
+            <Grid item xs={12}>
+              <Typography variant='h1' align="center">{`«${problem.name}»`}</Typography>
+            </Grid>
+            <Grid container item spacing={2} xs={12} md={10} lg={8}>
+              <Grid container item direction='column' xs={12} md={8} spacing={2}>
+                <Grid item>
+                  <Paper className={classes.paper}>
+                    <Typography gutterBottom variant='h3' align='center'>صورت مسئله</Typography>
+                    <Divider className={classes.divider} />
+                    <TinyPreview
+                      frameProps={{
+                        frameBorder: '0',
+                        scrolling: 'no',
+                        width: '100%',
+                      }}
+                      content={problem.text} />
+                    <Divider className={classes.divider} />
+                    <Typography variant='h6' align='right'>
+                      {`اضافه‌کننده: ${questionMaker.first_name} ${questionMaker.last_name}`}
+                    </Typography>
+                  </Paper>
+                </Grid>
 
-          <Grid.Row columns={1}>
-            <Grid.Column
-              width={11}
-              style={{ textAlign: 'right', direction: 'rtl' }}
-            >
-              <Segment textAlign="center" style={{ paddingBottom: '30px' }}>
-                <Label size="large" attached="top">
-                  صورت‌مسئله
-                </Label>
-                <Container fluid textAlign="right" style={{ fontSize: 20 }}>
-                  <br />
-                  <TinyPreview
-                    frameProps={{
-                      frameBorder: '0',
-                      scrolling: 'no',
-                      width: '100%',
-                    }}
-                    content={problem.text}
-                  />
-                </Container>
-                <Label size="large" attached="bottom left">
-                  {`اضافه‌کننده: ${questionMaker.first_name} ${questionMaker.last_name}`}
-                </Label>
-              </Segment>
-              <Segment textAlign="center">
-                <Label size="large" attached="top" >
-                  نظرات
-                </Label>
-                {problem.comments &&
-                  problem.comments.map(comment => {
-                    return <Comment text={comment.text} commenterId={comment.writer} />
-                  })
-                }
-                <CreateComment id={problemId} />
-              </Segment>
-            </Grid.Column>
+                <Grid item>
+                  <Paper className={classes.paper}>
+                    <Grid item container direction='column'>
+                      <Grid item>
+                        <Typography gutterBottom variant='h3' align='center'>نظرات</Typography>
+                      </Grid>
+                      {problem.comments &&
+                        problem.comments.map(comment => {
+                          return <Comment text={comment.text} commenterId={comment.writer} />
+                        })
+                      }
+                      <CreateComment id={problemId} />
+                    </Grid>
+                  </Paper>
+                </Grid>
+              </Grid>
 
-            <Grid.Column
-              width={5}
-              style={{ textAlign: 'right', direction: 'rtl' }}
-            >
-
-              <Segment textAlign="center">
-                <br />
-                <br />
-                <Label size='large' attached="top" >
-                  شناسنامه
-                </Label>
-                <Difficulty
-                  difficulty={problem.hardness}
-                ></Difficulty>
-                {problem.tags && problem.tags.length > 0 &&
-                  <Segment >
-                    <Label attached="top">مباحث کلی سوال</Label>
-                    {
-                      tags.filter(tag => {
-                        if (problem.tags.includes(tag.id)) {
-                          return true;
+              <Grid item container xs={12} md={4} direction='column' spacing={2}>
+                <Grid item>
+                  <Button variant='contained' color='primary' href={'/editproblem/' + problemId} fullWidth>ویرایش</Button>
+                </Grid>
+                <Grid item>
+                  <Paper className={classes.paper}>
+                    <Grid item container direction='column' spacing={2}>
+                      <Grid item>
+                        <Typography gutterBottom variant='h3' align='center'>اطلاعات</Typography>
+                      </Grid>
+                      <Divider className={classes.divider} />
+                      <Grid item>
+                        <Difficulty difficulty={problem.hardness} />
+                      </Grid>
+                      <Grid item>
+                        <Typography gutterBottom variant='h5'>مباحث کلی:</Typography>
+                        {
+                          tags
+                            .filter(tag => problem.tags.includes(tag.id))
+                            .map((tag, index) =>
+                              <Tag name={tag.name} key={index} />)
                         }
-                      }).map((tag) => (
-                        <Tag
-                          selectable
-                          size={'small'}
-                          name={tag.name}
-                          key={tag.id}
-                        />
-                      ))
-                    }
-                  </Segment>
-                }
-                {problem.sub_tags && problem.sub_tags.length > 0 &&
-                  <Segment>
-                    <Label attached="top">مباحث ریزتر</Label>
-                    {
-                      subtags.filter(subtag => {
-                        if (problem.sub_tags.includes(subtag.id) && problem.tags.includes(subtag.parent)) {
-                          return true
+                      </Grid>
+                      <Grid item>
+                        <Typography gutterBottom variant='h5'>مباحث جزئی‌تر:</Typography>
+                        {
+                          subtags
+                            .filter(subtag => problem.sub_tags.includes(subtag.id))
+                            .map((subtag, index) =>
+                              <Tag name={subtag.name} key={index} />)
                         }
-                      }).map((subtag) => (
-                        <Tag
-                          selectable
-                          size={'small'}
-                          name={subtag.name}
-                          key={subtag.id}
-                        />
-                      ))
-                    }
-                  </Segment>
-                }
-                {problem.source && problem.source.length > 0 &&
-                  <Segment>
-                    <Label attached="top">منبع</Label>
-                    {
-                      sources.filter(source => {
-                        if (source.id == problem.source) {
-                          return true;
+                      </Grid>
+                      <Grid item>
+                        <Typography gutterBottom variant='h5'>منبع:</Typography>
+                        {
+                          sources
+                            .filter(source => problem.source === source.id)
+                            .map((source, index) =>
+                              <Tag name={source.name} key={index} />)
                         }
-                      }).map((source) => (
-                        <Label
-                          size={'small'}
-                          key={source.id}
-                        >
-                          {source.name}
-                        </Label>
-                      ))
-                    }
-                  </Segment>
-                }
-                {problem.events && problem.events.length > 0 &&
-                  <Segment>
-                    <Label attached="top">رویداد‌های به کار رفته</Label>
-                    {
-                      events.filter(event => {
-                        if (problem.events.includes(event.id)) {
-                          return true
+                      </Grid>
+                      <Grid item>
+                        <Typography gutterBottom variant='h5'>رویدادهای به‌کاررفته:</Typography>
+                        {
+                          events
+                            .filter(event => problem.events.includes(event.id))
+                            .map((event, index) =>
+                              <Tag name={event.name} key={index} />)
                         }
-                      }).map((event) => (
-                        <Label
-                          size={'small'}
-                          key={event.id}
-                        >
-                          {event.name}
-                        </Label>
-                      ))
-                    }
-                  </Segment>
-                }
-              </Segment>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row textAlign='center'>
-            <Grid.Column
-              width={16}
-              only="mobile tablet"
-              textAlign='center'
-            >
-              <Button
-                as={Link}
-                to={'/editproblem/' + problemId}
-                icon
-                labelPosition="right"
-                positive
-                className="mobile-save-btn"
-              // loading={isFetching} todo
-              >
-                <Icon name="save" />
-                {'ویرایش'}
-              </Button>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid >
-      }
+                      </Grid>
+                    </Grid>
+                  </Paper>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid >
+        }
+      </Container>
     </>
   );
 

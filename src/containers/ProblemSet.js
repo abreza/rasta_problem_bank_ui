@@ -10,18 +10,17 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Chip,
-  Typography
+  Typography,
+  Divider,
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import { useHistory } from "react-router-dom";
 import { connect } from 'react-redux';
 import { fetchProblemsListByPage } from '../redux/actions/problem'
-import Tag from '../components/problem/Tag';
 import { getTags } from '../redux/actions/properties'
 import { Link } from 'react-router-dom';
 import { toPersianNumber } from '../utils/translateNumber'
-
+import Tag from '../components/problem/Tag';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -31,9 +30,6 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     width: '100%',
-  },
-  chip: {
-    margin: theme.spacing(1) / 3,
   },
 }))
 
@@ -94,13 +90,9 @@ const ProblemSet = ({
                           {allTags
                             .filter(tag => problem.tags.includes(tag.id))
                             .map((tag, index) => (
-                              <Chip
-                                className={classes.chip}
-                                key={index}
+                              <Tag
                                 label={tag.name}
-                                color='primary'
-                                clickable
-                                onClick={handleTagClick}
+                                key={index}
                               />
                             ))}
                         </TableCell>
@@ -122,9 +114,15 @@ const ProblemSet = ({
           </Grid>
           <Grid item container xs={12} md={4}>
             <Paper className={classes.paper}>
-              <Typography variant="h2" align='center'>جستجو</Typography>
-              <hr />
-              <Typography variant="h3" textAlign="center" >به زودی :)</Typography>
+              <Grid item container direction='column' spacing={2}>
+                <Grid item>
+                  <Typography variant="h2" align='center'>جستجو</Typography>
+                </Grid>
+                <Divider />
+                <Grid item>
+                  <Typography variant="h3" textAlign="center" >به زودی :)</Typography>
+                </Grid>
+              </Grid>
             </Paper>
           </Grid>
         </Grid>

@@ -1,36 +1,29 @@
-import React, { Component } from 'react';
-import { Label } from 'semantic-ui-react';
+import React from 'react';
+import { Chip, Typography, makeStyles } from '@material-ui/core';
 
-export default class Tag extends Component {
-  constructor(props) {
-    super(props);
-    this.toggleSelected = this.toggleSelected.bind(this);
-  }
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    padding: theme.spacing(2),
+    width: '100%',
+  },
+  chip: {
+    margin: '2px',
+  },
+}));
 
-  toggleSelected() {
-    if (this.props.onChange) {
-      this.props.onChange(this.props.id, !this.props.selected);
-    }
-  }
-
-  render() {
-    return (
-      <span style={{ margin: '3px', display: 'inline-block' }}>
-        <Label
-          tag
-          size={this.props.size}
-          className={
-            this.props.selectable
-              ? this.props.selected
-                ? 'selectable-tag selected'
-                : 'selectable-tag'
-              : ''
-          }
-          onClick={this.props.selectable ? this.toggleSelected : () => { }}
-        >
-          {this.props.name}
-        </Label>
-      </span >
-    );
-  }
+const Tag = ({ name, isSelected = 'false', onClick, ...rest }) => {
+  const classes = useStyles();
+  return (
+    <Chip
+      className={classes.chip}
+      label={<Typography variant='h5'>{name}</Typography>}
+      variant={isSelected ? 'default' : 'outlined'}
+      color={isSelected ? 'primary' : ''}
+      clickable={onClick}
+      onClick={onClick}
+      {...rest}
+    />
+  );
 }
+
+export default Tag;

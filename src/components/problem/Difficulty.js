@@ -1,7 +1,12 @@
-import React, { Component } from 'react';
-import { Segment, Progress, Icon } from 'semantic-ui-react';
+import React from 'react';
+import {
+  LinearProgress,
+  withStyles,
+  Typography,
+  makeStyles,
+  Paper,
+} from '@material-ui/core';
 import { toPersianNumber } from '../../utils/translateNumber'
-
 
 const grades = [
   'اول',
@@ -18,28 +23,51 @@ const grades = [
   'دوازدهم',
 ]
 
-export default (props) => {
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    padding: theme.spacing(2),
+    width: '100%',
+  }
+}));
+
+const BorderLinearProgress = withStyles((theme) => ({
+  root: {
+    height: 20,
+    borderRadius: 5,
+  },
+  colorPrimary: {
+    backgroundColor: theme.palette.grey[theme.palette.type === 'light' ? 200 : 700],
+  },
+  bar: {
+    borderRadius: 5,
+    backgroundColor: '#ff0000',
+  },
+}))(LinearProgress);
+
+const Difficulty = ({ difficulty }) => {
+  const classes = useStyles();
   return (
-    <div>
-      <Progress
-        textAlign="center"
-        value={props.difficulty.level}
-        total={100}
-        color="red"
-      >
-        سختی: {toPersianNumber(props.difficulty.level)}
-      </Progress>
-      <Segment >
-        پایین‌ترین پایه‌ی مناسب:
-        <b>
-          {' ' + grades[props.difficulty.appropriate_grades_min - 1]}
-        </b>
-        <br />
+    <>
+      <BorderLinearProgress variant="determinate" value={difficulty.level} />
+      <Typography align='center'>
+        سختی: {toPersianNumber(difficulty.level)}
+      </Typography>
+      <Paper className={classes.paper}>
+        <Typography align='center'>
+          پایین‌ترین پایه‌ی مناسب:
+          <b>
+            {' ' + grades[difficulty.appropriate_grades_min - 1]}
+          </b>
+          <br />
         بالاترین پایه‌ی مناسب:
-        <b>
-          {' ' + grades[props.difficulty.appropriate_grades_max - 1]}
-        </b>
-      </Segment>
-    </div>
+          <b>
+            {' ' + grades[difficulty.appropriate_grades_max - 1]}
+          </b>
+        </Typography>
+      </Paper>
+    </>
   );
 }
+
+
+export default Difficulty;
