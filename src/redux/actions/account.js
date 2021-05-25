@@ -3,7 +3,7 @@ import * as URLs from './urls';
 
 import { CALL_API } from '../middleware/api/api';
 
-const _getUser = (id) => ({
+export const getUser = (id) => ({
   [CALL_API]: {
     types: [
       actionTypes.USER_REQUEST,
@@ -16,17 +16,6 @@ const _getUser = (id) => ({
     },
   },
 });
-
-
-export const getUser = (id) => (
-  dispatch,
-  getState
-) => {
-  if (getState().account.users && getState().account.users.find(user => user.id == id)) {
-    return getState().account.users.find(user => user.id == id);
-  }
-  return dispatch(_getUser(id));
-};
 
 
 export const login = (username, password) => ({

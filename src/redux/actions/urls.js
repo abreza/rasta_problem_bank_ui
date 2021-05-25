@@ -11,6 +11,9 @@ export const SUBMIT_PROBLEM = ROOT.concat('question/');
 
 export const CREATE_COMMENT = ROOT.concat('comment/');
 export const EDIT_COMMENT = ROOT.concat('comment/');
+export const SCORE_PROBLEM = ROOT.concat('scorequestion/');
+export const CREATE_LESSON_PLAN = ROOT.concat('lessonplan/');
+export const EDIT_LESSON_PLAN = ROOT.concat('lessonplan/');
 
 export const GET_TAGS = ROOT.concat('tag/');
 export const GET_SUBTAGS = ROOT.concat('subtag/');

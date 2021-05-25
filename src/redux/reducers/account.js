@@ -67,7 +67,7 @@ function account(state = initialState, action) {
       console.log(action)
       return {
         ...state,
-        users: [...state.users, action.response]
+        user: action.response,
       }
 
     case actionTypes.USER_FAILURE:

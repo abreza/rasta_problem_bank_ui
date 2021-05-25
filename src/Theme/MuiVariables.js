@@ -1,9 +1,9 @@
 export const variables = {
   colors: {
-    primary: '#2185d0',
+    primary: '#2183B5',
     primaryLight: '#5E60CE',
     primaryDark: '#7400B8',
-    secondary: '#1361A4',
+    secondary: '#CA462A',
     inheritDefault1: '#fefefe',
     inheritDefault2: '#f8f9ff',
     second: '#070919',

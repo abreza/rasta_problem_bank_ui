@@ -7,6 +7,8 @@ import {
   makeStyles,
   Divider,
   Button,
+  ButtonGroup,
+  Chip,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Difficulty from '../components/problem/Difficulty';
@@ -16,10 +18,12 @@ import Comment from '../components/problem/Comment';
 import CreateComment from '../components/problem/CreateComment';
 import { useHistory } from "react-router-dom";
 import TinyPreview from '../components/editor/tiny_editor/react_tiny/Preview';
+import Score from '../components/problem/Score';
+import ProblemMaker from '../components/problem/ProblemMaker';
 import {
   fetchProblem,
-} from '../redux/actions/problem'
-import { toPersianNumber } from '../utils/translateNumber'
+} from '../redux/actions/problem';
+import { toPersianNumber } from '../utils/translateNumber';
 import {
   getTags,
   getSubtags,
@@ -52,18 +56,19 @@ const ViewProblem = ({
   getTags,
   getEvents,
   getSources,
-  problems,
+  problem,
   getSubtags,
+  scoreProblem,
   tags,
   subtags,
   events,
   sources,
   getUser,
-  users,
+  user,
 }) => {
   const classes = useStyles();
-  const [problem, setProblem] = useState('');
-  const [questionMaker, setQuestionMaker] = useState('')
+  const [score, setScore] = useState(0)
+  const [questionMaker, setQuestionMaker] = useState()
   let history = useHistory();
 
   useEffect(() => {
@@ -75,18 +80,16 @@ const ViewProblem = ({
   }, [fetchProblem, getTags, getSubtags, getEvents, getSources]);
 
   useEffect(() => {
-    if (users && users.find(user => user.id == problem.question_maker)) {
-      setQuestionMaker(users.find(user => user.id == problem.question_maker))
+    if (problem?.question_maker) {
+      getUser(problem.question_maker);
     }
-  }, [users, problem])
+  }, [getUser, problem?.question_maker])
 
   useEffect(() => {
-    if (problems && problems.find(problem => problem.id == problemId)) {
-      const problem = problems.find(problem => problem.id == problemId);
-      setProblem(problem);
-      getUser(problem.question_maker)
+    if (user) {
+      setQuestionMaker(user)
     }
-  }, [problems]);
+  }, [user])
 
   return (
     <>
@@ -100,19 +103,30 @@ const ViewProblem = ({
               <Grid container item direction='column' xs={12} md={8} spacing={2}>
                 <Grid item>
                   <Paper className={classes.paper}>
-                    <Typography gutterBottom variant='h3' align='center'>صورت مسئله</Typography>
-                    <Divider className={classes.divider} />
-                    <TinyPreview
-                      frameProps={{
-                        frameBorder: '0',
-                        scrolling: 'no',
-                        width: '100%',
-                      }}
-                      content={problem.text} />
-                    <Divider className={classes.divider} />
-                    <Typography variant='h6' align='right'>
-                      {`اضافه‌کننده: ${questionMaker.first_name} ${questionMaker.last_name}`}
-                    </Typography>
+                    <Grid item container direction='column'>
+                      <Grid item>
+                        <Typography gutterBottom variant='h3' align='center'>صورت مسئله</Typography>
+                      </Grid>
+                      <Divider className={classes.divider} />
+                      <Grid item>
+                        <TinyPreview
+                          frameProps={{
+                            frameBorder: '0',
+                            scrolling: 'no',
+                            width: '100%',
+                          }}
+                          content={problem.text} />
+                      </Grid>
+                      <Divider className={classes.divider} />
+                      <Grid item container justify='space-between' alignItems='center' spacing={2}>
+                        <Grid item container xs={12} md={5} justify='flex-start'>
+                          <Score problemId={problemId} initialScore={problem.score} />
+                        </Grid>
+                        <Grid item container xs={12} md={5} justify='flex-end'>
+                          <ProblemMaker problemMaker={questionMaker} />
+                        </Grid>
+                      </Grid>
+                    </Grid>
                   </Paper>
                 </Grid>
 
@@ -196,15 +210,14 @@ const ViewProblem = ({
 
 }
 
-
 const mapStateToProps = (state) => {
   return ({
-    problems: state.problem.problems,
+    problem: state.problem.problem,
+    user: state.account.user,
     tags: state.properties.tags,
     subtags: state.properties.subtags,
     events: state.properties.events,
     sources: state.properties.sources,
-    users: state.account.users,
   });
 }
 

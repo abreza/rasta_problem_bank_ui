@@ -146,3 +146,65 @@ export const editComment = (text, question) => {
     },
   })
 }
+
+export const scoreProblem = ({ score, problem }) => {
+  return ({
+    [CALL_API]: {
+      types: [
+        actionTypes.SCORE_PROBLEM_REQUEST,
+        actionTypes.SCORE_PROBLEM_SUCCESS,
+        actionTypes.SCORE_PROBLEM_FAILURE,
+      ],
+      url: URLs.SCORE_PROBLEM,
+      fetchOptions: {
+        method: 'POST',
+        body: {
+          score,
+          question: problem,
+        }
+      },
+    },
+  })
+}
+
+export const createLessonPlan = ({ problems, tags, subtags }) => {
+  return ({
+    [CALL_API]: {
+      types: [
+        actionTypes.CREATE_LESSON_PLAN_REQUEST,
+        actionTypes.CREATE_LESSON_PLAN_SUCCESS,
+        actionTypes.CREATE_LESSON_PLAN_FAILURE,
+      ],
+      url: URLs.CREATE_LESSON_PLAN,
+      fetchOptions: {
+        method: 'POST',
+        body: {
+          tags,
+          sub_tags: subtags,
+          questions: problems,
+        }
+      },
+    },
+  })
+}
+
+export const editLessonPlan = ({ id, problems, tags, subtags }) => {
+  return ({
+    [CALL_API]: {
+      types: [
+        actionTypes.EDIT_LESSON_PLAN_REQUEST,
+        actionTypes.EDIT_LESSON_PLAN_SUCCESS,
+        actionTypes.EDIT_LESSON_PLAN_FAILURE,
+      ],
+      url: URLs.EDIT_LESSON_PLAN + '/' + id,
+      fetchOptions: {
+        method: 'POST',
+        body: {
+          tags,
+          sub_tags: subtags,
+          questions: problems,
+        }
+      },
+    },
+  })
+}
