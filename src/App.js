@@ -1,10 +1,17 @@
+import 'semantic-ui-css/semantic.min.css';
+import 'react-toastify/dist/ReactToastify.css';
+
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Slide, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import 'semantic-ui-css/semantic.min.css';
 import { initRedirect } from './redux/actions/redirect';
+import { StylesProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+
+import ZeroJourneyerMuiTheme from './Theme/RtlMuiTheme';
+import jss from './utils/jssRTL';
+
 import Root from './root/Root';
 
 const Toast = () => (
@@ -32,8 +39,13 @@ const App = ({ redirectTo, initRedirect }) => {
 
   return (
     <>
-      <Root />
-      <Toast />
+      <ThemeProvider theme={ZeroJourneyerMuiTheme}>
+        <StylesProvider jss={jss}>
+          <Toast />
+          <Root />
+        </StylesProvider>
+      </ThemeProvider>
+
     </>
   );
 };

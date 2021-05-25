@@ -1,17 +1,20 @@
-import _ from 'lodash'
 import React, { useState, useEffect } from 'react';
 import {
-  Grid,
-  Header,
-  Segment,
-  Divider,
-  Label,
-  Table,
-  Pagination,
   Container,
-  Icon,
-} from 'semantic-ui-react';
-import { Redirect } from 'react-router';
+  Grid,
+  Paper,
+  makeStyles,
+  Table,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Chip,
+  Typography
+} from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
+import { useHistory } from "react-router-dom";
 import { connect } from 'react-redux';
 import { fetchProblemsListByPage } from '../redux/actions/problem'
 import Tag from '../components/problem/Tag';
@@ -19,6 +22,20 @@ import { getTags } from '../redux/actions/properties'
 import { Link } from 'react-router-dom';
 import { toPersianNumber } from '../utils/translateNumber'
 
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
+  paper: {
+    padding: theme.spacing(2),
+    width: '100%',
+  },
+  chip: {
+    margin: theme.spacing(1) / 3,
+  },
+}))
 
 
 const ProblemSet = ({
@@ -29,131 +46,88 @@ const ProblemSet = ({
   totalNumberOfPages,
   isFetching
 }) => {
-
-  const [redirect, setRedirect] = useState(false)
-  const [activePage, setActivePage] = useState(parseInt(window.location.pathname.split('/')[3]))
+  const classes = useStyles();
+  const history = useHistory();
+  const [currentPage, setCurrentPage] = useState(parseInt(window.location.pathname.split('/')[3]))
 
   useEffect(() => {
     fetchProblemsListByPage(parseInt(window.location.pathname.split('/')[3]));
     getTags();
-  }, [fetchProblemsListByPage, getTags])
+  }, [])
 
-  function handlePaginationChange(e, { activePage }) {
-    setActivePage(activePage)
-    setRedirect(true)
+  const handlePaginationChange = (event, value) => {
+    setCurrentPage(value)
+    history.push(`/problemset/page/${value}`)
   }
 
-  if (redirect) {
-    return <Redirect to={`/problemset/page/${activePage}`} />;
+  const handleTagClick = (event) => {
+
   }
 
   return (
-    <Container style={{ direction: 'rtl' }}>
-      <Grid centered stackable container doubling>
-        <Grid.Row verticalAlign='middle' columns={1}>
-          <Grid.Column style={{ textAlign: 'right' }}>
-            <Header as="h1" textAlign="center">
-              {'«سوالات»'}
-            </Header>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row columns={2}>
-          <Grid.Column width={10} >
-            <Segment loading={isFetching}>
-              <Label color='teal' ribbon='right'>
-                صفحه‌ی {toPersianNumber(activePage)} از {toPersianNumber(totalNumberOfPages)}
-              </Label>
-              <Table
-                selectable
-                color='teal'
-                celled
-                striped
-                fixed
-                textAlign='center'
-              >
-                <Table.Header>
-                  <Table.Row>
-                    <Table.HeaderCell
-                      textAlign='center'
-                      width={3}
-                    >
-                      شناسه
-                    </Table.HeaderCell>
-                    <Table.HeaderCell
-                      width={3}
-                    >
-                      نام
-                    </Table.HeaderCell>
-                    <Table.HeaderCell
-                      width={5}
-                    >
-                      موضوعات اصلی
-                    </Table.HeaderCell>
-                    <Table.HeaderCell
-                      width={3}
-                    >
-                      درجه سختی
-                    </Table.HeaderCell>
-                  </Table.Row>
-                </Table.Header>
-
-                <Table.Body>
-                  {_.map(problems, ({ id, name, tags, hardness: difficulty, reviewStatus }) => (
-                    <Table.Row key={id}>
-                      <Table.Cell >{toPersianNumber(id)}</Table.Cell>
-                      <Table.Cell textAlign='right' selectable>
-                        <a
-                          as={Link}
-                          href={'/problem/' + id}
-                        >
-                          {name}
-                        </a>
-                      </Table.Cell>
-                      < Table.Cell textAlign='right' >
-                        {
-                          allTags.filter(tag => {
-                            if (tags.includes(tag.id)) {
-                              return true
-                            }
-                          }).map((tag) => (
-                            <Tag
-                              selectable
-                              size={'small'}
-                              name={tag.name}
-                              key={tag.id}
-                            />
-                          ))
-                        }
-                      </Table.Cell>
-                      <Table.Cell>{toPersianNumber(difficulty.level)}</Table.Cell>
-                    </Table.Row>
-                  ))}
-                </Table.Body>
-              </Table>
+    <Container className={classes.container}>
+      <Grid container spacing={2} justify='center'>
+        <Grid item xs={12}>
+          <Typography variant="h1" align="center">«سوالات»</Typography>
+        </Grid>
+        <Grid item container spacing={2} xs={12} md={10} lg={8}>
+          <Grid item container xs={12} md={8} direction='column' spacing={2}>
+            <Grid item>
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>شناسه</TableCell>
+                      <TableCell>نام</TableCell>
+                      <TableCell>موضوعات اصلی</TableCell>
+                      <TableCell>درجه سختی</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {problems.map((problem, index) =>
+                      <TableRow key={index}>
+                        <TableCell>{toPersianNumber(problem.id)}</TableCell>
+                        <TableCell >
+                          <a as={Link} href={'/problem/' + problem.id}>{problem.name}</a>
+                        </TableCell>
+                        <TableCell>
+                          {allTags
+                            .filter(tag => problem.tags.includes(tag.id))
+                            .map((tag, index) => (
+                              <Chip
+                                className={classes.chip}
+                                key={index}
+                                label={tag.name}
+                                color='primary'
+                                clickable
+                                onClick={handleTagClick}
+                              />
+                            ))}
+                        </TableCell>
+                        <TableCell>{toPersianNumber(problem.hardness.level)}</TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Grid>
+            <Grid item>
               <Pagination
-                ellipsisItem={null}
-                activePage={activePage}
-                firstItem={{ content: <Icon name='angle double right' />, icon: true }}
-                lastItem={{ content: <Icon name='angle double left' />, icon: true }}
-                prevItem={{ content: <Icon name='angle right' />, icon: true }}
-                nextItem={{ content: <Icon name='angle left' />, icon: true }}
-                onPageChange={handlePaginationChange}
-                totalPages={totalNumberOfPages}
+                count={totalNumberOfPages}
+                page={currentPage}
+                onChange={handlePaginationChange}
+                hidePrevButton hideNextButton
               />
-            </Segment>
-          </Grid.Column>
-
-          <Grid.Column
-            width={5}
-            style={{ textAlign: 'right', direction: 'rtl' }}
-          >
-            <Segment>
-              <Header content={'جستجو'} as="h2" textAlign="center" />
-              <Divider />
-              <Header content={'به زودی :)'} as="h3" textAlign="center" />
-            </Segment>
-          </Grid.Column>
-        </Grid.Row>
+            </Grid>
+          </Grid>
+          <Grid item container xs={12} md={4}>
+            <Paper className={classes.paper}>
+              <Typography variant="h2" align='center'>جستجو</Typography>
+              <hr />
+              <Typography variant="h3" textAlign="center" >به زودی :)</Typography>
+            </Paper>
+          </Grid>
+        </Grid>
       </Grid >
     </Container>
   );
@@ -167,12 +141,8 @@ const mapStateToProps = (state) => {
     problems: state.problem.problems
       ? state.problem.problems
       : [],
-    totalNumberOfPages: state.problem.numberOfPages
-      ? state.problem.numberOfPages
-      : '',
-    isFetching: state.problem.isFetching
-      ? state.problem.isFetching
-      : '',
+    totalNumberOfPages: state.problem.numberOfPages,
+    isFetching: state.problem.isFetching,
   })
 }
 

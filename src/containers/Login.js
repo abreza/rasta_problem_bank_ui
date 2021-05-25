@@ -8,6 +8,10 @@ import {
   Segment,
   Container,
 } from 'semantic-ui-react';
+import {
+  Button as Btn,
+  Grid as Gr,
+} from '@material-ui/core';
 import { login } from '../redux/actions/account';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -15,8 +19,8 @@ import { Redirect } from 'react-router';
 
 
 const Login = ({ isFetching, isLoggedIn, login }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState()
+  const [password, setPassword] = useState()
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -28,65 +32,70 @@ const Login = ({ isFetching, isLoggedIn, login }) => {
   }
 
   return (
-    <>
-      < Container >
-        <Grid centered container doubling stackable>
-          <Grid.Row verticalAlign='middle'>
-            <Grid.Column
-              textAlign='center'
-              width={6}
-            >
-              <Header as="h2" textAlign="center">
-                ورود
-              </Header>
-              <Segment>
-                <Form
-                  size="large"
-                  onSubmit={handleSubmit}
-                  loading={isFetching}
+    <Container>
+      <Grid centered container doubling stackable>
+        <Grid.Row verticalAlign='middle'>
+          <Grid.Column
+            textAlign='center'
+            width={6}
+          >
+            <Header as="h2" textAlign="center">
+              ورود
+            </Header>
+            <Gr justify='flex-start' container>
+              <Gr item>
+                <Btn variant='contained' color='primary'>
+                  {'سلام!'}
+                </Btn>
+              </Gr>
+            </Gr>
+            <Segment>
+              <Form
+                size="large"
+                onSubmit={handleSubmit}
+                loading={isFetching}
+              >
+                <Form.Input
+                  name="username"
+                  required
+                  fluid
+                  // icon="user"
+                  // iconPosition="right"
+                  placeholder="نام کاربری"
+                  className="persian-input"
+                  onChange={(event) => setUsername(event.target.value)}
                 >
-                  <Form.Input
-                    name="username"
-                    required
-                    fluid
-                    // icon="user"
-                    // iconPosition="right"
-                    placeholder="نام کاربری"
-                    className="persian-input"
-                    onChange={(event) => setUsername(event.target.value)}
-                  >
-                    <input style={{ direction: 'ltr' }} />
-                  </Form.Input>
+                  <input style={{ direction: 'ltr' }} />
+                </Form.Input>
 
-                  <Form.Input
-                    name="password"
-                    required
-                    fluid
-                    // icon="lock"
-                    // iconPosition="right"
-                    placeholder="رمز عبور"
-                    type="password"
-                    className="persian-input"
-                    onChange={(event) => setPassword(event.target.value)}
-                  >
-                    <input style={{ direction: 'ltr' }} />
-                  </Form.Input>
+                <Form.Input
+                  name="password"
+                  required
+                  fluid
+                  // icon="lock"
+                  // iconPosition="right"
+                  placeholder="رمز عبور"
+                  type="password"
+                  className="persian-input"
+                  onChange={(event) => setPassword(event.target.value)}
+                >
+                  <input style={{ direction: 'ltr' }} />
+                </Form.Input>
 
-                  <Button primary fluid size="large" disabled={isFetching}>
-                    بزن بریم
-                  </Button>
-                </Form>
-              </Segment>
+                <Button primary fluid size="large" disabled={isFetching}>
+                  بزن بریم
+                </Button>
+              </Form>
+            </Segment>
 
-              <Message style={{ direction: 'rtl' }}>
-                هنوز ثبت‌نام نکردی؟ <Link to="/registration">ثبت‌نام کن!</Link>
-              </Message>
+            <Message style={{ direction: 'rtl' }}>
+              هنوز ثبت‌نام نکردی؟ <Link to="/registration">ثبت‌نام کن!</Link>
+            </Message>
 
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Container >
-    </>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Container >
   );
 }
 
