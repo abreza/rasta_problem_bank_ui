@@ -64,7 +64,6 @@ function account(state = initialState, action) {
       }
 
     case actionTypes.USER_SUCCESS:
-      console.log(action)
       return {
         ...state,
         user: action.response,

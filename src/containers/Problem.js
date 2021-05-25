@@ -111,7 +111,6 @@ class Problem extends Component {
   }
 
   async handleSubmit(isProblemNew) {
-    console.log(converter(this.state))
     const ok = this.isProblemDataOk();
     if (ok) {
       await this.setProblem();
@@ -176,9 +175,6 @@ class Problem extends Component {
   ////////////////////////////////////////////
 
   render() {
-
-    console.log(this.state.selectedSubtags)
-
     const { problemId, isProblemNew } = this.state;
     const { isFetching } = this.props;
     let editingProblem;

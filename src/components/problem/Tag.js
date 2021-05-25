@@ -15,9 +15,6 @@ const useStyles = makeStyles((theme) => ({
 const Tag = ({ name, selected = false, clickable, ...rest }) => {
   const classes = useStyles();
 
-  console.log(selected)
-  console.log(selected ? 'primary' : '')
-
   return (
     <Chip
       className={classes.chip}
