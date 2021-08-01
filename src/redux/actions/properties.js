@@ -3,7 +3,7 @@ import * as URLs from './urls';
 
 import { CALL_API } from '../middleware/api/api';
 
-const fetchTags = () => ({
+const fetchAllTags = () => ({
   [CALL_API]: {
     types: [
       actionTypes.TAGS_REQUEST,
@@ -17,17 +17,17 @@ const fetchTags = () => ({
   },
 });
 
-export const getTags = () => (
+export const getAllTags = () => (
   dispatch,
   getState
 ) => {
   const tags = getState().properties.tags;
   if (tags.length === 0) {
-    return dispatch(fetchTags());
+    return dispatch(fetchAllTags());
   }
 };
 
-const fetchSubtags = () => ({
+const fetchAllSubtags = () => ({
   [CALL_API]: {
     types: [
       actionTypes.SUBTAGS_REQUEST,
@@ -41,17 +41,17 @@ const fetchSubtags = () => ({
   },
 });
 
-export const getSubtags = () => (
+export const getAllSubtags = () => (
   dispatch,
   getState
 ) => {
   const subtags = getState().properties.subtags;
   if (subtags.length === 0) {
-    return dispatch(fetchSubtags());
+    return dispatch(fetchAllSubtags());
   }
 };
 
-const fetchEvents = () => ({
+const fetchAllEvents = () => ({
   [CALL_API]: {
     types: [
       actionTypes.EVENTS_REQUEST,
@@ -65,17 +65,17 @@ const fetchEvents = () => ({
   },
 });
 
-export const getEvents = () => (
+export const getAllEvents = () => (
   dispatch,
   getState
 ) => {
   const events = getState().properties.events;
   if (events.length === 0) {
-    return dispatch(fetchEvents());
+    return dispatch(fetchAllEvents());
   }
 };
 
-const fetchSources = () => ({
+const fetchAllSources = () => ({
   [CALL_API]: {
     types: [
       actionTypes.SOURCES_REQUEST,
@@ -89,12 +89,12 @@ const fetchSources = () => ({
   },
 });
 
-export const getSources = () => (
+export const getAllSources = () => (
   dispatch,
   getState
 ) => {
   const sources = getState().properties.sources;
   if (sources.length === 0) {
-    return dispatch(fetchSources());
+    return dispatch(fetchAllSources());
   }
 };

@@ -12,15 +12,18 @@ import {
   TableBody,
   Typography,
   Divider,
+  Button,
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import { useHistory } from "react-router-dom";
 import { connect } from 'react-redux';
 import { fetchProblemsListByPage } from '../redux/actions/problem'
-import { getTags } from '../redux/actions/properties'
+import { getAllTags } from '../redux/actions/properties'
 import { Link } from 'react-router-dom';
 import { toPersianNumber } from '../utils/translateNumber'
 import Tag from '../components/problem/Tag';
+import PropertiesBox from '../components/problem/PropertiesBox'
+
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -33,10 +36,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+const pageNumber = parseInt(window.location.pathname.split('/')[3])
 
 const ProblemSet = ({
   fetchProblemsListByPage,
-  getTags,
+  getAllTags,
   problems,
   tags: allTags,
   totalNumberOfPages,
@@ -45,10 +49,12 @@ const ProblemSet = ({
   const classes = useStyles();
   const history = useHistory();
   const [currentPage, setCurrentPage] = useState(parseInt(window.location.pathname.split('/')[3]))
+  const [properties, setProperties] = useState({ tags: [], subtags: [], events: [], source: [] });
+
 
   useEffect(() => {
-    fetchProblemsListByPage(parseInt(window.location.pathname.split('/')[3]));
-    getTags();
+    search();
+    getAllTags();
   }, [])
 
   const handlePaginationChange = (event, value) => {
@@ -56,8 +62,8 @@ const ProblemSet = ({
     history.push(`/problemset/page/${value}`)
   }
 
-  const handleTagClick = (event) => {
-
+  const search = () => {
+    fetchProblemsListByPage({ properties, pageNumber });
   }
 
   return (
@@ -120,7 +126,10 @@ const ProblemSet = ({
                 </Grid>
                 <Divider />
                 <Grid item>
-                  <Typography variant="h3" textAlign="center" >به زودی :)</Typography>
+                  <PropertiesBox properties={properties} setProperties={setProperties} />
+                </Grid>
+                <Grid item>
+                  <Button fullWidth variant='contained' color='primary' onClick={search}>جستجو کن</Button>
                 </Grid>
               </Grid>
             </Paper>
@@ -148,6 +157,6 @@ export default connect(
   mapStateToProps,
   {
     fetchProblemsListByPage,
-    getTags,
+    getAllTags,
   }
 )(ProblemSet)

@@ -25,10 +25,10 @@ import {
 } from '../redux/actions/problem';
 import { toPersianNumber } from '../utils/translateNumber';
 import {
-  getTags,
-  getSubtags,
-  getEvents,
-  getSources,
+  getAllTags,
+  getAllSubtags,
+  getAllEvents,
+  getAllSources,
 } from '../redux/actions/properties'
 import {
   getUser,
@@ -53,11 +53,11 @@ const useStyles = makeStyles((theme) => ({
 
 const ViewProblem = ({
   fetchProblem,
-  getTags,
-  getEvents,
-  getSources,
+  getAllTags,
+  getAllSubtags,
+  getAllEvents,
+  getAllSources,
   problem,
-  getSubtags,
   scoreProblem,
   tags,
   subtags,
@@ -73,11 +73,11 @@ const ViewProblem = ({
 
   useEffect(() => {
     fetchProblem(problemId);
-    getTags();
-    getSubtags();
-    getEvents();
-    getSources();
-  }, [fetchProblem, getTags, getSubtags, getEvents, getSources]);
+    getAllTags();
+    getAllSubtags();
+    getAllEvents();
+    getAllSources();
+  }, [fetchProblem, getAllTags, getAllSubtags, getAllEvents, getAllSources]);
 
   useEffect(() => {
     if (problem?.question_maker) {
@@ -225,10 +225,10 @@ export default connect(
   mapStateToProps,
   {
     fetchProblem,
-    getTags,
-    getSubtags,
-    getEvents,
-    getSources,
+    getAllTags,
+    getAllSubtags,
+    getAllEvents,
+    getAllSources,
     getUser,
   }
 )(ViewProblem);

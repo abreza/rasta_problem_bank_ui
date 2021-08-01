@@ -17,7 +17,7 @@ export const fetchProblem = (problemId) => ({
   },
 });
 
-export const fetchProblemsListByPage = (page) => ({
+export const fetchProblemsListByPage = ({ properties, pageNumber }) => ({
   [CALL_API]: {
     types: [
       actionTypes.PROBLEM_LIST_REQUEST,
@@ -28,21 +28,19 @@ export const fetchProblemsListByPage = (page) => ({
     fetchOptions: {
       method: 'POST',
       body: {
-        sub_tags: [],
-        tag: -1,
+        sub_tags: properties.subtags,
+        tag: properties.tags,
         verification_status: [],
         publish_date_from: "2018-05-05T02:10:35.905349+04:30",
         publish_date_until: "2021-05-05T02:10:35.905349+04:30",
-        appropriate_grades_min: 1,
-        appropriate_grades_max: 12,
-        level_min: 0,
-        level_max: 100,
-        sources: [
-        ],
-        question_makers: [
-        ],
-        events: [],
-        page: page
+        appropriate_grades_min: 1, //todo
+        appropriate_grades_max: 12, //todo
+        level_min: 0, //todo
+        level_max: 100, //todo
+        sources: properties.source,
+        question_makers: [], //todo
+        events: properties.events,
+        page: pageNumber,
       }
     },
   },

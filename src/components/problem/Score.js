@@ -31,7 +31,7 @@ const Score = ({ initialScore, problemId, scoreProblem }) => {
       <Button color="primary" onClick={() => doScore(1)}>
         <Typography component='caption' variant='h4'>+</Typography>
       </Button>
-      <Button disabled><div dir='ltr'>{toPersianNumber(score)}</div></Button>
+      <Button disabled><div dir='ltr' style={{ fontSize: '16px' }} >{toPersianNumber(score)}</div></Button>
       <Button color="secondary" onClick={() => doScore(-1)}>
         <Typography component='caption' variant='h4'>-</Typography>
       </Button>

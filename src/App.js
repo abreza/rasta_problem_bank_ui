@@ -45,7 +45,6 @@ const App = ({ redirectTo, initRedirect }) => {
           <Root />
         </StylesProvider>
       </ThemeProvider>
-
     </>
   );
 };

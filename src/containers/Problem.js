@@ -25,10 +25,10 @@ import {
   editProblem,
 } from '../redux/actions/problem';
 import {
-  getTags,
-  getSubtags,
-  getEvents,
-  getSources,
+  getAllTags,
+  getAllSubtags,
+  getAllEvents,
+  getAllSources,
 } from '../redux/actions/properties';
 import { notify } from '../redux/actions/notification';
 import { toPersianNumber } from '../utils/translateNumber';
@@ -69,12 +69,12 @@ class Problem extends Component {
   }
 
   componentDidMount() {
-    const { getTags, getSubtags, getSources, getEvents, fetchProblem } = this.props;
+    const { getAllTags, getAllSubtags, getAllSources, getAllEvents, fetchProblem } = this.props;
     const { problemId } = this.state;
-    getTags();
-    getSubtags();
-    getEvents();
-    getSources();
+    getAllTags();
+    getAllSubtags();
+    getAllEvents();
+    getAllSources();
     if (!this.state.isProblemNew) {
       fetchProblem(problemId);
     }
@@ -344,18 +344,16 @@ class Problem extends Component {
                 />
                 <Segment textAlign="center">
                   <Label attached="top">مباحث کلی سوال</Label>
-                  <div>
-                    {this.props.tags.map((tag) => (
-                      <Tag
-                        name={tag.name}
-                        key={tag.id}
-                        selected={this.state.selectedTags[tag.id]}
-                        clickable={true}
-                        onClick={() => this.handleTagChange(tag.id, !this.state.selectedTags[tag.id])}
+                  {this.props.tags.map((tag) => (
+                    <Tag
+                      name={tag.name}
+                      key={tag.id}
+                      selected={this.state.selectedTags[tag.id]}
+                      clickable={true}
+                      onClick={() => this.handleTagChange(tag.id, !this.state.selectedTags[tag.id])}
 
-                      />
-                    ))}
-                  </div>
+                    />
+                  ))}
                 </Segment>
                 <Segment textAlign="center">
                   <Label attached="top">مباحث ریزتر</Label>
@@ -431,10 +429,10 @@ export default withRouter(connect(
     notify,
     editProblem,
     fetchProblem,
-    getTags,
-    getSubtags,
-    getEvents,
-    getSources,
+    getAllTags,
+    getAllSubtags,
+    getAllEvents,
+    getAllSources,
     createProblem,
   }
 )(Problem));
