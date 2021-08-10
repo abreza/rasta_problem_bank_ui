@@ -13,7 +13,7 @@ function redirect(state = initState, action) {
       return { redirectTo: '/' };
 
     case actionTypes.SUBMIT_PROBLEM_SUCCESS:
-      return { redirectTo: '/problemset/page/1' };
+      return { redirectTo: '/problemset/' };
 
     case actionTypes.REDIRECT:
       return { redirectTo: action.payload };

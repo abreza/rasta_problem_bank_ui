@@ -15,7 +15,6 @@ import {
   Button,
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
-import { useHistory } from "react-router-dom";
 import { connect } from 'react-redux';
 import { fetchProblemsListByPage } from '../redux/actions/problem'
 import { getAllTags } from '../redux/actions/properties'
@@ -47,23 +46,21 @@ const ProblemSet = ({
   isFetching
 }) => {
   const classes = useStyles();
-  const history = useHistory();
-  const [currentPage, setCurrentPage] = useState(parseInt(window.location.pathname.split('/')[3]))
-  const [properties, setProperties] = useState({ tags: [], subtags: [], events: [], source: [] });
-
+  const [currentPage, setCurrentPage] = useState(1)
+  const [properties, setProperties] = useState({ tags: [], subtags: [], events: [], sources: [] });
 
   useEffect(() => {
-    search();
+    search(currentPage);
     getAllTags();
   }, [])
 
   const handlePaginationChange = (event, value) => {
-    setCurrentPage(value)
-    history.push(`/problemset/page/${value}`)
+    search(value);
+    setCurrentPage(value);
   }
 
-  const search = () => {
-    fetchProblemsListByPage({ properties, pageNumber });
+  const search = (currentPage) => {
+    fetchProblemsListByPage({ properties, pageNumber: currentPage });
   }
 
   return (
@@ -129,7 +126,7 @@ const ProblemSet = ({
                   <PropertiesBox properties={properties} setProperties={setProperties} />
                 </Grid>
                 <Grid item>
-                  <Button fullWidth variant='contained' color='primary' onClick={search}>جستجو کن</Button>
+                  <Button fullWidth variant='contained' color='primary' onClick={() => search(currentPage)}>جستجو کن</Button>
                 </Grid>
               </Grid>
             </Paper>

@@ -28,7 +28,7 @@ const HomepageLayout = ({ mobile }) => (
         display: 'table',
       }}
       as={Link}
-      to="/problemset/page/1"
+      to="/problemset/"
     >
       مجموعه‌ی مسئله‌ها
       <Icon name="left arrow" />

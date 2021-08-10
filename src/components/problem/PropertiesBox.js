@@ -147,13 +147,13 @@ const PropertiesBox = ({
         <FormControl size='small' variant="outlined" fullWidth>
           <InputLabel>منبع</InputLabel>
           <Select
+            multiple
             className={classes.dropDown}
             defaultValue={[]}
             onBlur={handleSelect}
-            name='source'
+            name='sources'
             label='منبع'
           >
-            <MenuItem value={''}>{'هیچ‌کدام'}</MenuItem>
             {allSources.map((source) => (
               <MenuItem value={source.id}>{source.name}</MenuItem>
             ))}

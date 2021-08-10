@@ -29,7 +29,7 @@ export const fetchProblemsListByPage = ({ properties, pageNumber }) => ({
       method: 'POST',
       body: {
         sub_tags: properties.subtags,
-        tag: properties.tags,
+        tags: properties.tags,
         verification_status: [],
         publish_date_from: "2018-05-05T02:10:35.905349+04:30",
         publish_date_until: "2021-05-05T02:10:35.905349+04:30",
@@ -37,7 +37,7 @@ export const fetchProblemsListByPage = ({ properties, pageNumber }) => ({
         appropriate_grades_max: 12, //todo
         level_min: 0, //todo
         level_max: 100, //todo
-        sources: properties.source,
+        sources: properties.sources,
         question_makers: [], //todo
         events: properties.events,
         page: pageNumber,
